@@ -29,7 +29,7 @@ public:
         }
         buffer [_size++] = v;
     }
-    inline void push_back_copy(const T) {
+    inline void push_back_copy(const T v) {
         if (_size >= _capacity) {
             reserve(_capacity * 2);
         }

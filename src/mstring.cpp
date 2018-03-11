@@ -2,6 +2,8 @@
 #include "freader.h"
 #include <string>
 
+using std::string;
+
 MString::MString(char * _raw) : raw{_raw} 
 {}
 

@@ -4,6 +4,8 @@
 #include "freader.h"
 #include <string>
 
+using std::string;
+
 class MString {
 private:
     char * raw;
