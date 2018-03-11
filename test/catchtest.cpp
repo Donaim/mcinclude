@@ -1,10 +1,12 @@
+/*
+
 //  source:
 //  https://github.com/catchorg/Catch2/blob/master/examples/010-TestCase.cpp
 
 // catch will define 'main'
 #define CATCH_CONFIG_MAIN
 
-#include "../extern/Catch2/single_include/catch.hpp"
+#include "catch.hpp"
 
 int Factorial( int number ) {
    return number <= 1 ? number : Factorial( number - 1 ) * number;  // fail
@@ -21,3 +23,5 @@ TEST_CASE( "Factorials of 1 and higher are computed (pass)", "[single-file]" ) {
     REQUIRE( Factorial(3) == 6 );
     REQUIRE( Factorial(10) == 3628800 );
 }
+
+*/
