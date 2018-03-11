@@ -3,13 +3,13 @@ import subprocess, os, sys
 def compile_run(test_file_name):
     if not test_file_name.endswith('.cpp'): test_file_name += '.cpp'
 
-    include = os.path.join('..', 'extern', 'doctest', 'doctest')
+    includes = [os.path.join('..', 'src'), os.path.join('..', 'extern', 'doctest', 'doctest')]
+    includes = list(map(lambda p: '-I' + p, includes))
     output_bin_path = os.path.join('..', 'test', 'out-{}.exe'.format(test_file_name))
-    # options = ['-std=c++14', '-Wall']
     options = ['-std=c++14']
 
-    compile_args = ['-I{}'.format(include), '-o', output_bin_path, os.path.join(test_dir, test_file_name)]
-    compile_args = ['g++'] + options + compile_args
+    compile_args = ['-o', output_bin_path, os.path.join(test_dir, test_file_name)]
+    compile_args = ['g++'] + options + includes + compile_args
 
     print("compiling ({})".format(" ".join(compile_args)))
     subprocess.check_call(compile_args)
