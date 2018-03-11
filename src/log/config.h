@@ -49,7 +49,7 @@ namespace mlog {
         }
     }
 
-    std::string padRightAsString(const char * raw, const size_t num, const char paddingChar = ' ')
+    std::string pad_right_as_string(const char * raw, const size_t num, const char paddingChar = ' ')
     {
         string str{raw};
         while(num > str.size())

@@ -15,7 +15,7 @@ namespace mlog {
     }
 
     void error(const char * str, ETYPE type = ETYPE::BAD, Pos pos = Pos::undefined()) {
-        println(padRightAsString(et_to_str(type), 12) + ": " + str + " [" + pos.to_str() + ']', cerr, rang::style::bold, rang::fg::red);
+        println(pad_right_as_string(et_to_str(type), 12) + ": " + str + " [" + pos.to_str() + ']', cerr, rang::style::bold, rang::fg::red);
 
         if ((int)type >= (int)ETYPE::BAD) {
             throw std::runtime_error{str}; 
@@ -23,6 +23,6 @@ namespace mlog {
     }
 
     void warn(const char * str, WTYPE type = WTYPE::DEFAULT, Pos pos = Pos::undefined()) {
-        println(padRightAsString(wt_to_str(type), 12) + ": " + str + " [" + pos.to_str() + ']', cerr, rang::style::bold, rang::fg::green);
+        println(pad_right_as_string(wt_to_str(type), 12) + ": " + str + " [" + pos.to_str() + ']', cerr, rang::style::bold, rang::fg::green);
     }
 }
