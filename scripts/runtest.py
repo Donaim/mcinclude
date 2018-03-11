@@ -21,7 +21,7 @@ test_dir = os.path.join('..', 'test')
 
 if sys.argv[1] == 'all':
     for f in os.listdir(test_dir):
-        if f.endswith('.cpp'): 
+        if f.endswith('.cpp') and not f.startswith('_'): 
             try: compile_run(f)
             except: pass
 else:
