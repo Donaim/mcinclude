@@ -6,7 +6,8 @@ typedef const char * log_string;
 using std::string;
 
 namespace mlog {
-#define mlog_nameof(expr) $##expr
+    /* source: https://www.cprogramming.com/reference/preprocessor/stringizing-operator.html */
+#define CONV_CASE(CT) case CT: return #CT
 
     struct Pos { // position
         const int line_index;
@@ -29,9 +30,8 @@ namespace mlog {
     };
     const char * et_to_str(ETYPE t) {
         switch(t) {
-            case ETYPE::DEFAULT: return "DEFAULT";
-            case ETYPE::BAD: return "BAD";
-
+            CONV_CASE(ETYPE::DEFAULT);
+            CONV_CASE(ETYPE::BAD);
             default: return "NOT_IMPLEMENTED";
         }
     }
@@ -42,9 +42,8 @@ namespace mlog {
     };
     const char * wt_to_str(WTYPE t) {
         switch(t) {
-            case WTYPE::DEFAULT: return "DEFAULT";
-            case WTYPE::SKIP_INCLUDE: return "SKIP_INCLUDE";
-            
+            CONV_CASE(WTYPE::DEFAULT);
+            CONV_CASE(WTYPE::SKIP_INCLUDE);
             default: return "NOT_IMPLEMENTED";
         }
     }
