@@ -36,7 +36,7 @@ cpps = get_cpps()
 if sys.argv[1] == 'all':
     for f in os.listdir(test_dir):
         if f.endswith('.cpp') and not f.startswith('_'): 
-            try: compile_run( [f] + cpps)
+            try: compile_run( [os.path.join(test_dir, f)] + cpps)
             except: pass
 else:
     target_test_file = os.path.abspath(os.path.join(test_dir, sys.argv[1]))
