@@ -14,15 +14,15 @@ namespace mlog {
             << rang::fg::reset << rang::bg::reset << rang::style::reset;
     }
 
-    void error(const char * str, ETYPE type = ETYPE::BAD, Pos pos = Pos::undefined()) {
+    void error(const char * str, EType type = EType::BAD, Pos pos = Pos::undefined()) {
         println(pad_right_as_string(et_to_str(type), 20) + ": " + str + " [" + pos.to_str() + ']', cerr, rang::style::bold, rang::fg::red);
 
-        if ((int)type >= (int)ETYPE::BAD) {
+        if ((int)type >= (int)EType::BAD) {
             throw std::runtime_error{str}; 
         }
     }
 
-    void warn(const char * str, WTYPE type = WTYPE::DEFAULT, Pos pos = Pos::undefined()) {
+    void warn(const char * str, WType type = WType::DEFAULT, Pos pos = Pos::undefined()) {
         println(pad_right_as_string(wt_to_str(type), 20) + ": " + str + " [" + pos.to_str() + ']', cerr, rang::style::bold, rang::fg::green);
     }
 }

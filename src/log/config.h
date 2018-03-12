@@ -11,7 +11,7 @@ namespace mlog {
 
     struct Pos { // position
         const int line_index;
-        std::string filename;
+        const std::string filename;
         Pos(int index, const char * _filename) : line_index{index}, filename{_filename} 
         {}
 
@@ -24,26 +24,26 @@ namespace mlog {
         }
     };
 
-    enum class ETYPE : int { // ERROR TYPE
+    enum class EType : int { // ERROR TYPE
         DEFAULT,
         BAD = 1000000, // types that are >= BAD, throw exception
     };
-    const char * et_to_str(ETYPE t) {
+    const char * et_to_str(EType t) {
         switch(t) {
-            CONV_CASE(ETYPE::DEFAULT);
-            CONV_CASE(ETYPE::BAD);
+            CONV_CASE(EType::DEFAULT);
+            CONV_CASE(EType::BAD);
             default: return "NOT_IMPLEMENTED";
         }
     }
 
-    enum class WTYPE : int { // ERROR TYPE
+    enum class WType : int { // ERROR TYPE
         DEFAULT,
         SKIP_INCLUDE,
     };
-    const char * wt_to_str(WTYPE t) {
+    const char * wt_to_str(WType t) {
         switch(t) {
-            CONV_CASE(WTYPE::DEFAULT);
-            CONV_CASE(WTYPE::SKIP_INCLUDE);
+            CONV_CASE(WType::DEFAULT);
+            CONV_CASE(WType::SKIP_INCLUDE);
             default: return "NOT_IMPLEMENTED";
         }
     }
