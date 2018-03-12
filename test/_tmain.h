@@ -9,7 +9,7 @@
 
 using namespace std;
 
-#define SIMPLETEXT_PATH "..\\test\\simpletext.txt"
+#define SIMPLETEXT_PATH "test\\simpletext.txt"
 
 
 

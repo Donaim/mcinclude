@@ -1,7 +1,8 @@
 
-import os
+import os, sys
 
-srcdir = os.path.join('..', 'src')
+mydir = os.path.dirname(sys.argv[0])
+srcdir = os.path.abspath(os.path.join(mydir, '..', 'src'))
 
 allf = [os.path.join(dp, f) for dp, dn, fn in os.walk(srcdir) for f in fn]
 for f in allf:

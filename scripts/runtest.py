@@ -17,10 +17,10 @@ def compile_run(files):
     compile_args += files
     compile_args += ['-o', output_bin_path]
 
-    print("compiling ({})".format(" ".join(compile_args)))
+    print('compiling:', ' '.join(compile_args), '', sep='\n')
     subprocess.check_call(compile_args)
 
-    print("running {}".format(output_bin_path))
+    print('running:', output_bin_path, '-' * len(output_bin_path), '', sep='\n')
     subprocess.call(output_bin_path)
 def get_cpps():
     import subprocess
