@@ -8,22 +8,6 @@ using std::string;
 namespace mlog {
     /* source: https://www.cprogramming.com/reference/preprocessor/stringizing-operator.html */
 #define CONV_CASE(CT) case CT: return #CT
-
-    struct Pos { // position
-        const int line_index;
-        const std::string filename;
-        Pos(int index, const char * _filename) : line_index{index}, filename{_filename} 
-        {}
-
-        bool undef() const { return line_index < 0; }
-
-        static Pos undefined() { return Pos{-1, "std_undefined_position"}; }
-
-        string to_str() {
-            return "line " + std::to_string(line_index) + " in \"" + filename + '\"';
-        }
-    };
-
     enum class EType : int { // ERROR TYPE
         DEFAULT,
         BAD = 1000000, // types that are >= BAD, throw exception

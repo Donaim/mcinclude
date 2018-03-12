@@ -1,6 +1,7 @@
 
 #include "config.h"
 #include "rang.hpp"
+#include "../linepos.hpp"
 
 #include <iostream>
 #include <stdexcept>
@@ -14,7 +15,7 @@ namespace mlog {
             << rang::fg::reset << rang::bg::reset << rang::style::reset;
     }
 
-    void error(const char * str, EType type = EType::BAD, Pos pos = Pos::undefined()) {
+    void error(const char * str, EType type = EType::BAD, LinePos pos = LinePos::undefined()) {
         println(pad_right_as_string(et_to_str(type), 20) + ": " + str + " [" + pos.to_str() + ']', cerr, rang::style::bold, rang::fg::red);
 
         if ((int)type >= (int)EType::BAD) {
@@ -22,7 +23,7 @@ namespace mlog {
         }
     }
 
-    void warn(const char * str, WType type = WType::DEFAULT, Pos pos = Pos::undefined()) {
+    void warn(const char * str, WType type = WType::DEFAULT, LinePos pos = LinePos::undefined()) {
         println(pad_right_as_string(wt_to_str(type), 20) + ": " + str + " [" + pos.to_str() + ']', cerr, rang::style::bold, rang::fg::green);
     }
 }
