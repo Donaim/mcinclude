@@ -1,15 +1,21 @@
 
 #include "sfile_line_reader.h"
 #include "slist.hpp"
+#include "log/short.hpp"
 
 #include <stdexcept>
 #include <iostream>
+#include <string>
 
 using namespace std;
 
 SFileLineReader::SFileLineReader(const char * source_file_path) : handle{} {
     handle.open(source_file_path, ios_base::in);
-    if (!handle.is_open()) { throw std::runtime_error{"couldn't open file!"}; }
+    if (!handle.is_open()) { 
+        char mess[1000];
+        sprintf(mess, "SFileLineReader couldn't open file \"%s\" !", source_file_path);
+        mlog::error(mess); 
+    }
 }
 
 char * SFileLineReader::readline() const {
