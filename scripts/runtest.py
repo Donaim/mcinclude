@@ -12,7 +12,7 @@ def compile_run(main_source):
     includes = list(map(lambda p: '-I' + p, includes))
     subprocess.check_call(['py', 'mxxbuild.py', src_dir, '++no-link', '++exclude', 'main.cpp', '++copts'] + includes) # compile only, but not main.cpp
 
-    mybuild_path = path.normpath(path.join(main_source, '..', 'build'))
+    mybuild_path = path.normpath(path.join(test_dir, '..', 'build'))
     if not path.exists(mybuild_path): os.makedirs(mybuild_path)
     my_object_path = path.join(mybuild_path, path.basename(main_source) + '.o')
     subprocess.check_call(['g++', '-c', main_source, '-o', my_object_path] + includes) # compile only this file
@@ -30,8 +30,4 @@ if __name__ == "__main__":
     else:
         target_test_file = path.join(test_dir, target_argument)
         compile_run(target_test_file)
-
-    print("END")
-
-
 
