@@ -5,13 +5,14 @@ my_dir = path.normpath(path.dirname(path.abspath(sys.argv[0])))
 project_dir = path.normpath(path.join(my_dir, '..'))
 test_dir = path.join(project_dir, 'test', 'units')
 src_dir = path.join(project_dir, 'src')
+mxxfile = path.join(my_dir, 'mxxbuild.py')
 
 includes = [src_dir, os.path.join(project_dir, 'extern', 'doctest', 'doctest')]
 includes = list(map(lambda p: '-I' + p, includes))
 
 def compile_run(main_source):
     # compile /src
-    subprocess.check_call(['py', 'mxxbuild.py', src_dir, '++no-link', '++exclude', 'main.cpp', '++copts'] + includes) # do not compile main.cpp
+    subprocess.check_call(['py', mxxfile, src_dir, '++no-link', '++exclude', 'main.cpp', '++copts'] + includes) # do not compile main.cpp
 
     # compile this test file
     my_build_dir = path.normpath(path.join(test_dir, '..', 'build'))
@@ -21,7 +22,7 @@ def compile_run(main_source):
 
     # link this test with /src
     out_exe_path = path.join(my_build_dir, 'exe.exe')
-    subprocess.check_call(['py', 'mxxbuild.py', src_dir, '++no-compile', '++lopts', my_object_path, '++exclude', 'main.o', '++out', out_exe_path]) # do not include main.o
+    subprocess.check_call(['py', mxxfile, src_dir, '++no-compile', '++lopts', my_object_path, '++exclude', 'main.o', '++out', out_exe_path]) # do not include main.o
     
     # run
     subprocess.call([out_exe_path])
