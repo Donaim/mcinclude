@@ -9,7 +9,9 @@
 
 using namespace std;
 
-#define SIMPLETEXT_PATH "test\\data\\simpletext.txt"
+#define TESTDATA_DIR __FILE__"\\..\\..\\data\\"
+
+#define SIMPLETEXT_PATH TESTDATA_DIR"simpletext.txt"
 
 
 #endif
