@@ -16,7 +16,7 @@ SFile& SFile::create_root(const char * path) {
 bool SFile::is_file_root() const { return parent_file_ == nullptr; }
 
 void SFile::read_lines() {
-    while (true) {
+    while (!reader_.is_end()) {
         MString& ms = MString::from_reader_line(reader_);
         lines.push_back(&ms);
     }

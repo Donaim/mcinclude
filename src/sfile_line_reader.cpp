@@ -3,9 +3,11 @@
 
 using namespace std;
 
-SFileLineReader::SFileLineReader(const char * source_file_path) : handle{} {
+SFileLineReader::SFileLineReader(const char * source_file_path) : handle{}, eof_{true} {
     handle.open(source_file_path, ios_base::in);
-    if (!handle.is_open()) { 
+    if (handle.is_open()) { 
+        eof_ = false;
+    } else {
         char mess[1000];
         sprintf(mess, "SFileLineReader couldn't open file \"%s\" !", source_file_path);
         mlog::error(mess); 
@@ -17,7 +19,11 @@ char * SFileLineReader::readline() const {
 
     while (!handle.eof()) {
         char c = this->handle.get(); // to do: read char array, not single one
-        if (c == -1 || c == '\0') { break; }
+        if (c == -1 || c == '\0') 
+        { 
+            eof_ = true;
+            break; 
+        }
 
         buff.push_back_copy(c);
 
@@ -29,5 +35,5 @@ char * SFileLineReader::readline() const {
 }
 
 bool SFileLineReader::is_end() const {
-    return handle.eof();
+    return eof_;
 }

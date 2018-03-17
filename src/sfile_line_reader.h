@@ -15,6 +15,7 @@ using namespace std;
 
 class SFileLineReader : public LineReader {
     mutable ifstream handle; // reading handle does not change SFileLineReader itself (but not const for handle), so this can be mutable
+    mutable bool eof_;
 public:
     SFileLineReader(const char * source_file_path);
 

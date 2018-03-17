@@ -8,3 +8,7 @@ TEST_CASE("test creation") {
     CHECK_NOTHROW(SFile::create_root(SIMPLETEXT_PATH));
 }
 
+TEST_CASE("test read") {
+    SFile& sf = SFile::create_root(SIMPLETEXT_PATH);
+    sf.read_lines();
+}
