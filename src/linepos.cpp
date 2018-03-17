@@ -1,5 +1,7 @@
 #include "linepos.h"
 
+using std::string;
+
 LinePos::LinePos(int index, const char * _filename) : line_index{index}, filename{_filename} 
 {}
 

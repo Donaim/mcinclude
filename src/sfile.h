@@ -7,7 +7,6 @@
 #include "sfile_line_reader.h"
 
 #include <string>
-using std::string;
 
 class SFile : public CodeBlock {
 protected:
@@ -15,7 +14,7 @@ protected:
     SFile * const parent_file_;
     bool ended_;
 public:
-    const string path;
+    const std::string path;
 
     SFile(const char * path_, SFile * parent, LineReader& reader);
     static SFile create_root(const char * path);

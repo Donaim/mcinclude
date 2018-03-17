@@ -5,9 +5,6 @@
 #include <string>
 #include <iostream>
 
-using std::string;
-using std::ostream;
-
 class MString {
 private:
     char * raw;
@@ -15,9 +12,9 @@ private:
 public:
     static MString& from_reader_line(const LineReader& r);
 
-    string copy_as_std() const;
+    std::string copy_as_std() const;
 
-    friend ostream& operator<< (ostream& os, const MString& me);
+    friend std::ostream& operator<< (std::ostream& os, const MString& me);
 
     ~MString();
     

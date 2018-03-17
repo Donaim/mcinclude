@@ -5,14 +5,13 @@
 #include "../linepos.h"
 
 #include <iostream>
-#include <stdexcept>
-using namespace std;
+#include <string>
 
 namespace mlog {
 
     void println(
-        string str, 
-        ostream& os = cout, 
+        std::string str, 
+        std::ostream& os = std::cout, 
         rang::style style = rang::style::reset,
         rang::fg foreground_color = rang::fg::reset, 
         rang::bg background_color = rang::bg::reset);

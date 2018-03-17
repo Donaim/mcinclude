@@ -1,6 +1,8 @@
 
 #include "config.h"
 
+using std::string;
+
 namespace mlog {
     const char * et_to_str(EType t) {
         switch(t) {

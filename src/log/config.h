@@ -3,7 +3,6 @@
 typedef const char * log_string;
 
 #include <string>
-using std::string;
 
 namespace mlog {
     /* source: https://www.cprogramming.com/reference/preprocessor/stringizing-operator.html */
