@@ -3,8 +3,10 @@
 
 #include "line_reader.h"
 #include <string>
+#include <iostream>
 
 using std::string;
+using std::ostream;
 
 class MString {
 private:
@@ -15,7 +17,9 @@ public:
 
     string copy_as_std() const;
 
-    ~MString();
+    friend ostream& operator<< (ostream& os, const MString& me);
 
+    ~MString();
+    
     // to do: add is_empty() -> bool
 };
