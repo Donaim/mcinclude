@@ -176,6 +176,8 @@ namespace rang_implementation {
 
     inline bool isMsysPty(int fd) noexcept
     {
+        return false;
+
         // // Dynamic load for binary compability with old Windows
         // const auto ptrGetFileInformationByHandleEx
         //   = reinterpret_cast<decltype(&GetFileInformationByHandleEx)>(
@@ -221,7 +223,7 @@ namespace rang_implementation {
         //     return false;
         // }
 
-        return true;
+        // return true;
     }
 
 #endif
