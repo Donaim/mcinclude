@@ -11,15 +11,16 @@ includes = [src_dir, os.path.join(project_dir, 'extern', 'doctest', 'doctest')]
 includes = list(map(lambda p: '-I' + p, includes))
 
 def compile_run(main_source):
+    source_without_ext = '.'.join(main_source.split('.')[:-1])
+
     # compile /src
     subprocess.check_call(['py', mxxfile, src_dir, '++no-link', '++exclude', 'main.cpp', '++copts'] + includes) # do not compile main.cpp
 
     # compile this test file
     my_build_dir = path.normpath(path.join(test_dir, '..', 'build'))
     if not path.exists(my_build_dir): os.makedirs(my_build_dir)
-    my_object_path = path.join(my_build_dir, path.basename(main_source) + '.o')
+    my_object_path = path.join(my_build_dir, path.basename(source_without_ext) + '.o')
     subprocess.check_call(['py', mxxfile, test_dir, '++no-link', '++copts'] + includes) # do not compile main.cpp
-    # subprocess.check_call(['g++', '-c', main_source, '-o', my_object_path] + includes) # compile only this file
 
     # link this test with /src
     out_exe_path = path.join(my_build_dir, 'exe.exe')
