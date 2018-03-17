@@ -1,5 +1,6 @@
 
 #include "sfile_line_reader.h"
+#include <iostream>
 
 using namespace std;
 
@@ -22,6 +23,7 @@ char * SFileLineReader::readline() const {
         if (c == -1 || c == '\0') 
         { 
             eof_ = true;
+            handle.close();
             break; 
         }
 
@@ -36,4 +38,9 @@ char * SFileLineReader::readline() const {
 
 bool SFileLineReader::is_end() const {
     return eof_;
+}
+
+SFileLineReader::~SFileLineReader() {
+    try { handle.close(); }
+    catch (exception) { }
 }

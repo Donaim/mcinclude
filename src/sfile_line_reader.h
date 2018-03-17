@@ -21,4 +21,6 @@ public:
 
     virtual char * readline() const override;
     virtual bool is_end() const override;
+
+    ~SFileLineReader();
 };

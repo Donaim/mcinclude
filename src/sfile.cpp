@@ -9,8 +9,8 @@ SFile::SFile(const char * path_, SFile * parent, LineReader& reader) :
     {
     }
 
-SFile& SFile::create_root(const char * path) {
-    return *new SFile(path, nullptr, *new SFileLineReader(path)); // unsafe: no destruction of reader
+SFile SFile::create_root(const char * path) {
+    return SFile{path, nullptr, *new SFileLineReader(path)};
 }
 
 bool SFile::is_file_root() const { return parent_file_ == nullptr; }
@@ -20,4 +20,8 @@ void SFile::read_lines() {
         MString& ms = MString::from_reader_line(reader_);
         lines.push_back(&ms);
     }
+}
+
+SFile::~SFile() {
+    delete &reader_; // should SFile delete it? who else would?
 }

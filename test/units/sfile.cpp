@@ -9,10 +9,14 @@ TEST_CASE("test creation") {
 }
 
 TEST_CASE("test read") {
-    SFile& sf = SFile::create_root(SIMPLETEXT_PATH);
+    stringstream ss{};
+
+    SFile sf = SFile::create_root(SIMPLETEXT_PATH);
     sf.read_lines();
 
     for (int i = 0, to = sf.lines.size(); i < to; i++) {
-        cout << *sf.lines[i];
+        ss << *sf.lines[i];
     }
+
+    CHECK_EQ(ss.str(), get_true_content(SIMPLETEXT_PATH));
 }

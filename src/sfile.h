@@ -17,9 +17,11 @@ public:
     const string path;
 
     SFile(const char * path_, SFile * parent, LineReader& reader);
-    static SFile& create_root(const char * path);
+    static SFile create_root(const char * path);
 
     bool is_file_root() const ;
 
     void read_lines();
+
+    ~SFile();
 };
