@@ -5,6 +5,7 @@
 #include "sfile_line_reader.h"
 #include "log/config.h"
 #include "log/short.h"
+#include "code_block.h"
 
 using namespace std;
 

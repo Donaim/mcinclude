@@ -1,5 +1,4 @@
 #include "mstring.h"
-#include "freader.h"
 #include <string>
 
 using std::string;
@@ -7,8 +6,8 @@ using std::string;
 MString::MString(char * _raw) : raw{_raw} 
 {}
 
-MString& MString::from_reader_line(const FReader& r) {
-    return *new MString(r.reader().readline());
+MString& MString::from_reader_line(const LineReader& r) {
+    return *new MString(r.readline());
 }
 
 string MString::copy_as_std() const {

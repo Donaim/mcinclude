@@ -27,3 +27,7 @@ char * SFileLineReader::readline() const {
     buff.push_back_copy('\0');
     return buff.source();
 }
+
+bool SFileLineReader::is_end() const {
+    return handle.eof();
+}
