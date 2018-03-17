@@ -1,10 +1,16 @@
 #include "mstring.h"
+#include <cstring>
 
 using std::string;
 using std::ostream;
 
 MString::MString(char * _raw) : raw{_raw} 
 {}
+
+MString::MString(const MString& o) : raw{new char[std::strlen(o.raw)]}
+{
+    std::strcpy(this->raw, o.raw);
+}
 
 MString& MString::from_reader_line(const LineReader& r) {
     return *new MString(r.readline());
