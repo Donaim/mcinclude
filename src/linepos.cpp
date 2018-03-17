@@ -1,21 +1,13 @@
-#pragma once
+#include "linepos.h"
 
-#include <string>
+LinePos::LinePos(int index, const char * _filename) : line_index{index}, filename{_filename} 
+{}
 
-using std::string;
+bool LinePos::undef() const { return line_index < 0; }
 
-struct LinePos { // position
-    const int line_index;
-    const string filename;
-    LinePos(int index, const char * _filename) : line_index{index}, filename{_filename} 
-    {}
+LinePos LinePos::undefined() { return LinePos{-1, "std_undefined_position"}; }
 
-    bool undef() const { return line_index < 0; }
-
-    static LinePos undefined() { return LinePos{-1, "std_undefined_position"}; }
-
-    string to_str() {
-        if (this->undef()) { return string{""}; }
-        return "[line " + std::to_string(line_index) + " in \"" + filename + "\"]";
-    }
-};
+string LinePos::to_str() {
+    if (this->undef()) { return string{""}; }
+    return "[line " + std::to_string(line_index) + " in \"" + filename + "\"]";
+}

@@ -4,12 +4,12 @@
 
 #include "sfile_line_reader.h"
 #include "log/config.h"
-// #include "log/short.h"
+#include "log/short.h"
 
 using namespace std;
 
 int main() {
-    // mlog::warn("HI THERE!");
+    mlog::warn("HI THERE!");
     cout << "hello!" << endl;
 
     auto d = mlog::et_to_str(mlog::EType::DEFAULT);
