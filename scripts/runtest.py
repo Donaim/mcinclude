@@ -36,6 +36,7 @@ if __name__ == "__main__":
                 try: compile_run(path.join(test_dir, f))
                 except: pass
     else:
+        if not target_argument.endswith('.cpp'): target_argument += '.cpp'
         target_test_file = path.join(test_dir, target_argument)
         compile_run(target_test_file)
 
