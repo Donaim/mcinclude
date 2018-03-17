@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _LOG_SHORT_HPP
+#define _LOG_SHORT_HPP
+
 
 #include "config.h"
 #include "rang.hpp"
@@ -28,3 +30,5 @@ namespace mlog {
         println(pad_right_as_string(wt_to_str(type), 20) + ": " + str + pos.to_str(), cerr, rang::style::bold, rang::fg::green);
     }
 }
+
+#endif

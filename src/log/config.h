@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _LOG_CONFIG_H
+#define _LOG_CONFIG_H
 
 typedef const char * log_string;
 
@@ -40,3 +41,5 @@ namespace mlog {
         return str;
     }
 }
+
+#endif
