@@ -8,7 +8,7 @@ SFileLineReader::SFileLineReader(const char * source_file_path) : handle{} {
     if (!handle.is_open()) { 
         char mess[1000];
         sprintf(mess, "SFileLineReader couldn't open file \"%s\" !", source_file_path);
-        // mlog::error(mess); 
+        mlog::error(mess); 
     }
 }
 
