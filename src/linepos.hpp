@@ -15,7 +15,7 @@ struct LinePos { // position
     static LinePos undefined() { return LinePos{-1, "std_undefined_position"}; }
 
     string to_str() {
-        if (this->undef()) { return ""s; }
+        if (this->undef()) { return string{""}; }
         return "[line " + std::to_string(line_index) + " in \"" + filename + "\"]";
     }
 };
