@@ -1,5 +1,7 @@
 #include "_tmain.h"
 
+#include <cstring>
+
 TEST_CASE("experimenting with strings") {
     string s1{"hello"};
     string s2{s1};
