@@ -2,7 +2,9 @@
 #define _TMAIN_H_INCL
 
 
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+// #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#define DOCTEST_CONFIG_IMPLEMENT
+// #define DOCTEST_SINGLE_HEADER
 #include "doctest.h"
 
 #include <iostream>
@@ -30,6 +32,8 @@ string get_true_content(const char* path) {
 
     return ss.str();
 }
+
+int main(int argc, char** argv) { return doctest::Context(argc, argv).run(); }
 
 
 #endif
