@@ -1,3 +1,4 @@
+#include "stdafx.h"
 
 #include "sfile_line_reader.h"
 #include <iostream>

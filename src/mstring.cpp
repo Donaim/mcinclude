@@ -1,3 +1,5 @@
+#include "stdafx.h"
+
 #include "mstring.h"
 #include <cstring>
 

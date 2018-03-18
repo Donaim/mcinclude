@@ -1,6 +1,6 @@
-#pragma once
-
 #include <string>
+
+#pragma once
 
 struct LinePos { // position
     const int line_index;

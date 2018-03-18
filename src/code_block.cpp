@@ -1,3 +1,5 @@
+#include "stdafx.h"
+
 #include "code_block.h"
 
 using std::vector;
