@@ -8,10 +8,11 @@
 class MString {
 private:
     char * raw;
-    MString(char * _raw);
+    MString(const LineReader& r);
 public:
     MString(const MString& o); // override copy constructor
     static MString& from_reader_line(const LineReader& r);
+    static MString tmp_from_reader_line(const LineReader& r);
 
     std::string copy_as_std() const;
 
