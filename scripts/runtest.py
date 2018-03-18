@@ -12,19 +12,20 @@ includes = list(map(lambda p: '-I' + p, includes))
 
 def compile_run(main_source):
     source_without_ext = '.'.join(main_source.split('.')[:-1])
+    myopts = sys.argv[2:]
 
     # compile /src
-    subprocess.check_call(['py', mxxfile, src_dir, '++no-link', '++exclude', 'main.cpp', '++copts'] + includes) # do not compile main.cpp
+    subprocess.check_call(['py', mxxfile, src_dir, '++no-link', '++exclude', 'main.cpp', '++copts'] + includes + myopts) # do not compile main.cpp
 
     # compile this test file
     my_build_dir = path.normpath(path.join(test_dir, '..', 'build'))
     if not path.exists(my_build_dir): os.makedirs(my_build_dir)
     my_object_path = path.join(my_build_dir, path.basename(source_without_ext) + '.o')
-    subprocess.check_call(['py', mxxfile, test_dir, '++no-link', '++copts'] + includes) # do not compile main.cpp
+    subprocess.check_call(['py', mxxfile, test_dir, '++no-link', '++copts'] + includes + myopts) # do not compile main.cpp
 
     # link this test with /src
     out_exe_path = path.join(my_build_dir, 'exe.exe')
-    subprocess.check_call(['py', mxxfile, src_dir, '++no-compile', '++lopts', my_object_path, '++exclude', 'main.o', '++out', out_exe_path]) # do not include main.o
+    subprocess.check_call(['py', mxxfile, src_dir, '++no-compile', '++lopts', my_object_path, '++exclude', 'main.o', '++out', out_exe_path] + myopts) # do not include main.o
     
     # run
     subprocess.call([out_exe_path])
