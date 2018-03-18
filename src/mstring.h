@@ -8,7 +8,7 @@
 class MString {
 private:
     char * raw;
-    MString(char * raw_);
+    MString(const char * raw_);
 public:
     MString(const LineReader& r);
     MString(const MString& o); // override copy constructor

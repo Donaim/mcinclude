@@ -4,8 +4,10 @@
 using std::string;
 using std::ostream;
 
-MString::MString(char * raw_) : raw{raw_} // unsafe: shared memory
-{}
+MString::MString(const char * raw_) : raw{new char[std::strlen(raw_)]}
+{
+    std::strcpy(this->raw, raw_);
+}
 MString::MString(const LineReader& r) : raw{r.readline()} // note: MString will free readline memory (potentially unsafe)
 {}
 
