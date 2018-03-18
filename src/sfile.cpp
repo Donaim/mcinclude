@@ -19,8 +19,8 @@ bool SFile::is_ended() const { return ended_; }
 
 void SFile::read_lines() {
     while (!reader_.is_end()) {
-        MString& ms = MString::from_reader_line(reader_);
-        lines.push_back(&ms);
+        MString * ms_ptr = new MString{reader_};
+        lines.push_back(ms_ptr);
     }
     ended_ = true;
 }
