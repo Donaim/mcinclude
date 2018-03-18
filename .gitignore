@@ -1,6 +1,7 @@
 *.exe
 *.out
 *.o
+*.gch
 
 extern/*/**
 extern/doctest
