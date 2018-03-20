@@ -15,3 +15,7 @@ string LinePos::to_str() {
     if (this->undef()) { return string{""}; }
     return "[line " + std::to_string(line_index) + " in \"" + filename + "\"]";
 }
+
+bool LinePos::operator==(const LinePos& o) {
+    return this->line_index == o.line_index && this->filename == o.filename;
+}

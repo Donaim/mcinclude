@@ -9,12 +9,14 @@
 #include <string>
 
 class SFile : public CodeBlock {
+    static int id_counter;
 protected:
     LineReader& reader_;
     SFile * const parent_file_;
     bool ended_;
 public:
     const std::string path;
+    const int id; // unique
 
     SFile(const char * path_, SFile * parent, LineReader& reader);
     static SFile create_root(const char * path);

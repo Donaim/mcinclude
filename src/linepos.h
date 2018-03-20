@@ -12,4 +12,6 @@ struct LinePos { // position
     static LinePos undefined();
 
     std::string to_str();
+
+    bool operator ==(const LinePos& o);
 };
