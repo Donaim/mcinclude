@@ -14,7 +14,7 @@ public:
     Line(MString& source_text, SFile& source_file, LinePos pos);
 
     const MString& text() const;
-    void writeme(Writer& w);
+    virtual void writeme(Writer& w); // will be overriden by Label, Include, .. etc
 
     static bool is_same_origin(const Line& a, const Line& b);
 
