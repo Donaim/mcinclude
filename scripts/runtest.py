@@ -5,41 +5,63 @@ my_dir = path.normpath(path.dirname(path.abspath(sys.argv[0])))
 project_dir = path.normpath(path.join(my_dir, '..'))
 test_dir = path.join(project_dir, 'test', 'units')
 src_dir = path.join(project_dir, 'src')
-mxxfile = path.join(my_dir, 'mxxbuild.py')
+mxxlink = path.join(my_dir, 'mxxbuild.py')
 
-includes = [src_dir, os.path.join(project_dir, 'extern', 'doctest', 'doctest')]
+includes = [src_dir, path.join(project_dir, 'extern', 'doctest', 'doctest'), path.join(project_dir, 'include')]
 includes = list(map(lambda p: '-I' + p, includes))
 
-def compile_run(main_source):
-    source_without_ext = '.'.join(main_source.split('.')[:-1])
-    myopts = sys.argv[2:]
+options = sys.argv[2:]
 
-    # compile /src
-    subprocess.check_call(['py', mxxfile, src_dir, '++no-link', '++verbose', '0', '++exclude', 'main.cpp', '++copts'] + includes + myopts) # do not compile main.cpp
+def get_mxx():
+    with open(mxxlink) as lr:
+        num = 0
+        while True:
+            line: str = lr.readline()
+            if len(line) < 1 or line.isspace(): continue
+            num += 1
+            if num >= 2: 
+                p = path.abspath(path.expanduser(line)).strip()
+                if not path.isfile(p): continue
+                else:
+                    if not path.exists(p):
+                        subprocess.check_call(['py', mxxlink])
+                        return get_mxx()
+                    else:
+                        return p
 
-    # compile this test file
-    my_build_dir = path.normpath(path.join(test_dir, '..', 'build'))
-    if not path.exists(my_build_dir): os.makedirs(my_build_dir)
-    my_object_path = path.join(my_build_dir, path.basename(source_without_ext) + '.o')
-    subprocess.check_call(['py', mxxfile, test_dir, '++no-link', '++verbose', '0', '++copts'] + includes + myopts) # do not compile main.cpp
+mxxfile = get_mxx()
 
-    # link this test with /src
-    out_exe_path = path.join(my_build_dir, 'exe.exe')
-    subprocess.check_call(['py', mxxfile, src_dir, '++no-compile', '++verbose', '0', '++lopts', my_object_path, '++exclude', 'main.o', '++out', out_exe_path] + myopts) # do not include main.o
+sys.path.insert(0, path.dirname(mxxfile))
+import mxxbuild
+import cppcollector
+
+def run_tests(names):
+    args = mxxbuild.parse_args([src_dir, '++verbose', '0', '++exclude', 'main.o', '++copts'] + includes + options)
+    mxx = mxxbuild.mxxbuilder(args)
+    src_build_dir = path.join(project_dir, 'build')
+    test_build_dir = path.join(test_dir, '..', 'build')
     
-    # run
-    subprocess.call([out_exe_path])
+    for main_source in names:
+        source_without_ext = '.'.join(main_source.split('.')[:-1])
+
+        sources = [src_dir, path.join(test_dir, main_source)]
+        mxx.compile_new(sources)
+
+        builds = [src_build_dir, path.join(test_build_dir, source_without_ext + '.o')]
+        mxx.args.out = path.join(test_build_dir, source_without_ext + '.exe')
+        mxx.link_some(builds)
+        mxx.runexe()
 
 if __name__ == "__main__":
     target_argument = sys.argv[1]
 
     if target_argument == 'all':
-        for f in os.listdir(test_dir):
-            if f.endswith('.cpp') and not f.startswith('_'): 
-                try: compile_run(path.join(test_dir, f))
-                except: pass
+        run_tests(
+            map(lambda f: path.join(test_dir, f),
+                filter(lambda f: f.endswith('.cpp') and not f.startswith('_'), os.listdir(test_dir)))
+            )
     else:
         if not target_argument.endswith('.cpp'): target_argument += '.cpp'
         target_test_file = path.join(test_dir, target_argument)
-        compile_run(target_test_file)
+        run_tests([target_test_file])
 
