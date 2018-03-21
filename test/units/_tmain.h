@@ -12,6 +12,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <sstream>
+#include <cstdlib>
 
 using namespace std;
 
@@ -33,7 +34,17 @@ string get_true_content(const char* path) {
     return ss.str();
 }
 
-int main(int argc, char** argv) { return doctest::Context(argc, argv).run(); }
+bool verbose = false;
+int main(int argc, char** argv) 
+{
+    for (int i = 0; i < argc; i++) {
+        if (strcmp(argv[i], "verbose") == 0) { 
+            verbose = true;
+        }
+    }
+
+    return doctest::Context(argc, argv).run();
+}
 
 
 #endif

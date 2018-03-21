@@ -13,10 +13,10 @@ Line::Line(MString& ms, SFile& sf, LinePos p) : text_{ms}, source_file_{sf,}, po
 
 }
 
-inline const MString& Line::text() const {
+const MString& Line::text() const {
     return this->text_;
 }
-inline void Line::writeme(Writer& w) {
+void Line::writeme(Writer& w) {
     w.write(text_);
 }
 
