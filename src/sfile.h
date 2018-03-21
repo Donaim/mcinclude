@@ -9,7 +9,6 @@
 class LineReader;
 
 class SFile : public CodeBlock {
-    static int id_counter;
 protected:
     LineReader& reader_;
     SFile * const parent_file_;

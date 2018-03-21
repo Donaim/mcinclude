@@ -57,8 +57,11 @@ if __name__ == "__main__":
 
     if target_argument == 'clean':
         import shutil
-        shutil.rmtree(path.join(project_dir, 'build'))
-        shutil.rmtree(path.join(project_dir, 'test', 'build'))
+        try: shutil.rmtree(path.join(project_dir, 'build'))
+        except:pass
+        try: shutil.rmtree(path.join(project_dir, 'test', 'build'))
+        except:pass
+        
         print("build directories are clean")
     elif target_argument == 'all':
         run_tests(
