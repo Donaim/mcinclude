@@ -11,6 +11,9 @@ private:
 public:
     MString(const LineReader& r);
     MString(const MString& o); // override copy constructor
+    MString(); // empty line
+    
+    static MString create_empty();
 
     std::string copy_as_std() const;
 

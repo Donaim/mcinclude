@@ -2,14 +2,15 @@
 
 #include "sfile.h"
 
-int SFile::id_counter = 0;
+#include "line.h"
+#include "mstring.h"
+#include "sfile_line_reader.h"
 
 SFile::SFile(const char * path_, SFile * parent, LineReader& reader) : 
         path(path_), // copies chars -> no safety issues
         reader_(reader),
         parent_file_(parent),
         ended_(false),
-        id(SFile::id_counter++),
         CodeBlock(parent != nullptr ? parent->parent_block() : nullptr) 
     {
     }
@@ -23,9 +24,13 @@ bool SFile::is_file_root() const { return parent_file_ == nullptr; }
 bool SFile::is_ended() const { return ended_; }
 
 void SFile::read_lines() {
+    Line * ln = new Line(*new MString{}, *this, LinePos::zero(this->path) );
+
     while (!reader_.is_end()) {
-        MString * ms_ptr = new MString{reader_}; // Line class is responsible for free
-        lines.push_back(ms_ptr);
+        MString * ms = new MString{reader_}; // Line class is responsible for free
+        
+        ln = new Line(*ms, *this, ln->pos.next());
+        lines.push_back(ln);
     }
     ended_ = true;
 }

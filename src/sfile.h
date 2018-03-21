@@ -3,10 +3,10 @@
 // SOURCE FILE //
 
 #include "code_block.h"
-#include "line_reader.h"
-#include "sfile_line_reader.h"
 
 #include <string>
+
+class LineReader;
 
 class SFile : public CodeBlock {
     static int id_counter;
@@ -16,7 +16,6 @@ protected:
     bool ended_;
 public:
     const std::string path;
-    const int id; // unique
 
     SFile(const char * path_, SFile * parent, LineReader& reader);
     static SFile create_root(const char * path);

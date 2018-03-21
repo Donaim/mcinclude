@@ -4,7 +4,9 @@
 
 using std::vector;
 
-CodeBlock::CodeBlock(CodeBlock * parent_) : parent_block_{parent_}, lines{}
+int CodeBlock::id_counter = 0;
+
+CodeBlock::CodeBlock(CodeBlock * parent_) : parent_block_{parent_}, lines{}, id{CodeBlock::id_counter++}
 {}
 
 CodeBlock * CodeBlock::parent_block() const { return parent_block_; }

@@ -6,3 +6,7 @@
 - [ ] call mxxbuild from runtest directly (`import mxxbuild`)
 - [ ] make possible to imitate classes (and inheritance) in C with mcinclude
 
+# What ive learned
+- always split .h and .cpp
+- use forward-declarations as much as possible
+

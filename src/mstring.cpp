@@ -12,10 +12,12 @@ MString::MString(const char * raw_) : raw{new char[std::strlen(raw_)]}
 }
 MString::MString(const LineReader& r) : raw{r.readline()} // note: MString will free readline memory (potentially unsafe)
 {}
-
 MString::MString(const MString& o) : raw{new char[std::strlen(o.raw)]}
 {
     std::strcpy(this->raw, o.raw);
+}
+MString::MString() : raw{new char[1]} {
+    raw[0] = '\0';
 }
 
 string MString::copy_as_std() const {
