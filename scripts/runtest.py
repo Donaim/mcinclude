@@ -55,7 +55,12 @@ def run_tests(names):
 if __name__ == "__main__":
     target_argument = sys.argv[1]
 
-    if target_argument == 'all':
+    if target_argument == 'clean':
+        import shutil
+        shutil.rmtree(path.join(project_dir, 'build'))
+        shutil.rmtree(path.join(project_dir, 'test', 'build'))
+        print("build directories are clean")
+    elif target_argument == 'all':
         run_tests(
             map(lambda f: path.join(test_dir, f),
                 filter(lambda f: f.endswith('.cpp') and not f.startswith('_'), os.listdir(test_dir)))
