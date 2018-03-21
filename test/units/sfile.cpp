@@ -1,5 +1,5 @@
 
-#include "_tmain.h"
+#include "stdafx.h"
 
 #include "mstring.h"
 #include "sfile_line_reader.h"

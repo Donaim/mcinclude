@@ -2,7 +2,7 @@
 #include "log/short.h"
 #include "linepos.h"
 
-#include "_tmain.h"
+#include "stdafx.h"
 
 
 TEST_CASE("testing log") {

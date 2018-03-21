@@ -1,4 +1,4 @@
-#include "_tmain.h"
+#include "stdafx.h"
 
 #include "sfile_line_reader.h"
 
