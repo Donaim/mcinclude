@@ -2,7 +2,8 @@
 
 # To do
 - [x] faster project compilations: split compilation and linking with scripts
-- [ ] make test compilation faster
+- [X] make test compilation faster
+- [ ] implement `reverse` on SIter
 - [ ] make possible with mcincluder to generate precompiled headers for each individual file. Because now only possible that only first header can be precompiled which is silly
 - [ ] call mxxbuild from runtest directly (`import mxxbuild`)
 - [ ] make possible to imitate classes (and inheritance) in C with mcinclude
