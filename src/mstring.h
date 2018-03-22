@@ -18,7 +18,7 @@ public:
     static MString create_empty();
 
     std::string copy_as_std() const;
-    // SIter get_iterator() const;
+    SIter get_iterator() const;
 
     friend std::ostream& operator<< (std::ostream& os, const MString& me);
 

@@ -36,30 +36,6 @@ TEST_CASE("turn around") {
         }
     }
 }
-TEST_CASE("goto beg + skip_whitespace") {
-	// if(verbose){cout << "\n\n" <<"goto beg + skip_whitespace" << endl;}
-    
-    // SIter it(ttext);
-
-	// while(it.inarr()) { it.next(); }
-    // it.next();
-    // it.next();
-    // it.next();
-
-    // it.beg();
-
-    // // it.turn_around();
-    // it.skip_whitespace();
-
-    // // it.turn_around();
-
-	// while(it.inarr()) {
-    //     auto c = it.next();
-    //     if (verbose) {
-    //         printf("[%c]", c);
-    //     }
-    // }
-}
 TEST_CASE("exceed") {
 	if(verbose){cout << "\n\n" << "exceed test" <<endl;}
     
@@ -88,4 +64,25 @@ TEST_CASE("loop test") {
             printf("[%c]", c);
         }
     }
+}
+TEST_CASE("bounds check") {
+	if(verbose){cout << "\n\n" << "bounds check" <<endl;}
+    
+    SIter it(ttext);
+
+    CHECK_NOTHROW(
+        while(it.inarr()) { it.next(); }
+        it.next();
+        it.next();
+        printf("%c", it.next());
+        it.next();
+    );
+
+    CHECK_THROWS(
+        it.look(2);
+    );
+
+    CHECK_THROWS(
+        it.curr();
+    );
 }

@@ -3,18 +3,17 @@
 // very safe. 
 // not memory-safe though..
 
+#include <stdexcept>
+using std::runtime_error;
+
 template<typename T>
 class OIter {
     int dir; // direction
     const int len;
     mutable int pos;
     const T * const source;
-    T bounds_re; // i hope this will be zeroes automatically
 public:
-    OIter(const T * source_, int len_, int pos_ = -1, int dir_ = 1) : source{source_}, dir{dir_}, pos{pos_}, len{len_} {
-
-    }
-    OIter(const T * source_, int len_, int pos_, int dir_, T bounds_re_) : source{source_}, dir{dir_}, pos{pos_}, len{len_}, bounds_re{bounds_re_} {
+    OIter(const T * source_, int len_, int pos_, int dir_) : source{source_}, dir{dir_}, pos{pos_}, len{len_} {
         if (dir == 0) { dir = 1; }
 
         int adir = dir > 0 ? dir : -dir;
@@ -46,10 +45,11 @@ public:
     T look(int at) const {
         at = pos + at * dir;
         if (at >= 0 && at < this->len) { return this->source[at]; }
-        else { return bounds_re; }
+        else { throw runtime_error("oiter: index was outside the bounds of the array"); }
     }
     T curr() const {
-        return this->source[pos]; // safe
+        if (pos >= 0 && pos < this->len) { return this->source[pos]; }
+        else { throw runtime_error("oiter: index was outside the bounds of the array"); }
     }
     void skip() const {
         if (dir > 0) {
@@ -71,7 +71,7 @@ public:
     }
     T next() const {
         skip();
-        return curr();
+        return this->source[pos]; // safe
     }
     T next_look() const {
         skip();

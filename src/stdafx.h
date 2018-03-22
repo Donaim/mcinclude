@@ -6,6 +6,7 @@
     #include <cstring>
     #include <vector>
     #include <cstdlib>
+    #include <stdexcept>
     
     // rang //   
     #include <algorithm>
