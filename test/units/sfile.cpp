@@ -19,9 +19,7 @@ TEST_CASE("test read") {
     sf.read_lines();
 
     for (int i = 0, to = sf.lines.size(); i < to; i++) {
-        if (verbose) {
-            cout << *sf.lines[i] << endl;
-        }
+        DLOG(*sf.lines[i]);
         ss << sf.lines[i]->text();
     }
 

@@ -4,9 +4,11 @@
 #include "strhelp.h"
 
 #include <cstring>
+#include <sstream>
 
 using std::string;
 using std::ostream;
+using std::stringstream;
 
 static char * from_raw(char * raw, int len, bool copy) { 
     if(copy) {
@@ -35,7 +37,7 @@ MString::MString(const LineReader& r)
 MString::MString(const MString& o) 
     : len(std::strlen(o.raw)), original{new char[len + 1]}, raw{original}
 {
-    std::strcpy((char*)this->original, o.raw);
+    std::strcpy(this->original, o.raw);
     raw[len] = '\0';
 }
 MString::MString() 
@@ -46,7 +48,9 @@ MString::MString()
 
 // main
 string MString::copy_as_std() const {
-    return string{this->raw}; // copies raw -> safe
+    stringstream ss{};
+    ss << *this;
+    return ss.str(); // copies raw -> safe
 }
 
 ostream& operator <<(ostream& os, const MString& me) {

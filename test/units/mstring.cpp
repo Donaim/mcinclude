@@ -46,8 +46,8 @@ TEST_CASE("test lrstrip") {
         MString a = MString{sf};
         MString b{a};
         a.lstrip();
-        cout << "left: " << a << endl;
         b.rstrip();
-        cout << "+rit: " << b << endl;
+        
+        cout << "left{" << a << "} right{" << b << '}' << endl;
     }
 }

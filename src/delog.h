@@ -2,16 +2,21 @@
 
 #pragma once
 
-#define DEBUG
-
 #ifdef DEBUG
 
 #include <cstring>
 #include <iostream>
-#define DPLOG(x, ...) { char buff[std::strlen(x)];   std::sprintf(buff, x, __VA_ARGS__);    printf("\n%s\n", buff); }
+
+#define DNEWL() { std::cout << std::endl; }
+#define DLOG(x) { std::cout << x << std::endl; }
+#define DLOGH(x) { std::cout << x; }
+#define DPLOG(x, ...) { printf(x, __VA_ARGS__); std::cout << std::endl; }
+#define DPLOGH(x, ...) { printf(x, __VA_ARGS__); }
 
 #else
 
 #define DPLOG(x, ...) 
+#define DPLOGH(x, ...) 
+#define DNEWL() 
 
 #endif

@@ -5,23 +5,21 @@
 
 #define ttext  "\t abc \t"
 
-#define verbose true
-
 TEST_CASE("simple") {
-	if(verbose){cout << "\n\n" << "simple next" <<endl;}
+	INFO("simple next");
     
-    SIter it(ttext);
+    SIter it = SIter::create_local(ttext);
 	while(it.inarr()) {
-        auto c = it.next();
-        if (verbose) {
-            printf("[%c]", c);
-        }
+        const char c = it.next();
+        DPLOGH("[%c]", c);
     }
+
+    DNEWL();
 }
 TEST_CASE("turn around") {
-	if(verbose){cout << "\n\n" << "turn around" << endl;}
+	INFO("turn around");
     
-    SIter it(ttext);
+    SIter it = SIter::create_local(ttext);
 
     it.next(); // \t
     it.next(); // ' '
@@ -31,15 +29,14 @@ TEST_CASE("turn around") {
 
 	while(it.inarr()) {
         auto c = it.next();
-        if (verbose) {
-            printf("[%c]", c);
-        }
+        DPLOGH("[%c]", c);
     }
+    DNEWL();
 }
 TEST_CASE("exceed") {
-	if(verbose){cout << "\n\n" << "exceed test" <<endl;}
+	INFO("exceed test");
     
-    SIter it(ttext);
+    SIter it = SIter::create_local(ttext);
 
 	while(it.inarr()) { it.next(); }
     it.next();
@@ -49,40 +46,37 @@ TEST_CASE("exceed") {
 
 	while(it.inarr()) {
         auto c = it.next();
-        if (verbose) {
-            printf("[%c]", c);
-        }
+        DPLOGH("[%c]", c);
     }
+    DNEWL();
 }
 TEST_CASE("loop test") {
-	if(verbose){cout << "\n\n" << "simple loop curr" <<endl;}
+	INFO("simple loop curr");
     
-    SIter it(ttext);
+    SIter it = SIter::create_local(ttext);
 	while(it.loop()) {
         auto c = it.curr();
-        if (verbose) {
-            printf("[%c]", c);
-        }
+        DPLOGH("[%c]", c);
     }
+    DNEWL();
 }
 TEST_CASE("bounds check") {
-	if(verbose){cout << "\n\n" << "bounds check" <<endl;}
-    
-    SIter it(ttext);
+    INFO("bounds check");
 
-    CHECK_NOTHROW(
-        while(it.inarr()) { it.next(); }
-        it.next();
-        it.next();
-        printf("%c", it.next());
-        it.next();
+    SIter it = SIter::create_local(ttext);
+
+    while(it.inarr()) { it.next(); }
+    it.next();
+    it.next();
+    char c = it.next();
+    DPLOGH("[%c]", c);
+    it.next();
+
+    CHECK_NOTHROW( // because string is supposed to return '\0', not throw
+        it.look(20);
     );
 
-    CHECK_THROWS(
-        it.look(2);
-    );
-
-    CHECK_THROWS(
+    CHECK_NOTHROW( // same here
         it.curr();
     );
 }

@@ -12,5 +12,6 @@
 - always split .h and .cpp
 - use forward-declarations as much as possible
 - dont use `inline` in definition if declaration does not have it
+- use `&&` (move) references. [tutor](https://stackoverflow.com/questions/5481539/what-does-t-double-ampersand-mean-in-c11)
 
 
