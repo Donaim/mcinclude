@@ -1,6 +1,8 @@
 #ifndef _STDAFX_H
 #define _STDAFX_H
 
+    #include "delog.h"
+
     #include <iostream>
     #include <string>
     #include <cstring>

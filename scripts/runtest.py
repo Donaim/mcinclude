@@ -63,13 +63,17 @@ if __name__ == "__main__":
         except:pass
         
         print("build directories are clean")
-    elif target_argument == 'all':
-        run_tests(
-            map(lambda f: path.join(test_dir, f),
-                filter(lambda f: f.endswith('.cpp') and not f.startswith('_'), os.listdir(test_dir)))
-            )
     else:
-        if not target_argument.endswith('.cpp'): target_argument += '.cpp'
-        target_test_file = path.join(test_dir, target_argument)
-        run_tests([target_test_file])
+        mxx = mxxbuild.mxxbuilder(mxxbuild.parse_args([src_dir]))
+        mxx.compile_stdafx()
+
+        if target_argument == 'all':
+            run_tests(
+                map(lambda f: path.join(test_dir, f),
+                    filter(lambda f: f.endswith('.cpp') and not f.startswith('_'), os.listdir(test_dir)))
+                )
+        else:
+            if not target_argument.endswith('.cpp'): target_argument += '.cpp'
+            target_test_file = path.join(test_dir, target_argument)
+            run_tests([target_test_file])
 

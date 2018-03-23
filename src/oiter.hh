@@ -3,7 +3,7 @@
 // very safe. 
 // not memory-safe though..
 
-#include <stdexcept>
+#include "stdafx.h"
 using std::runtime_error;
 
 template<typename T>
@@ -29,16 +29,35 @@ public:
     static OIter<T> create_local(const T * source_, int len_, int pos_, int dir_) {
         return OIter<T>(source_, len_, pos_, dir_);
     }
-    bool is_empty() const {
+    inline bool is_empty() const {
         return len <= 0;
     }
-    int direction() const { return dir; }
-    void turn_around() { 
+    inline int direction() const { return dir; }
+    inline void turn_around() { 
         dir = -dir;
     }
+    inline bool is_subset_of(const OIter<T> & other) {
+        return OIter<T>::is_subset(*this, other);
+    }
+    static bool is_subset(const OIter<T>& small, const OIter<T>& big) {
+        while (small.inarr()) {
+            if (!big.inarr()) { return false; } // big is shorter
+            if (small.next() != big.next()) { return false; }
+        }
+        return true;
+    }
+    static bool are_equal(const OIter<T>& a, const OIter<T>& b) {
+        while (a.inarr()) {
+            if (!b.inarr()) { return false; } // b is shorter
+            if (a.next() != b.next()) { return false; }
+        }
+        if (b.inarr()) { return false; } // b has not ended
+        return true;
+    }
+
     // void reverse(); // dev: hard to implement without copying
     
-    bool inarr() const {
+    inline bool inarr() const {
         if (dir > 0) {
             return pos < (len - 1);
         }
@@ -46,7 +65,7 @@ public:
             return pos > 0;
         }
     }
-    bool loop() const {
+    inline bool loop() const {
         skip();
         return pos >= 0 && pos < this->len;
     }  
@@ -56,11 +75,11 @@ public:
         if (at >= 0 && at < this->len) { return this->source[at]; }
         else { return outside_object(); }
     }
-    T curr() const {
+    inline T curr() const {
         if (pos >= 0 && pos < this->len) { return this->source[pos]; }
         else { return outside_object(); }
     }
-    void skip() const {
+    inline void skip() const {
         if (dir > 0) {
             if (pos <= (len - 1)) {
                 pos += dir;
@@ -71,18 +90,18 @@ public:
             }
         }
     }
-    void beg() const {
+    inline void beg() const {
         if (dir > 0) {
             pos = 0 - dir;
         } else {
             pos = (len - 1) - dir;
         }
     }
-    T next() const {
+    inline T next() const {
         skip();
         return this->source[pos]; // safe
     }
-    T next_look() const {
+    inline T next_look() const {
         skip();
         return look(1);
     }

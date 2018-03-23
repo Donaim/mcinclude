@@ -7,6 +7,7 @@
 
 class MString {
 private:
+    char * const original; // use for delete [] 
     char * raw; // 0-terminated
     int len;
     MString(char * raw_, bool copy);

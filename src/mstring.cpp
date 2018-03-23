@@ -8,30 +8,40 @@
 using std::string;
 using std::ostream;
 
-MString::MString(char * raw_, bool copy) : len(std::strlen(raw_))
-{
+static char * from_raw(char * raw, int len, bool copy) { 
     if(copy) {
-        raw = new char[len + 1];
-        std::strcpy(this->raw, raw_);
+        char * re = new char[len + 1];
+        std::strcpy(re, raw);
+        re[len] = '\0';
+        return re;
     }
     else {
-        raw = raw_; // unsafe
+        // raw[len] = '\0';
+        return raw; // unsafe
     }
-
-    raw[len] = '\0';
 }
-MString::MString(const LineReader& r) : raw{r.readline()} // note: MString will free readline memory (potentially unsafe)
+
+MString::MString(char * src, bool copy) 
+    : len(std::strlen(src)), original(from_raw(src, len, copy)), raw{original} 
+{
+
+}
+MString::MString(const LineReader& r) 
+    : original{r.readline()}, raw{(char*)original} // note: MString will free readline memory (potentially unsafe)
 {
     len = std::strlen(raw);
     raw[len] = '\0';
 }
-MString::MString(const MString& o) : len(std::strlen(o.raw)), raw{new char[len + 1]}
+MString::MString(const MString& o) 
+    : len(std::strlen(o.raw)), original{new char[len + 1]}, raw{original}
 {
-    std::strcpy(this->raw, o.raw);
+    std::strcpy((char*)this->original, o.raw);
     raw[len] = '\0';
 }
-MString::MString() : len{0}, raw{new char[1]} {
-    raw[len] = '\0';
+MString::MString() 
+    : len{0}, original{new char[1]}, raw{original}
+{
+    original[len] = '\0';
 }
 
 // main
@@ -48,7 +58,7 @@ SIter MString::get_iterator() const {
 }
 
 MString::~MString() {
-    delete[] this->raw;
+    delete [] this->original;
 }
 
 // props
@@ -76,12 +86,39 @@ bool MString::startswith(const char * s, bool skip_whitespace) const {
         sit.skip_whitespace();
     }
 
-    while (sit.inarr()) {
-        if (!mit.inarr()) { return false; } // my is shorter
-        if (mit.next() != sit.next()) { return false; }
+    return sit.is_subset_of(mit); 
+}
+
+
+bool MString::endswith(const char * s, bool skip_whitespace) const {
+    auto mit = get_iterator();
+    auto sit = SIter::create_local(s);
+
+    // go from end
+    mit.turn_around(); mit.beg();
+    sit.turn_around(); sit.beg();
+    
+    if (skip_whitespace) {
+        mit.skip_whitespace();
+        sit.skip_whitespace();
     }
- 
-    return true;
+    
+    return sit.is_subset_of(mit);
+}
+void MString::lstrip() {
+    while(is_space(raw[0])) 
+    { 
+        this->raw++;
+        this->len--; 
+    }
+}
+void MString::rstrip() {
+    int last = len - 1;
+    while(is_space(raw[last])) {
+        last--;
+        len--;
+    }
+    raw[last + 1] = '\0';
 }
 
 // mods
