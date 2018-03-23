@@ -43,6 +43,9 @@ ostream& operator <<(ostream& os, const MString& me) {
     os << me.raw;
     return os;
 }
+SIter MString::get_iterator() const {
+    return SIter::create_local(this->raw);
+}
 
 MString::~MString() {
     delete[] this->raw;
@@ -53,33 +56,30 @@ bool MString::is_empty() const {
     return len == 0;
 }
 bool MString::is_whitespace_or_empty() const {
-    for (int i = 0; i < len; i++) {
-        if (!is_space(raw[i])) { return false; }
+    auto it = get_iterator();
+    while(it.inarr()) {
+        if (!is_space(it.next())) { return false; }
     }
+
     return true;
 }
 bool MString::is_whitespace_not_empty() const {
     return !is_empty() && is_whitespace_or_empty();
 }
 
-// bool is_sub_sequance()
-
 bool MString::startswith(const char * s, bool skip_whitespace) const {
-    // char * raw = this->raw;
-    // if (skip_whitespace) {
-    //     MString ms = MString{raw, false};
-    //     ms.lstrip();
-    //     raw = ms.raw;
-    // }
- 
-    // int slen = std::strlen(s);
-    // if (std::strlen(raw) < slen) { return false; }
+    auto mit = get_iterator();
+    auto sit = SIter::create_local(s);
     
-    // for (int i = 0; i < slen; i++) { // does not check if `s` has whitespaces 
-    //     if (raw[i] != s[i]) {
-    //         return false;
-    //     }
-    // }
+    if (skip_whitespace) {
+        mit.skip_whitespace();
+        sit.skip_whitespace();
+    }
+
+    while (sit.inarr()) {
+        if (!mit.inarr()) { return false; } // my is shorter
+        if (mit.next() != sit.next()) { return false; }
+    }
  
     return true;
 }
