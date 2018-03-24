@@ -2,13 +2,17 @@
 
 #include "mstring.h"
 #include "strhelp.h"
+#include "range.hpp"
 
 #include <cstring>
 #include <sstream>
 
+#include <stdexcept>
+
 using std::string;
 using std::ostream;
 using std::stringstream;
+using std::runtime_error;
 
 static char * from_raw(char * raw, int len, bool copy) { 
     if(copy) {
@@ -109,6 +113,8 @@ bool MString::endswith(const char * s, bool skip_whitespace) const {
     
     return sit.is_subset_of(mit);
 }
+
+// mods
 void MString::lstrip() {
     while(is_space(raw[0])) 
     { 
@@ -125,6 +131,19 @@ void MString::rstrip() {
     raw[last + 1] = '\0';
 }
 
-// mods
-
 // subsets
+
+MString MString::slice(Range r) const {
+    char * buff = new char[r.size + 1];
+    
+    auto it = get_iterator();
+    for (int i = 0; i < r.beg; i++) { it.skip(); }
+
+    for (int i = 0; i < r.size; i++) {
+        buff[i] = it.next();
+    }
+    buff[r.size] = '\0';
+
+    return MString(buff, false);
+}
+

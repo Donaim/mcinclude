@@ -1,9 +1,11 @@
 #pragma once
 
 #include "line_reader.h"
+#include "s_iter.h"
+#include "range.hpp"
+
 #include <string>
 #include <iostream>
-#include "s_iter.h"
 
 class MString {
 private:
@@ -38,6 +40,7 @@ public:
     void rstrip();
     
     // subsets
+    MString slice(Range r) const;
     MString get_next_word() const;
 
 };
