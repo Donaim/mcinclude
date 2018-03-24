@@ -11,13 +11,13 @@
 template <typename T>
 class SList { 
     T * buffer;
-    int _size;
-    int _capacity;
+    size_t _size;
+    size_t _capacity;
 public:
-    SList(int capac_init) {
+    SList(size_t capac_init) {
         forget_and_alloc_new(capac_init);
     }
-    inline void forget_and_alloc_new(unsigned int capac_init) {
+    inline void forget_and_alloc_new(size_t capac_init) {
         _capacity = capac_init;
         buffer = (T*) malloc (sizeof(T) * _capacity);
         _size = 0;
@@ -36,14 +36,19 @@ public:
         buffer [_size++] = v;
     }
 
-    inline void reserve(unsigned int capacity) {
+    inline void reserve(size_t capacity) {
         _capacity = capacity;
         buffer = (T*)realloc(buffer, sizeof(T) * capacity);
     }
-    inline T * source() { return buffer; }
-    inline int size() { return _size; }
+    inline T * source() const { return buffer; }
+    inline size_t size() const { return _size; }
 
     inline void clear_dont_free() { _size = 0; }
+    inline void free() {
+        free(buffer);
+        _size = 0;
+        _capacity = 0;
+    }
 
-    T operator [] (std::size_t i) { return buffer[i]; }
+    inline T operator [] (std::size_t i) const { return buffer[i]; }
 };
