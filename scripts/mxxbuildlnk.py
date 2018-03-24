@@ -1,34 +1,29 @@
 TARGET_INFO='''
-~/Documents/dev/mxxbuild/mxxbuild.py
+$[local, -linux] ~/dev/mxxbuilder/mxxbuild.py
 # $[-pylink] ~/Documents/dev/mxxbuild/mxxbuild.py
 # $[-symlink] ~/Documents/dev/mxxbuild/mxxbuild.py
 https://github.com/Donaim/mxxbuilder.git
-# $ -windows  ,  local
-
-# jest tutaj miejsce dla adresow. wyszukiwanie jest pryorytetowane z gory do dolu
-# second non-emty non-comment line is defined to be the beginning of TARGET_INFO string
-
 '''
 
 # for stderr
 import sys
 import re
 import os
-import sys
-import subprocess
 import urllib.request
 import os
 import subprocess
 import os
 import subprocess
+import os
 
 DEFAULT_TAG = 'auto'
 
+osname = os.name
 def make_self_copy():
     import shutil #pyincluder-ignore
     import random #pyincluder-ignore
     selfpath = sys.argv[0]
-    copy_dest = "~/Documents/pylnk/{}/{}".format(random.randint(1000, 9999), os.path.basename(selfpath))
+    copy_dest = "~/pylnk/{}/{}".format(random.randint(1000, 9999), os.path.basename(selfpath))
     copy_dest = tag_funcs._format_path(copy_dest)
     print("copydest=", copy_dest)
     if not os.path.exists(os.path.dirname(copy_dest)): os.makedirs(os.path.dirname(copy_dest))
@@ -151,23 +146,14 @@ class tag_funcs(object):
     
     def _is_pathname_valid(pathname: str) -> bool: # https://stackoverflow.com/a/34102855/7038168
         try:
-            
-            if len(pathname) < 1: return False
-            _, pathname = os.path.splitdrive(pathname)
-            root_dirname = os.environ.get('HOMEDRIVE', 'C:') \
-                if sys.platform == 'win32' else os.path.sep
-            assert os.path.isdir(root_dirname)   # ...Murphy and her ironclad Law
-            root_dirname = root_dirname.rstrip(os.path.sep) + os.path.sep
-            for pathname_part in pathname.split(os.path.sep):
-                try: os.lstat(root_dirname + pathname_part)
-                except OSError as exc:
-                    if hasattr(exc, 'winerror'):
-                        if exc.winerror == 123: # ERROR_INVALID_NAME = 123
-                            return False
-                    elif exc.errno in {errno.ENAMETOOLONG, errno.ERANGE}:
-                        return False
-        except TypeError as exc: return False
-        else: return True
+            full = os.path.expanduser(pathname)
+            if osname == 'posix':
+                return full[0] == os.path.sep # the only condition
+            elif osname == 'nt': # thats windows
+                return full[1] == ':' and full[2] == os.path.sep
+        except:
+            return False
+
     
     def _is_valid_git(url: str):
         return url.endswith(".git")
@@ -279,6 +265,20 @@ class tag_funcs(object):
 
 
     pass
+def init_func(arg):
+    
+    
+    osname = os.name
+    
+    if arg.has_tag('-linux'):
+        if osname != 'posix': args_list.remove(arg)
+    elif arg.has_tag('-windows'):
+        if osname != 'nt': args_list.remove(arg)
+    
+
+    
+
+    pass
 
 # parsing tag_fucs
 tag_funcs_static = filter(lambda name: name[0] != '_', dir(tag_funcs))
@@ -288,6 +288,7 @@ class arg(object):
         self.command = None
         self.tags = []
     def has_tag(self, tname): return any(map(lambda t: t.name == tname, self.tags))
+    def __repr__(self): return '(command:"{}"  tags:[{}])'.format(self.command, ','.join(map(lambda t: t.name, self.tags)))
 class tag(object):
     def __init__(self, name, func):
         self.name = name
@@ -344,13 +345,19 @@ def parse_args():
             a.tags = parse_tags(aleft) + group_tags
             a.command = aright
             args_list.append(a)
-    
-    #invoking tags
+def init_args():
+    for a in args_list.copy():
+        init_func(a)
+def invoke_tags():
     for a in args_list:
         for t in a.tags:
             if t.invoke(a): return      # if some tag succeded with args, end the program
-
 tags_dict = dict(map(lambda name: (name, tag(name, getattr(tag_funcs, name))), tag_funcs_static))
 args_list = []
-parse_args()
 
+def main():
+    parse_args()
+    init_args()
+    invoke_tags()
+if __name__ == "__main__":
+    main()

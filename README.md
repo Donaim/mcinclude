@@ -3,11 +3,11 @@
 # To do
 - [x] faster project compilations: split compilation and linking with scripts
 - [X] make test compilation faster
-- [ ] implement `mstring.split`
-- [ ] fix test building in `/units` directory
+- [ ] write `install.py` script for downloading externs
+- [ ] make fully portable to linux
 - [ ] implement `reverse` on SIter
 - [ ] make possible with mcincluder to generate precompiled headers for each individual file. Because now only possible that only first header can be precompiled which is silly
-- [ ] call mxxbuild from runtest directly (`import mxxbuild`)
+- [X] call mxxbuild from runtest directly (`import mxxbuild`)
 - [ ] make possible to imitate classes (and inheritance) in C with mcinclude
 
 # What ive learned

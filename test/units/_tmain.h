@@ -20,7 +20,11 @@
 
 using namespace std;
 
+#ifdef WIN32
 #define TESTDATA_DIR __FILE__"\\..\\..\\data\\"
+#else
+#define TESTDATA_DIR "/home/d0naim/dev/mcinclude/test/data/"
+#endif
 
 #define SIMPLETEXT_PATH TESTDATA_DIR"simpletext.txt"
 
