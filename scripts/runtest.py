@@ -5,7 +5,7 @@ my_dir = path.normpath(path.dirname(path.abspath(sys.argv[0])))
 project_dir = path.normpath(path.join(my_dir, '..'))
 test_dir = path.join(project_dir, 'test', 'units')
 src_dir = path.join(project_dir, 'src')
-mxxlink = path.join(my_dir, 'mxxbuild.py')
+mxxlink = path.join(my_dir, 'mxxbuildlnk.py')
 
 includes = [src_dir, path.join(project_dir, 'extern', 'doctest', 'doctest'), path.join(project_dir, 'include')]
 includes = list(map(lambda p: '-I' + p, includes))
@@ -13,36 +13,27 @@ includes = list(map(lambda p: '-I' + p, includes))
 options = sys.argv[2:]
 
 def get_mxx():
-    with open(mxxlink) as lr:
-        num = 0
-        while True:
-            line: str = lr.readline()
-            if len(line) < 1 or line.isspace(): continue
-            num += 1
-            if num >= 2: 
-                p = path.abspath(path.expanduser(line)).strip()
-                if not path.isfile(p): continue
-                else:
-                    if not path.exists(p):
-                        subprocess.check_call(['py', mxxlink])
-                        return get_mxx()
-                    else:
-                        return p
-
+    import mxxbuildlnk
+    mxxbuildlnk.parse_args()
+    mxxbuildlnk.init_args()
+    re = mxxbuildlnk.tag_funcs._get_first_local(mxxbuildlnk.args_list).command
+    re = path.expanduser(re)
+    if not path.exists(re): mxxbuildlnk.invoke_tags()
+    return re
 mxxfile = get_mxx()
 
 sys.path.insert(0, path.dirname(mxxfile))
 import mxxbuild
-import cppcollector
 
 def run_tests(names):
     args = mxxbuild.parse_args([src_dir, '++verbose', '0', '++exclude', 'main.o', '++copts'] + includes + options)
+    # args = mxxbuild.parse_args([src_dir, '++verbose', '0', '++copts'] + includes + options)
     mxx = mxxbuild.mxxbuilder(args)
-    src_build_dir = path.join(project_dir, 'build')
-    test_build_dir = path.join(test_dir, '..', 'build')
+    src_build_dir = path.join(project_dir, 'build', 'src')
+    test_build_dir = path.join(project_dir, 'build', 'test', 'units')
     
     for main_source in names:
-        source_without_ext = '.'.join(main_source.split('.')[:-1])
+        source_without_ext = path.basename('.'.join(main_source.split('.')[:-1]))
 
         sources = [src_dir, path.join(test_dir, main_source)]
         mxx.compile_new(sources)

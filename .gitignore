@@ -3,5 +3,7 @@
 *.o
 *.gch
 
+**__pycache__
+
 extern/*/**
 extern/doctest
