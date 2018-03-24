@@ -50,10 +50,8 @@ if __name__ == "__main__":
         import shutil
         try: shutil.rmtree(path.join(project_dir, 'build'))
         except:pass
-        try: shutil.rmtree(path.join(project_dir, 'test', 'build'))
-        except:pass
         
-        print("build directories are clean")
+        print("/build directory is clean")
     else:
         mxx = mxxbuild.mxxbuilder(mxxbuild.parse_args([src_dir]))
         mxx.compile_stdafx()

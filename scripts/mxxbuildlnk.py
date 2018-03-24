@@ -1,5 +1,6 @@
 TARGET_INFO='''
 $[local, -linux] ~/dev/mxxbuilder/mxxbuild.py
+$[local, -windows] ~/Documents/mxxbuilder/mxxbuild.py
 # $[-pylink] ~/Documents/dev/mxxbuild/mxxbuild.py
 # $[-symlink] ~/Documents/dev/mxxbuild/mxxbuild.py
 https://github.com/Donaim/mxxbuilder.git
