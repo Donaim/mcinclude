@@ -11,14 +11,4 @@
     #include <cstdlib>
     #include <stdexcept>
     
-    // rang //   
-    #include <algorithm>
-    #include <atomic>
-    #include <memory>
-    
-    #if defined(WIN32) || defined(_WIN32) || defined(_WIN64)
-    #include <windows.h>
-    #include <io.h>
-    #endif
-
 #endif
