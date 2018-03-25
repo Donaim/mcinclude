@@ -4,90 +4,113 @@
 #include "csplitters.h"
 #include "strhelp.h"
 
-WordSplitter::WordSplitter(Splitter<char> * prev) 
+// CharSplitter
+CharSplitter::CharSplitter(Splitter<char> * prev) 
     : Splitter<char>(prev) 
-{
-}
-
-SList<char> WordSplitter::release() {
+{}
+SList<char> CharSplitter::release() {
     collector.push_back_copy('\0');
     return collector;
 }
-bool WordSplitter::try_read(const char c) {
+
+// SimpleWordSplitter
+SimpleWordSplitter::SimpleWordSplitter(Splitter<char> * prev) 
+    : CharSplitter(prev) 
+{
+}
+
+bool SimpleWordSplitter::try_read(const char c) {
     if (isalnum(c)) {
-        // DLOGH("WORD ACCEPTED [");
-        // DLOGH(c);
-        // DLOG("]")
- 
         collector.push_back_copy(c);
         return true;
     } else {
-        // DLOGH("WORD END ON[");
-        // DLOGH(c);
-        // DLOGH("] WITH COLLECTOR=\"")
-        // for (int i = 0; i < collector.size(); i++) {
-        //     DLOGH(collector[i]);
-        // }
-        // DLOG("\"");
+        return false;
+    }
+}
+Splitter<char> * SimpleWordSplitter::try_create(const char c, Splitter<char> * parent) const {
+    if (isalnum(c)) {
+        auto re = new SimpleWordSplitter(parent);
+        re->collector.push_back_copy(c);
+        return re;
+    } else {
+        return nullptr;
+    }
+}
+
+// WordSplitter
+WordSplitter::WordSplitter(Splitter<char> * prev) 
+    : CharSplitter(prev) 
+{
+}
+
+bool WordSplitter::try_read(const char c) {
+    if (!is_space(c)) {
+        collector.push_back_copy(c);
+        return true;
+    } else {
         return false;
     }
 }
 Splitter<char> * WordSplitter::try_create(const char c, Splitter<char> * parent) const {
-    if (isalnum(c)) {
-        // DLOGH("WORD ACCEPTED[");
-        // DLOGH(c);
-        // DLOG("]")
+    if (!is_space(c)) {
         auto re = new WordSplitter(parent);
         re->collector.push_back_copy(c);
         return re;
     } else {
-        // DLOGH("WORD REJECTED[");
-        // DLOGH(c);
-        // DLOG("]")
+        return nullptr;
+    }
+}
+
+// TokenCharSplitter
+TokenCharSplitter::TokenCharSplitter(Splitter<char> * prev, char start, char end)
+    : CharSplitter(prev), c_start(start), c_end(end), c_prev('\0')
+{}
+
+// QuoteSplitter
+QuoteSplitter::QuoteSplitter(Splitter<char> * prev, char start, char end) 
+    : TokenCharSplitter(prev, start, end)
+{
+}
+
+bool QuoteSplitter::try_read(const char c) {
+    if (c == c_end && c_prev != '\\') {
+        return false;
+    }
+
+    collector.push_back_copy(c);
+    return true;
+}
+Splitter<char> * QuoteSplitter::try_create(const char c, Splitter<char> * parent) const {
+    if (c == c_start) {
+        return new QuoteSplitter(parent, c_start, c_end);
+    } else {
         return nullptr;
     }
 }
 
 
-
-SList<char> QuoteSplitter::release() {
-    collector.push_back_copy('\0');
-    return collector;
-}
-QuoteSplitter::QuoteSplitter(Splitter<char> * prev, char qs, char qe) 
-    : Splitter<char>(prev), quote_start(qs), quote_end(qe)
+// BracketSplitter
+BracketSplitter::BracketSplitter(Splitter<char> * prev, char start, char end) 
+    : TokenCharSplitter(prev, start, end), open_count(1)
 {
 }
 
-bool QuoteSplitter::try_read(const char c) {
-    if (c == quote_end) { // close 
-        // DLOGH("QUOTE END ON[");
-        // DLOGH(c);
-        // DLOGH("] WITH COLLECTOR=\"")
-        // for (int i = 0; i < collector.size(); i++) {
-        //     DLOGH(collector[i]);
-        // }
-        // DLOG("\"");
-        return false;
+bool BracketSplitter::try_read(const char c) {
+    if (c == c_end && c_prev != '\\') {
+        open_count--;
+        if (open_count <= 0) { return false; }
     }
-    else {
-        // DLOGH("QUOTE<<[");
-        // DLOGH(c);
-        // DLOG("]")
-        collector.push_back_copy(c);
-        return true;
+    else if (c == c_start) {
+        open_count++;
     }
+
+    collector.push_back_copy(c);
+    return true;
 }
-Splitter<char> * QuoteSplitter::try_create(const char c, Splitter<char> * parent) const {
-    if (c == quote_start) { 
-        // DLOGH("QUOTE ACCEPTED[");
-        // DLOGH(c);
-        // DLOG("]")
-        return new QuoteSplitter(parent, quote_start, quote_end);
+Splitter<char> * BracketSplitter::try_create(const char c, Splitter<char> * parent) const {
+    if (c == c_start) {
+        return new BracketSplitter(parent, c_start, c_end);
     } else {
-        // DLOGH("QUOTE REJECTED[");
-        // DLOGH(c);
-        // DLOG("]")
         return nullptr;
     }
 }
