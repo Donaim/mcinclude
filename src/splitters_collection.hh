@@ -12,11 +12,6 @@ public:
     const SArray<T> source;
 
     // unsafe: i will delete available, cuz they are mine only.
-    SplittersCollection(SList<Splitter<T> * > available_, T * source_, int len) 
-        : SplittersCollection(available_, SArray<T>(source_, len))
-    {
-
-    }
     SplittersCollection(SList<Splitter<T> * > available_, const SArray<T> source_) 
         : available(available_), source(source_)
     {

@@ -13,10 +13,10 @@ using std::runtime_error;
 
 template <typename T>
 class SArray {
-    T * const buffer;
+    const T * buffer;
     size_t _size;
 public:
-    SArray(T * source, size_t len) : buffer(source), _size(len)
+    SArray(const T * source, size_t len) : buffer(source), _size(len)
     {}
     
     inline T * source() const { return buffer; }
@@ -24,11 +24,11 @@ public:
     inline bool is_empty() const { return _size == 0; }
     
     inline void dofree() { // uses c-style free(*)
-        free(buffer);
+        free((T*)buffer);
         _size = 0;
     }
     inline void del() { // uses c++ style delete[]
-        delete[] buffer;
+        delete[] (T*)buffer;
         _size = 0;
     }
 
