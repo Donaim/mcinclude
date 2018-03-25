@@ -7,9 +7,40 @@
 using std::runtime_error;
 
 /*
-    simple list. no checks, no safety. only special-case use
-    does not have destructor!
+    simple lists. no checks, no safety. only special-case use
+    do not have destructor!
 */
+
+template <typename T>
+class SArray {
+    T * const buffer;
+    size_t _size;
+public:
+    SArray(T * source, size_t len) : buffer(source), _size(len)
+    {}
+    
+    inline T * source() const { return buffer; }
+    inline size_t size() const { return _size; }
+    inline bool is_empty() const { return _size == 0; }
+    
+    inline void dofree() { // uses c-style free(*)
+        free(buffer);
+        _size = 0;
+    }
+    inline void del() { // uses c++ style delete[]
+        delete[] buffer;
+        _size = 0;
+    }
+
+    inline T operator [] (std::size_t i) const { return buffer[i]; }
+    inline T at(size_t i) const {
+        if (i < _size) {
+            return buffer[i];
+        } else {
+            throw std::runtime_error("index was outside of SArray!");
+        }
+    }
+};
 
 template <typename T>
 class SList { 
@@ -80,33 +111,3 @@ public:
     }
 };
 
-template <typename T>
-class SArray {
-    T * const buffer;
-    size_t _size;
-public:
-    SArray(T * source, size_t len) : buffer(source), _size(len)
-    {}
-    
-    inline T * source() const { return buffer; }
-    inline size_t size() const { return _size; }
-    inline bool is_empty() const { return _size == 0; }
-    
-    inline void dofree() { // uses c-style free(*)
-        free(buffer);
-        _size = 0;
-    }
-    inline void del() { // uses c++ style delete[]
-        delete[] buffer;
-        _size = 0;
-    }
-
-    inline T operator [] (std::size_t i) const { return buffer[i]; }
-    inline T at(size_t i) const {
-        if (i < _size) {
-            return buffer[i];
-        } else {
-            throw std::runtime_error("index was outside of SArray!");
-        }
-    }
-};
