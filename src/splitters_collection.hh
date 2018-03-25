@@ -37,25 +37,41 @@ public:
         if (source.is_empty()) { return re; }
 
         Splitter<T> * curr = nullptr;
+        Splitter<T> * last = nullptr;
         for (int i = 0; i < source.size(); i++) {
 
             if (curr == nullptr) { }
-            else if (!curr->try_read(source[i])) {
+            else if (curr->try_read(source[i])) 
+                { continue; } // managed to read
+            else { 
                 re.push_back(curr->release());
             }
-            else { continue; }
 
-            curr = get_next(source[i], curr);
+            curr = get_next(source[i], last);
+            if (curr != nullptr) { last = curr; }
         }
+
+        last->delete_recursively();
 
         return re;
     }
-    SList<T> get_one(const SArray<T> source) {
+    SList<T> get_first(const SArray<T> source) {
+        Splitter<T> * curr = nullptr;
+        for (int i = 0; i < source.size(); i++) {
+            if (curr == nullptr) { }
+            else if (curr->try_read(source[i])) 
+                { continue; } // managed to read
+            else {
+                return curr->release();
+            }
+
+            curr = get_next(source[i], curr);
+        }
         throw runtime_error{"not implemented"};
     }
 
     virtual ~SplittersCollection() {
-        // available.delete_targets(); //!
-        // available.dofree();
+        available.delete_targets();
+        available.dofree();
     }
 };

@@ -1,11 +1,15 @@
 
 #pragma once
 
+#define DEBUG
+#include "delog.h"
+
 #include <vector>
 #include "slist.hpp"
 
 #include <stdexcept>
 using std::runtime_error;
+
 
 template<typename T>
 class Splitter {
@@ -40,7 +44,7 @@ public:
         return re;
     }
     void delete_recursively() { // wont delete `collector`s memory, just Splitter objects
-        auto ptr = parent;
+        auto ptr = this;
         while(ptr != nullptr) {
             auto next_ptr = ptr->parent;
             delete ptr;
