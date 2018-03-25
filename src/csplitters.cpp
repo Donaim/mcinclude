@@ -29,9 +29,7 @@ bool SimpleWordSplitter::try_read(const char c) {
 }
 Splitter<char> * SimpleWordSplitter::try_create(const char c, Splitter<char> * parent) const {
     if (isalnum(c)) {
-        auto re = new SimpleWordSplitter(parent);
-        re->collector.push_back_copy(c);
-        return re;
+        return new SimpleWordSplitter(parent);
     } else {
         return nullptr;
     }
@@ -53,9 +51,7 @@ bool WordSplitter::try_read(const char c) {
 }
 Splitter<char> * WordSplitter::try_create(const char c, Splitter<char> * parent) const {
     if (!is_space(c)) {
-        auto re = new WordSplitter(parent);
-        re->collector.push_back_copy(c);
-        return re;
+        return new WordSplitter(parent);
     } else {
         return nullptr;
     }
@@ -73,6 +69,9 @@ QuoteSplitter::QuoteSplitter(Splitter<char> * prev, char start, char end)
 }
 
 bool QuoteSplitter::try_read(const char c) {
+    if (c == c_start && collector.size() == 0) {
+        return true;
+    }
     if (c == c_end && c_prev != '\\') {
         return false;
     }
@@ -91,7 +90,7 @@ Splitter<char> * QuoteSplitter::try_create(const char c, Splitter<char> * parent
 
 // BracketSplitter
 BracketSplitter::BracketSplitter(Splitter<char> * prev, char start, char end) 
-    : TokenCharSplitter(prev, start, end), open_count(1)
+    : TokenCharSplitter(prev, start, end), open_count(0)
 {
 }
 
@@ -102,6 +101,7 @@ bool BracketSplitter::try_read(const char c) {
     }
     else if (c == c_start) {
         open_count++;
+        if (collector.size() == 0) { return true; }
     }
 
     collector.push_back_copy(c);

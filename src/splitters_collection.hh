@@ -35,15 +35,19 @@ public:
         Splitter<T> * last = nullptr;
         for (int i = 0; i < source.size(); i++) {
 
-            if (curr == nullptr) { }
-            else if (curr->try_read(source[i])) 
+            if (curr == nullptr) {
+                curr = get_next(source[i], last);
+                if (curr != nullptr) { last = curr; }
+                else { continue; }
+            }
+            
+            if (curr->try_read(source[i])) 
                 { continue; } // managed to read
             else {
                 re.push_back(curr->release());
+                curr = nullptr;
             }
 
-            curr = get_next(source[i], last);
-            if (curr != nullptr) { last = curr; }
         }
         if (curr != nullptr) {
             re.push_back(curr->release());
