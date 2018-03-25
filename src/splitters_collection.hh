@@ -59,16 +59,25 @@ public:
     }
     SList<T> get_first(const SArray<T> source) {
         Splitter<T> * curr = nullptr;
+        Splitter<T> * last = nullptr;
         for (int i = 0; i < source.size(); i++) {
-            if (curr == nullptr) { }
-            else if (curr->try_read(source[i])) 
+            if (curr == nullptr) {
+                curr = get_next(source[i], last);
+                if (curr != nullptr) { last = curr; }
+                else { continue; }
+            }
+            
+            if (curr->try_read(source[i])) 
                 { continue; } // managed to read
             else {
                 return curr->release();
             }
-
-            curr = get_next(source[i], curr);
         }
+        if (curr != nullptr) {
+            return curr->release();
+        }
+
+        return SList<T>{0};
     }
 
     virtual ~SplittersCollection() {

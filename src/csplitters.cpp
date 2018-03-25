@@ -77,6 +77,7 @@ bool QuoteSplitter::try_read(const char c) {
     }
 
     collector.push_back_copy(c);
+    c_prev = c;
     return true;
 }
 Splitter<char> * QuoteSplitter::try_create(const char c, Splitter<char> * parent) const {
@@ -105,6 +106,7 @@ bool BracketSplitter::try_read(const char c) {
     }
 
     collector.push_back_copy(c);
+    c_prev = c;
     return true;
 }
 Splitter<char> * BracketSplitter::try_create(const char c, Splitter<char> * parent) const {
