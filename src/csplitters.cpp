@@ -100,7 +100,7 @@ bool BracketSplitter::try_read(const char c) {
         open_count--;
         if (open_count <= 0) { return false; }
     }
-    else if (c == c_start) {
+    else if (c == c_start && c_prev != '\\') {
         open_count++;
         if (collector.size() == 0) { return true; }
     }
