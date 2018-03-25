@@ -28,25 +28,24 @@ public:
             Splitter<T> * next = available[i]->try_create(o, parent);
             if (next != nullptr) { return next; }
         }
-        throw runtime_error{"no available Splitter found!"};
+        return nullptr; // just skip this
+        // throw runtime_error{"no available Splitter found!"};
     }
 
     SList<SList<T>> split() {
         SList<SList<T>> re{4};
         if (source.is_empty()) { return re; }
 
-        // parse
-        Splitter<T> * curr = get_next(source[0], nullptr);
+        Splitter<T> * curr = nullptr;
         for (int i = 0; i < source.size(); i++) {
-            if (!curr->try_read(source[i])) {
-                curr = get_next(source[i], curr);
+
+            if (curr == nullptr) { }
+            else if (!curr->try_read(source[i])) {
+                re.push_back(curr->release());
             }
-        }
-        
-        // collect back
-        while (curr != nullptr) {
-            re.push_back(curr->release());
-            curr = curr->parent;
+            else { continue; }
+
+            curr = get_next(source[i], curr);
         }
 
         return re;
@@ -56,7 +55,7 @@ public:
     }
 
     virtual ~SplittersCollection() {
-        available.delete_targets();
-        available.dofree();
+        // available.delete_targets(); //!
+        // available.dofree();
     }
 };

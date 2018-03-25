@@ -31,7 +31,7 @@ public:
     SList<SList<T>> collect_recursively() {
         SList<SList<T>> re{0};
 
-        auto ptr = parent;
+        auto ptr = this;
         while(ptr != nullptr) {
             re.push_back(ptr->collector);
             ptr = ptr->parent;
