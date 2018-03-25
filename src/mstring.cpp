@@ -3,6 +3,7 @@
 #include "mstring.h"
 #include "strhelp.h"
 #include "range.hpp"
+#include "csplitters_collection.h"
 
 #include <cstring>
 #include <sstream>
@@ -52,9 +53,7 @@ MString::MString()
 
 // main
 string MString::copy_as_std() const {
-    stringstream ss{};
-    ss << *this;
-    return ss.str(); // copies raw -> safe
+    return string(this->raw, this->len);
 }
 
 ostream& operator <<(ostream& os, const MString& me) {
@@ -147,3 +146,14 @@ MString MString::slice(Range r) const {
     return MString(buff, false);
 }
 
+SList<MString *> MString::split() const {
+    CSplittersCollection coll = *new CSplittersCollection(this->raw);
+    auto sp = coll.split();
+    
+    SList<MString *> re{sp.size()};
+    for (int i = 0; i < sp.size(); i++) {
+        re.push_back(new MString(sp[i].source(), false));
+    }
+    
+    return re;
+}

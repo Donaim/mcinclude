@@ -22,7 +22,7 @@ TEST_CASE("test whitespace") {
     }
 }
 TEST_CASE("test startswith") {
-    cout << endl << endl << "test startswith" << endl;
+    DLOG("\n\ntest startswith");
     SFileLineReader sf{SIMPLETEXT_PATH};
     while(!sf.is_end()) {
         MString s = MString{sf};
@@ -31,7 +31,7 @@ TEST_CASE("test startswith") {
     }
 }
 TEST_CASE("test endswith") {
-    cout << endl << endl << "test endswith" << endl;
+    DLOG("\n\ntest endswith");
     SFileLineReader sf{SIMPLETEXT_PATH};
     while(!sf.is_end()) {
         MString s = MString{sf};
@@ -40,7 +40,7 @@ TEST_CASE("test endswith") {
     }
 }
 TEST_CASE("test lrstrip") {
-    cout << endl << endl << "test lrstrip" << endl;
+    DLOG("\n\ntest lrstrip");
     SFileLineReader sf{SIMPLETEXT_PATH};
     while(!sf.is_end()) {
         MString a = MString{sf};
@@ -49,5 +49,33 @@ TEST_CASE("test lrstrip") {
         b.rstrip();
         
         cout << "left{" << a << "} right{" << b << '}' << endl;
+    }
+}
+TEST_CASE("test slice") {
+    DLOG("\n\ntest slice");
+    SFileLineReader sf{SIMPLETEXT_PATH};
+    while(!sf.is_end()) {
+        MString a = MString{sf};
+    }
+}
+TEST_CASE("test split") {
+    DLOG("\n\ntest split");
+
+    SFileLineReader sf{SIMPLETEXT_PATH};
+    while(!sf.is_end()) {
+        MString a = MString{sf};
+        a.rstrip();
+        DLOGH("SLICES OF \"");
+        DLOGH(a);
+        DLOG("\":");
+        
+        auto sl = a.split();
+        for (int i = 0; i < sl.size(); i++) {
+            DLOGH('\"')
+            DLOGH(*sl[i]);
+            DLOG('\"')
+        }
+
+        DNEWL();
     }
 }

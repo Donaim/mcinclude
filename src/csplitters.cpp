@@ -7,11 +7,18 @@
 WordSplitter::WordSplitter(Splitter<char> * prev) 
     : Splitter<char>(prev) 
 {
-
 }
 
+SList<char> WordSplitter::release() {
+    collector.push_back_copy('\0');
+    return collector;
+}
 bool WordSplitter::try_read(const char c) {
     if (isalnum(c)) {
+        // DLOGH("WORD ACCEPTED [");
+        // DLOGH(c);
+        // DLOG("]")
+ 
         collector.push_back_copy(c);
         return true;
     } else {
@@ -41,6 +48,12 @@ Splitter<char> * WordSplitter::try_create(const char c, Splitter<char> * parent)
     }
 }
 
+
+
+SList<char> QuoteSplitter::release() {
+    collector.push_back_copy('\0');
+    return collector;
+}
 QuoteSplitter::QuoteSplitter(Splitter<char> * prev, char qs, char qe) 
     : Splitter<char>(prev), quote_start(qs), quote_end(qe)
 {

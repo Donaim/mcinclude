@@ -28,7 +28,7 @@ public:
     virtual bool try_read(const T) = 0; // false if better to chose another splitter
     virtual Splitter<T> * try_create(const T current_obj, Splitter<T> * parent) const = 0;
 
-    inline SList<T> release() {
+    virtual SList<T> release() {
         return collector;
     }
 
@@ -52,9 +52,7 @@ public:
         }
     }
 
-    virtual ~Splitter() {
-        // should delete availables
-    }
+    virtual ~Splitter() { }
 };
 
 

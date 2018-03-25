@@ -3,6 +3,7 @@
 #include "line_reader.h"
 #include "s_iter.h"
 #include "range.hpp"
+#include "slist.hpp"
 
 #include <string>
 #include <iostream>
@@ -41,6 +42,5 @@ public:
     
     // subsets
     MString slice(Range r) const;
-    MString get_next_word() const;
-
+    SList<MString *> split() const;
 };

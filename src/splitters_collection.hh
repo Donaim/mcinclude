@@ -43,12 +43,15 @@ public:
             if (curr == nullptr) { }
             else if (curr->try_read(source[i])) 
                 { continue; } // managed to read
-            else { 
+            else {
                 re.push_back(curr->release());
             }
 
             curr = get_next(source[i], last);
             if (curr != nullptr) { last = curr; }
+        }
+        if (curr != nullptr) {
+            re.push_back(curr->release());
         }
 
         last->delete_recursively();
