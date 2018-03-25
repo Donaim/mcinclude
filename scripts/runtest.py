@@ -3,12 +3,16 @@ from os import path
 
 my_dir = path.normpath(path.dirname(path.abspath(sys.argv[0])))
 project_dir = path.normpath(path.join(my_dir, '..'))
+builddir = path.join(project_dir, 'build')
+
 test_dir = path.join(project_dir, 'test', 'units')
 src_dir = path.join(project_dir, 'src')
-mxxlink = path.join(my_dir, 'mxxbuildlnk.py')
+src_build_dir = path.join(builddir, 'src')
+test_build_dir = path.join(builddir, 'test', 'units')
 
 includes = [src_dir, path.join(project_dir, 'extern', 'doctest', 'doctest'), path.join(project_dir, 'include')]
 includes = list(map(lambda p: '-I' + p, includes))
+exclude = [path.join(src_build_dir, 'main.o')]
 
 options = sys.argv[2:]
 
@@ -24,24 +28,24 @@ mxxfile = get_mxx()
 
 sys.path.insert(0, path.dirname(mxxfile))
 import mxxbuild
+import buildmethods
 
-def run_tests(names):
-    args = mxxbuild.parse_args([src_dir, '++verbose', '0', '++exclude', 'main.o', '++copts'] + includes + options)
-    # args = mxxbuild.parse_args([src_dir, '++verbose', '0', '++copts'] + includes + options)
-    mxx = mxxbuild.mxxbuilder(args)
-    src_build_dir = path.join(project_dir, 'build', 'src')
-    test_build_dir = path.join(project_dir, 'build', 'test', 'units')
-    
+log = mxxbuild.Log(0)
+if '++verbose' in sys.argv:
+    log.level = 1
+
+def run_tests(names: list):
     for main_source in names:
         source_without_ext = path.basename('.'.join(main_source.split('.')[:-1]))
 
         sources = [src_dir, path.join(test_dir, main_source)]
-        mxx.compile_new(sources)
+        buildmethods.compile_new(sources, rootdir=project_dir, builddir=builddir, copts=includes, exclude=exclude, log=log)
 
         builds = [src_build_dir, path.join(test_build_dir, source_without_ext + '.o')]
-        mxx.args.out = path.join(test_build_dir, source_without_ext + '.exe')
-        mxx.link_some(builds)
-        mxx.runexe()
+        output_exe = path.join(test_build_dir, source_without_ext + '.exe')
+        buildmethods.linksome(builds, output_exe, rootdir=project_dir, lopts=[], exclude=exclude, log=log)
+
+        subprocess.check_call([output_exe])
 
 if __name__ == "__main__":
     target_argument = sys.argv[1]
@@ -50,11 +54,10 @@ if __name__ == "__main__":
         import shutil
         try: shutil.rmtree(path.join(project_dir, 'build'))
         except:pass
-        
+
         print("/build directory is clean")
     else:
-        mxx = mxxbuild.mxxbuilder(mxxbuild.parse_args([src_dir]))
-        mxx.compile_stdafx()
+        buildmethods.compile_stdafxes([src_dir, test_dir], copts=includes, log=log)
 
         if target_argument == 'all':
             run_tests(

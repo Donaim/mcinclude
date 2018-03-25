@@ -1,4 +1,4 @@
-#include "../stdafx.h"
+#include "log.stdafx.h"
 
 #include "short.h"
 using namespace std;
