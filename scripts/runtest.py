@@ -39,11 +39,13 @@ def run_tests(names: list):
         source_without_ext = path.basename('.'.join(main_source.split('.')[:-1]))
 
         sources = [src_dir, path.join(test_dir, main_source)]
-        buildmethods.compile_new(sources, rootdir=project_dir, builddir=builddir, copts=includes, exclude=exclude, log=log)
+        try: buildmethods.compile_new(sources, rootdir=project_dir, builddir=builddir, copts=includes, exclude=exclude, log=log)
+        except: return
 
         builds = [src_build_dir, path.join(test_build_dir, source_without_ext + '.o')]
         output_exe = path.join(test_build_dir, source_without_ext + '.exe')
-        buildmethods.linksome(builds, output_exe, rootdir=project_dir, lopts=[], exclude=exclude, log=log)
+        try: buildmethods.linksome(builds, output_exe, rootdir=project_dir, lopts=[], exclude=exclude, log=log)
+        except: return
 
         subprocess.check_call([output_exe])
 
