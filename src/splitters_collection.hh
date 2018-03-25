@@ -67,7 +67,6 @@ public:
 
             curr = get_next(source[i], curr);
         }
-        throw runtime_error{"not implemented"};
     }
 
     virtual ~SplittersCollection() {

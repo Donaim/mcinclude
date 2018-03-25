@@ -60,13 +60,22 @@ public:
         _size = 0;
         // dont change capacity
     }
+    inline SArray<T> move_to_array() {
+        SArray<T> re(buffer, _size);
+
+        buffer = nullptr;
+        _capacity = 0;
+        _size = 0;
+
+        return re;
+    }
 
     inline T operator [] (std::size_t i) const { return buffer[i]; }
     inline T at(size_t i) {
         if (i < _size) {
             return buffer[i];
         } else {
-            throw std::runtime_error("index was outside of SArray!");
+            throw std::runtime_error("index was outside of SList!");
         }
     }
 };
