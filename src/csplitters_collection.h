@@ -10,7 +10,7 @@ class CSplittersCollection : public SplittersCollection<char> {
 
 public:
     CSplittersCollection(SList<Splitter<char> * > available_, SArray<char> source_);
-    CSplittersCollection(char * null_terminated); // with std csplitters
+    CSplittersCollection(const char * null_terminated); // with std csplitters
 
     SList<char> get_first(const char * arr);
 };

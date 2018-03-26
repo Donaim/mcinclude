@@ -53,6 +53,8 @@ public:
     }
 
     inline void forget_and_alloc_new(size_t capac_init) {
+        if (capac_init <= 0) { capac_init = 1; }
+   
         _capacity = capac_init;
         buffer = (T*) malloc (sizeof(T) * _capacity);
         _size = 0;
@@ -70,8 +72,15 @@ public:
         }
         buffer [_size++] = v;
     }
+    inline void remove_last() {
+        if(_size > 0) {
+            _size--;
+        }
+    }
 
     inline void reserve(size_t capacity) {
+        if (capacity <= 0) { capacity = 1; }
+
         _capacity = capacity;
         buffer = (T*)realloc(buffer, sizeof(T) * capacity);
     }

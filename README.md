@@ -3,6 +3,7 @@
 # To do
 - [x] faster project compilations: split compilation and linking with scripts
 - [X] make test compilation faster
+- [ ] make quote splitters trim `\"` 
 - [ ] write `install.py` script for downloading externs
 - [ ] make fully portable to linux
 - [ ] implement `reverse` on SIter
@@ -15,5 +16,4 @@
 - use forward-declarations as much as possible
 - dont use `inline` in definition if declaration does not have it
 - use `&&` (move) references. [tutor](https://stackoverflow.com/questions/5481539/what-does-t-double-ampersand-mean-in-c11)
-
 
