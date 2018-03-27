@@ -44,5 +44,5 @@ public:
     // subsets
     MString slice(Range r) const;
     SList<MString *> split() const;
-    SList<std::string*> split_into_raw() const;
+    SList<SList<char>> split_into_raw() const;
 };

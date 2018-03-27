@@ -40,10 +40,9 @@ ArgParse::ArgParse(string source)
 {
     
 }
-ArgParse::ArgParse(SList<string *>&& parts) 
-    : args{4}, nargs{2}, original_args(parts)
+ArgParse::ArgParse(SList<string *> parts) 
+    : args{4}, nargs{2}
 {
-    
     NArg * last_narg = nullptr;
     for (int i = 0; i < parts.size(); i++) {
         if (*parts[i] == NARG_SPLITCHAR && args.size() > 0) {
@@ -57,7 +56,7 @@ ArgParse::ArgParse(SList<string *>&& parts)
         else {
             if (last_narg == nullptr) {
                 // DPLOG("NEWARG:%s", parts[i]->c_str());
-                args.push_back(new string(*parts[i]));
+                args.push_back(string(*parts[i]));
             } else {
                 // DPLOG("NEW NARG:%s", parts[i]->c_str());
                 last_narg->push_arg(*parts[i]);
@@ -65,18 +64,20 @@ ArgParse::ArgParse(SList<string *>&& parts)
         }
     }
 }
+
 string ArgParse::get_option(const string& name) const {
-    
+    for (int i = 0, to = args.size() - 1; i < to; i++) {
+        DPLOG("curr=[%s], next=[%s]", args[i].c_str(), args[i + 1].c_str());
+        if (args[i] == name) { return (args[i + 1]); }
+    }
+
+    return "";
 }
 
 ArgParse::~ArgParse() {
-    args.delete_targets();
-    args.dofree();
+    args.clear();
 
     nargs.delete_targets();
     nargs.dofree();
-
-    original_args.delete_targets();
-    original_args.dofree();
 }
 

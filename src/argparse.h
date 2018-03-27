@@ -3,6 +3,7 @@
 
 #include <string>
 #include <slist.hpp>
+#include <vector>
 
 class NArg {
 public:
@@ -14,16 +15,16 @@ public:
     ~NArg();
 };
 
+
 class ArgParse {
-    SList<std::string*> original_args; // for destructor 
 public:
-    SList<std::string * > args; // without nargs
+    std::vector<std::string> args; // without nargs
     SList<NArg *> nargs;
     
     static const std::string NARG_SPLITCHAR;
 
     ArgParse(std::string source);
-    ArgParse(SList<std::string *>&& parts);
+    ArgParse(SList<std::string*> parts);
 
     std::string get_option(const std::string& name) const; // like `verbose=1`
     std::string get_tag(const std::string& name) const; // bool

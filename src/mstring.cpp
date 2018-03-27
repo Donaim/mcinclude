@@ -161,14 +161,7 @@ SList<MString *> MString::split() const {
 
     return re;
 }
-SList<string*> MString::split_into_raw() const {
+SList<SList<char>> MString::split_into_raw() const {
     CSplittersCollection coll = *new CSplittersCollection(this->raw);
-    auto sp = coll.split();
-
-    SList<string*> re{sp.size()};
-    for (int i = 0; i < sp.size(); i++) {
-        re.push_back(new string{sp[i].source()});
-    }
-
-    return re;
+    return coll.split();
 }

@@ -21,7 +21,7 @@ protected:
 public:
     SArray(const T * source, size_t len) : buffer((T*)source), _size(len)
     {}
-    
+
     inline T * source() const { return this->buffer; }
     inline size_t size() const { return this->_size; }
     inline bool is_empty() const { return this->_size == 0; }
@@ -50,6 +50,13 @@ public:
             throw std::runtime_error("index was outside of SArray!");
         }
     }
+    inline bool operator ==(const SArray<T>& o) const {
+        if (this->_size != o._size) { return false; }
+        for (int i = 0; i < this->_size; i++) {
+            if (this->buffer[i] != o.buffer[i]) { return false; }
+        }
+        return true;
+    }
 };
 
 template <typename T>
@@ -58,6 +65,14 @@ class SList : public SArray<T> {
 public:
     SList(size_t capac_init) {
         forget_and_alloc_new(capac_init);
+    }
+
+    static SList<T> make_copy(const T * source, size_t len) {
+        SList<T> re{len};
+        for (int i = 0; i < len; i++) {
+            re.push_back_copy(source[i]);
+        }
+        return re;
     }
 
     inline void forget_and_alloc_new(size_t capac_init) {
@@ -94,5 +109,14 @@ public:
     }
 
     inline void clear_dont_free() { this->_size = 0; }
+    
+    template <typename G>
+    SList<G> mutate() {
+        SList<G> re{this->_size};
+        for (int i = 0; i < this->_size; i++) {
+            re.push_back_copy(this->buffer[i]);
+        }
+        return re;
+    }
 };
 
