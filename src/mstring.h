@@ -21,6 +21,7 @@ public:
     
     static MString create_empty();
 
+    int size() const;
     std::string copy_as_std() const;
     SIter get_iterator() const;
 
@@ -43,4 +44,5 @@ public:
     // subsets
     MString slice(Range r) const;
     SList<MString *> split() const;
+    SList<std::string*> split_into_raw() const;
 };
