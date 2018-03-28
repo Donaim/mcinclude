@@ -67,11 +67,28 @@ ArgParse::ArgParse(SList<string *> parts)
 
 string ArgParse::get_option(const string& name) const {
     for (int i = 0, to = args.size() - 1; i < to; i++) {
-        DPLOG("curr=[%s], next=[%s]", args[i].c_str(), args[i + 1].c_str());
+        // DPLOG("curr=[%s], next=[%s]", args[i].c_str(), args[i + 1].c_str());
         if (args[i] == name) { return (args[i + 1]); }
     }
 
     return "";
+}
+string ArgParse::get_tag(const string & name ) const {
+    for (int i = 0, to = nargs.size(); i < to; i++) {
+        if (args[i] == name) { return (args[i]); }
+    }
+
+    return "";
+}
+IArray<string *> ArgParse::get_nargs(const string & name ) const {
+    for (int i = 0, to = nargs.size(); i < to; i++) {
+        // for (int k = 0; k < nargs[i]->list.size(); k++) {
+        //     DPLOG("curr=[%s]", nargs[i]->list[i]->c_str());
+        // }
+        if (nargs[i]->name == name) { return nargs[i]->list; }
+    }
+
+    return SArray<string*>(nullptr, 0);
 }
 
 ArgParse::~ArgParse() {

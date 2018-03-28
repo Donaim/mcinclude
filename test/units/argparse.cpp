@@ -21,6 +21,9 @@ TEST_CASE("test split") {
     while(!sf.is_end()) {
         MString a{sf.readline(), false};
         a.rstrip();
+        a.lstrip();
+
+        DPLOG("\nS=[%s]", a.copy_as_std().c_str());
 
         SList<SList<char>> sl = a.split_into_raw();
         SList<string*> list{sl.size()};
@@ -31,6 +34,12 @@ TEST_CASE("test split") {
         }
 
         ArgParse ap{list};
-        DPLOG("OPTION [%s] = [%s]", "option", ap.get_option("#label").c_str());
+        DPLOG("OPTION [%s] = [%s]", "at", ap.get_option("at").c_str());
+        
+        auto nargs = ap.get_nargs("nargs2");
+        DLOG("NARGS {nargs2}:");
+        for (int i = 0; i < nargs.size(); i++) {
+            DLOG(*nargs[i]);
+        }
     }
 }

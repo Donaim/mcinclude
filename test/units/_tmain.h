@@ -27,6 +27,7 @@ using namespace std;
 #endif
 
 #define SIMPLETEXT_PATH TESTDATA_DIR"simpletext.txt"
+#define LONGTEXT_PATH TESTDATA_DIR"war_and_peace.txt"
 
 string get_true_content(const char* path) {
     stringstream ss;
