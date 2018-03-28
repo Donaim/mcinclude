@@ -13,18 +13,44 @@ using std::runtime_error;
  */
 
 template <typename T>
-class SArray {
+class IArray {
 protected:
     T * buffer;
     size_t _size;
+    IArray() {}
+public:
+    IArray(const T * source, size_t len) : buffer((T*)source), _size(len)
+    {}
+
+    inline size_t size() const { return this->_size; }
+    inline bool is_empty() const { return this->_size == 0; }
+  
+    inline T operator [] (size_t i) const { return this->buffer[i]; }
+    inline T at(size_t i) const {
+        if (i < this->_size) {
+            return this->buffer[i];
+        } else {
+            throw std::runtime_error("index was outside of SArray!");
+        }
+    }
+    inline bool operator ==(const IArray<T>& o) const {
+        if (this->_size != o._size) { return false; }
+        for (int i = 0; i < this->_size; i++) {
+            if (this->buffer[i] != o.buffer[i]) { return false; }
+        }
+        return true;
+    }
+};
+
+template <typename T>
+class SArray : public IArray<T> {
+protected:
     SArray() {}
 public:
-    SArray(const T * source, size_t len) : buffer((T*)source), _size(len)
+    SArray(const T * source, size_t len) : IArray<T>(source, len)
     {}
 
     inline T * source() const { return this->buffer; }
-    inline size_t size() const { return this->_size; }
-    inline bool is_empty() const { return this->_size == 0; }
     
     inline void dofree() { // uses c-style free(*)
         free((T*)this->buffer);
@@ -40,22 +66,6 @@ public:
         }
         this->_size = 0;
         // dont change capacity
-    }
-
-    inline T operator [] (std::size_t i) const { return this->buffer[i]; }
-    inline T at(size_t i) const {
-        if (i < this->_size) {
-            return this->buffer[i];
-        } else {
-            throw std::runtime_error("index was outside of SArray!");
-        }
-    }
-    inline bool operator ==(const SArray<T>& o) const {
-        if (this->_size != o._size) { return false; }
-        for (int i = 0; i < this->_size; i++) {
-            if (this->buffer[i] != o.buffer[i]) { return false; }
-        }
-        return true;
     }
 };
 
