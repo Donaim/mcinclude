@@ -8,8 +8,8 @@ using std::endl;
 #define QUOTE(x) #x
 
 Config::Config() {}
-Config Config::generate_default() {
-    Config re{};
+Config& Config::generate_default() {
+    Config& re = *new Config();
     
     re.commands_prefix_ = "#";
     re.skip_repeating_includes_ = false;
@@ -36,10 +36,9 @@ std::ostream& operator << (std::ostream& os, const Config& cfg) {
     return os;
 }
 
-
-string Config::commands_prefix() const { return commands_prefix_; }
+const string& Config::commands_prefix() const { return commands_prefix_; }
 bool Config::skip_repeating_includes() const { return skip_repeating_includes_; }
 bool Config::error_if_include_doesnt_exist() const { return error_if_include_doesnt_exist_; }
 bool Config::leave_headers() const { return leave_headers_; }
-string Config::include_name() const { return include_name_; }
-string Config::label_name() const { return label_name_; }
+const string& Config::include_name() const { return include_name_; }
+const string& Config::label_name() const { return label_name_; }

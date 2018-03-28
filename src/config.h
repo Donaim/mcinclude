@@ -16,13 +16,13 @@ class Config {
     Config(); // only through static methods
 public:
 
-    std::string commands_prefix() const;
+    const std::string& commands_prefix() const;
     bool skip_repeating_includes() const;
     bool error_if_include_doesnt_exist() const;
     bool leave_headers() const;
-    std::string include_name() const;
-    std::string label_name() const;
+    const std::string& include_name() const;
+    const std::string& label_name() const;
 
-    static Config generate_default();
+    static Config& generate_default();
     friend std::ostream& operator << (std::ostream& os, const Config& me);
 };

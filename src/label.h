@@ -5,13 +5,20 @@
 #include "mstring.h"
 #include "linepos.h"
 #include "sfile.h"
+#include "ilinefac.h"
 
 #include <string>
 
-class Label : public Line, public ILabel {
-
+class LabelFactory : public ILineFactory {
 public:
-    Label(MString& source_text, SFile& source_file, LinePos pos, std::string name);
+    virtual Line * try_create(const Line& src) override;
+};
+
+class Label : public Line, public ILabel {
+    friend class LabelFactory;
+public:
+    Label(const Line& source, std::string name);
 
     virtual void writeme(Writer& w) override;
+
 };
