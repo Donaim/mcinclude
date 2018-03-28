@@ -29,7 +29,9 @@ Line::~Line() {
 }
 
 ostream& operator <<(ostream& os, const Line& me) {
-    os << '\"' << me.text_ << '\"';
+    os << '{' << '{';
+    os << '\"' << me.text_ << '\"' << ' ';
     os << me.pos;
+    os << '}' << '}';
     return os;
 }
