@@ -10,7 +10,9 @@
 #include <string>
 
 class LabelFactory : public ILineFactory {
+    MString original_name;
 public:
+    LabelFactory(const Config& cfg);
     virtual Line * try_create(const Line& src) override;
 };
 

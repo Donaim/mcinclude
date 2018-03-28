@@ -8,7 +8,6 @@ using std::vector;
 using std::string;
 
 ILabel::ILabel(string name_) : name{name_} {
-    DPLOG("LABEL [%s] CREATED", name.c_str());
 }
 
 void ILabel::add_att(Line * l) {

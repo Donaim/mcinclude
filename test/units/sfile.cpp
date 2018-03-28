@@ -12,9 +12,10 @@
 Scope * dscope = nullptr;
 
 TEST_CASE("init scope") {
+    auto cfg = Config::generate_default();
     SList<ILineFactory*> facs{1};
-    facs.push_back_copy(new LabelFactory());
-    dscope = new Scope(Config::generate_default(), facs);
+    facs.push_back_copy(new LabelFactory(cfg));
+    dscope = new Scope(cfg, facs);
 }
 
 TEST_CASE("test creation") {
@@ -29,15 +30,15 @@ TEST_CASE("test read") {
     sf.read_lines();
 
     for (int i = 0, to = sf.lines.size(); i < to; i++) {
-        DLOG(*sf.lines[i]);
-        ss << sf.lines[i]->text();
+        // DLOG(*sf.lines[i]);
+        // ss << sf.lines[i]->text();
     }
 
     // CHECK_EQ(ss.str(), get_true_content(SIMPLETEXT_PATH));
 }
 TEST_CASE("test read long") {
 
-    DLOG("START READING LONG TEXT");
+    DLOG("\nSTART READING LONG TEXT");
 
 
     // while(true) 

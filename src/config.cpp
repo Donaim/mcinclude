@@ -16,8 +16,8 @@ Config& Config::generate_default() {
     re.error_if_include_doesnt_exist_ = true;
     re.leave_headers_ = false;
 
-    re.include_name_ = re.commands_prefix_ + "include";
-    re.label_name_ = re.commands_prefix_ + "label";
+    re.include_name_ = "include";
+    re.label_name_ = "#label";
 
     return re;
 }

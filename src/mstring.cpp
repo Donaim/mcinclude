@@ -4,6 +4,7 @@
 #include "strhelp.h"
 #include "range.hpp"
 #include "csplitters_collection.h"
+#include "slist.hpp"
 
 #include <cstring>
 #include <sstream>
@@ -15,25 +16,37 @@ using std::ostream;
 using std::stringstream;
 using std::runtime_error;
 
-static char * from_raw(char * raw, bool copy) {
+static const char * from_raw(const char * raw, bool copy) {
     if(copy) {
+        // DPLOG("IVE GOT [%s] to copy", raw);
+        
         int _size = strlen(raw);
         char * re = new char[_size + 1];
         std::strcpy(re, raw);
         re[_size] = '\0';
         return re;
-    }
-    else {
+    } else {
         // this->raw[_size] = '\0';
         return raw; // unsafe
     }
 }
 
 MString::MString(const char * src, bool copy)
-    : original(from_raw((char*)src, copy))
+    : original((char*)from_raw(src, copy))
 {
     this->_size = strlen(src);
     this->buffer = original;
+}
+MString::MString(const string& raw)
+    : original(new char[raw.size() + 1])
+{
+    this->_size = raw.size();
+    this->buffer = original;
+
+    for (int i = 0; i < this->_size; i++) {
+        this->original[i] = raw[i];
+    }
+    this->original[this->_size] = '\0';
 }
 MString::MString(const MString& o)
     : original{new char[o._size + 1]}
@@ -88,16 +101,21 @@ bool MString::is_whitespace_not_empty() const {
     return !is_empty() && is_whitespace_or_empty();
 }
 
-bool MString::startswith(const char * s, bool skip_whitespace) const {
-    auto mit = get_iterator();
-    auto sit = SIter::create_local(s);
-
+inline bool iterators_subseq(const SIter& mit, const SIter& sit, bool skip_whitespace) {
     if (skip_whitespace) {
         mit.skip_whitespace();
         sit.skip_whitespace();
     }
 
     return sit.is_subset_of(mit);
+}
+bool MString::startswith(const MString& o, bool skip_whitespace) const {
+    return this->startswith(o.buffer, skip_whitespace);
+}
+bool MString::startswith(const char * s, bool skip_whitespace) const {
+    auto mit = get_iterator();
+    auto sit = SIter::create_local(s);
+    return iterators_subseq(mit, sit, skip_whitespace);
 }
 
 
@@ -109,12 +127,7 @@ bool MString::endswith(const char * s, bool skip_whitespace) const {
     mit.turn_around(); mit.beg();
     sit.turn_around(); sit.beg();
 
-    if (skip_whitespace) {
-        mit.skip_whitespace();
-        sit.skip_whitespace();
-    }
-
-    return sit.is_subset_of(mit);
+    return iterators_subseq(mit, sit, skip_whitespace);
 }
 
 // mods

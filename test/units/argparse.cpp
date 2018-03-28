@@ -24,16 +24,8 @@ TEST_CASE("test split") {
         a.lstrip();
 
         DPLOG("\nS=[%s]", a.copy_as_std().c_str());
-
-        SList<SList<char>> sl = a.split_into_raw();
-        SList<string*> list{sl.size()};
-        for (int i = 0; i < sl.size(); i++) {
-            char * src = sl[i].source();
-            // DPLOG("src=[%s]", src);
-            list.push_back_copy(new string(src));
-        }
-
-        ArgParse ap{list};
+        
+        ArgParse ap{a};
         DPLOG("OPTION [%s] = [%s]", "at", ap.get_option("at").c_str());
         
         auto nargs = ap.get_nargs("nargs2");

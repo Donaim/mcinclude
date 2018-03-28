@@ -7,10 +7,11 @@
 #include <string>
 #include <iostream>
 
-class MString : IArray<char> {
+class MString : public IArray<char> {
 private:
     char * const original; // use for delete [] 
 public:
+    MString(const std::string& copy_from_std);
     MString(const char * raw_, bool copy);
     MString(const MString& o); // override copy constructor
     MString(); // empty line
@@ -31,6 +32,7 @@ public:
     bool is_whitespace_not_empty() const;
 
     bool startswith(const char * s, bool skip_whitespace) const;
+    bool startswith(const MString& ms, bool skip_whitespace) const;
     bool endswith(const char * s, bool skip_whitespace) const;
     
     // mods

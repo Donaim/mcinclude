@@ -2,6 +2,8 @@
 
 #include "ilabel.h"
 #include "label.h"
+#include "argparse.h"
+
 
 Label::Label(const Line & source, std::string name) : Line(source), ILabel(name) {
     DPLOG("LABEL [%s] CREATED", name.c_str())
@@ -13,9 +15,22 @@ void Label::writeme(Writer& w) {
     }
 }
 
+
+LabelFactory::LabelFactory(const Config& cfg) 
+    : original_name(cfg.label_name())
+{
+    // DPLOG("LabelFactory initialized with name=[%s]", original_name.copy_as_std().c_str());
+}
 Line * LabelFactory::try_create(const Line& src) {
-    if (src.text().startswith("#label", true)) {
-        return new Label(src, "some name");
+    if (src.text().startswith(original_name, true)) {
+        try {
+            ArgParse ap(src.text());
+            auto name = ap.get_tag_at(1);
+            if (name.empty()) { return nullptr; }
+
+            return new Label(src, name);
+        }
+        catch (std::exception& ex) { }
     }
 
     return nullptr;

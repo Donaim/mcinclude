@@ -1,6 +1,6 @@
 hello 
     #in lakdkjad
 
-    #label somename at option nargsname : aa bb cc dd nargs2 : xxx yyy
+    #label MYLABL at option nargsname : aa bb cc dd nargs2 : xxx yyy
 
 kek!

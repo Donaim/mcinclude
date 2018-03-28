@@ -69,7 +69,7 @@ ArgParse::ArgParse(SList<string *> parts)
         }
         else {
             if (last_narg == nullptr) {
-                DPLOG("NEWARG: [%s]", parts[i]->c_str());
+                // DPLOG("NEWARG: [%s]", parts[i]->c_str());
                 args.push_back_copy(new string(*parts[i]));
             } else {
                 // DPLOG("NEW NARG:%s", parts[i]->c_str());
