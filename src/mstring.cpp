@@ -139,9 +139,12 @@ void MString::lstrip() {
     }
 }
 void MString::rstrip() {
+    if (is_empty()) { return; }
+    
     int last = _size - 1;
     while(is_space(this->buffer[last])) {
         last--;
+        if (_size <= 1) { break; }
         _size--;
     }
     this->buffer[last + 1] = '\0';
