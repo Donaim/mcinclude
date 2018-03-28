@@ -15,57 +15,64 @@ using std::ostream;
 using std::stringstream;
 using std::runtime_error;
 
-static char * from_raw(char * raw, bool copy) {
+static char * from_raw(char * buffer, bool copy) {
     if(copy) {
-        int len = strlen(raw);
-        char * re = new char[len + 1];
-        std::strcpy(re, raw);
-        re[len] = '\0';
+        int _size = strlen(buffer);
+        char * re = new char[_size + 1];
+        std::strcpy(re, buffer);
+        re[_size] = '\0';
         return re;
     }
     else {
-        // raw[len] = '\0';
-        return raw; // unsafe
+        // this->buffer[_size] = '\0';
+        return buffer; // unsafe
     }
 }
 
 MString::MString(char * src, bool copy)
-    : len(std::strlen(src)), original(from_raw(src, copy)), raw{original}
+    : original(from_raw(src, copy))
 {
-
+    this->_size = strlen(src);
+    this->buffer = original;
 }
 MString::MString(const LineReader& r)
-    : original{r.readline()}, raw{original} // note: MString will free readline memory (potentially unsafe)
+    : original{r.readline()}
 {
-    len = std::strlen(raw);
-    raw[len] = '\0';
+    this->buffer = original; // note: MString will free readline memory (potentially unsafe)
+    _size = std::strlen(this->buffer);
+    this->buffer[_size] = '\0';
 }
 MString::MString(const MString& o)
-    : len(o.len), original{new char[o.len + 1]}, raw{original}
+    : original{new char[o._size + 1]}
 {
-    std::strcpy(this->original, o.raw);
-    raw[len] = '\0';
+    this->_size = o._size;
+    this->buffer = original;
+
+    std::strcpy(this->original, o.buffer);
+    this->buffer[_size] = '\0';
 }
 MString::MString()
-    : len{0}, original{new char[1]}, raw{original}
+    : original{new char[1]}
 {
-    original[len] = '\0';
+    this->_size = 0;
+    this->buffer = original;
+    original[this->_size] = '\0';
 }
 
 
 // main
-int MString::size() const { return this->len; }
+int MString::size() const { return this->_size; }
 
 string MString::copy_as_std() const {
-    return string(this->raw, this->len);
+    return string(this->buffer, this->_size);
 }
 
 ostream& operator <<(ostream& os, const MString& me) {
-    os << me.raw;
+    os << me.buffer;
     return os;
 }
 SIter MString::get_iterator() const {
-    return SIter::create_local(this->raw);
+    return SIter::create_local(this->buffer);
 }
 
 MString::~MString() {
@@ -74,7 +81,7 @@ MString::~MString() {
 
 // props
 bool MString::is_empty() const {
-    return len == 0;
+    return this->_size == 0;
 }
 bool MString::is_whitespace_or_empty() const {
     auto it = get_iterator();
@@ -119,19 +126,19 @@ bool MString::endswith(const char * s, bool skip_whitespace) const {
 
 // mods
 void MString::lstrip() {
-    while(is_space(raw[0]))
+    while(is_space(this->buffer[0]))
     {
-        this->raw++;
-        this->len--;
+        this->buffer++;
+        this->_size--;
     }
 }
 void MString::rstrip() {
-    int last = len - 1;
-    while(is_space(raw[last])) {
+    int last = _size - 1;
+    while(is_space(this->buffer[last])) {
         last--;
-        len--;
+        _size--;
     }
-    raw[last + 1] = '\0';
+    this->buffer[last + 1] = '\0';
 }
 
 // subsets
@@ -151,7 +158,7 @@ MString MString::slice(Range r) const {
 }
 
 SList<MString *> MString::split() const {
-    CSplittersCollection coll = *new CSplittersCollection(this->raw);
+    CSplittersCollection coll = *new CSplittersCollection(this->buffer);
     auto sp = coll.split();
 
     SList<MString *> re{sp.size()};
@@ -162,6 +169,7 @@ SList<MString *> MString::split() const {
     return re;
 }
 SList<SList<char>> MString::split_into_raw() const {
-    CSplittersCollection coll = *new CSplittersCollection(this->raw);
+    CSplittersCollection coll = *new CSplittersCollection(this->buffer);
     return coll.split();
 }
+
