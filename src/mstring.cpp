@@ -15,32 +15,25 @@ using std::ostream;
 using std::stringstream;
 using std::runtime_error;
 
-static char * from_raw(char * buffer, bool copy) {
+static char * from_raw(char * raw, bool copy) {
     if(copy) {
-        int _size = strlen(buffer);
+        int _size = strlen(raw);
         char * re = new char[_size + 1];
-        std::strcpy(re, buffer);
+        std::strcpy(re, raw);
         re[_size] = '\0';
         return re;
     }
     else {
-        // this->buffer[_size] = '\0';
-        return buffer; // unsafe
+        // this->raw[_size] = '\0';
+        return raw; // unsafe
     }
 }
 
-MString::MString(char * src, bool copy)
-    : original(from_raw(src, copy))
+MString::MString(const char * src, bool copy)
+    : original(from_raw((char*)src, copy))
 {
     this->_size = strlen(src);
     this->buffer = original;
-}
-MString::MString(const LineReader& r)
-    : original{r.readline()}
-{
-    this->buffer = original; // note: MString will free readline memory (potentially unsafe)
-    _size = std::strlen(this->buffer);
-    this->buffer[_size] = '\0';
 }
 MString::MString(const MString& o)
     : original{new char[o._size + 1]}
@@ -76,7 +69,7 @@ SIter MString::get_iterator() const {
 }
 
 MString::~MString() {
-    // delete [] this->original;
+    delete [] this->original;
 }
 
 // props

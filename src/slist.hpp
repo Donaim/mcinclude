@@ -40,6 +40,8 @@ public:
         }
         return true;
     }
+
+    virtual ~IArray() {}
 };
 
 template <typename T>

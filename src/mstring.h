@@ -1,6 +1,5 @@
 #pragma once
 
-#include "line_reader.h"
 #include "s_iter.h"
 #include "range.hpp"
 #include "slist.hpp"
@@ -11,9 +10,8 @@
 class MString : IArray<char> {
 private:
     char * const original; // use for delete [] 
-    MString(char * raw_, bool copy);
 public:
-    MString(const LineReader& r);
+    MString(const char * raw_, bool copy);
     MString(const MString& o); // override copy constructor
     MString(); // empty line
     

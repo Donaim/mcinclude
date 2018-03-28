@@ -19,7 +19,7 @@ TEST_CASE("test split") {
 
     SFileLineReader sf{SIMPLETEXT_PATH};
     while(!sf.is_end()) {
-        MString a = MString{sf};
+        MString a{sf.readline(), false};
         a.rstrip();
 
         SList<SList<char>> sl = a.split_into_raw();

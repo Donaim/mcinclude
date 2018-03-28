@@ -26,7 +26,7 @@ bool SFile::is_ended() const { return ended_; }
 void SFile::read_lines() {
     Line * ln = new Line(*new MString{}, *this, LinePos::zero(this->path) );
     while (!reader_.is_end()) {
-        MString * ms = new MString{reader_}; // Line class is responsible for free
+        MString * ms = new MString{reader_.readline(), false}; // Line class is responsible for free
         
         ln = new Line(*ms, *this, ln->pos.next());
         lines.push_back(ln);
