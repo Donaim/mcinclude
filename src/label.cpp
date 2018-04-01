@@ -7,6 +7,7 @@
 
 Label::Label(const Line & source, std::string name) : Line(source), ILabel(name) {
     DPLOG("LABEL [%s] CREATED", name.c_str())
+    // source_file_.scope.addme();
 }
 
 void Label::writeme(Writer& w) {
@@ -17,9 +18,12 @@ void Label::writeme(Writer& w) {
 
 
 LabelFactory::LabelFactory(const Config& cfg) 
-    : original_name(cfg.label_name())
+    : original_name(cfg.label_name()), created{16}
 {
     // DPLOG("LabelFactory initialized with name=[%s]", original_name.copy_as_std().c_str());
+}
+const IArray<Label*>& LabelFactory::list() const {
+    return this->created;
 }
 Line * LabelFactory::try_create(const Line& src) {
     if (src.text().startswith(original_name, true)) {
@@ -28,10 +32,18 @@ Line * LabelFactory::try_create(const Line& src) {
             auto name = ap.get_tag_at(1);
             if (name.empty()) { return nullptr; }
 
-            return new Label(src, name);
+            auto lbl = new Label(src, name);
+            created.push_back_copy(lbl);
+            return lbl;
         }
         catch (std::exception& ex) { }
     }
 
     return nullptr;
+}
+
+
+LabelFactory::~LabelFactory() {
+    created.delete_targets();
+    created.dofree();
 }

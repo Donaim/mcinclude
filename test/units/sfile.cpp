@@ -8,6 +8,7 @@
 #include "scope.h"
 #include "ilinefac.h"
 #include "label.h"
+#include "writer.h"
 
 Scope * dscope = nullptr;
 
@@ -39,7 +40,7 @@ TEST_CASE("test read") {
 TEST_CASE("test read long") {
 
     DLOG("\nSTART READING LONG TEXT");
-
+    dscope->find_factory<Scope>();
 
     // while(true) 
     {
@@ -54,4 +55,13 @@ TEST_CASE("test read long") {
 
 
     DLOG("END READING LONG TEXT");
+}
+TEST_CASE("test write") {
+    Writer wr(OUTPUT_PATH);
+    
+    SFile sf = SFile::create_root(SIMPLETEXT_PATH, *dscope);
+    sf.read_lines();
+    sf.writeall(wr);
+
+    // CHECK_EQ(ss.str(), get_true_content(SIMPLETEXT_PATH));
 }

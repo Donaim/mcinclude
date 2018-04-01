@@ -7,10 +7,11 @@ class SFile;
 class Writer;
 
 class Line {
-    MString& text_;
-    SFile& source_file_;
 public:
     const LinePos pos;
+    const SFile& source_file_;
+    const MString& text_;
+   
     Line(MString& source_text, SFile& source_file, LinePos pos);
 
     const MString& text() const;

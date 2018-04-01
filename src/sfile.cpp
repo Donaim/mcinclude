@@ -45,6 +45,11 @@ void SFile::read_lines() {
     }
     ended_ = true;
 }
+void SFile::writeall(Writer& wr) {
+    for (int i = 0; i < lines.size(); i++) {
+        lines[i]->writeme(wr);
+    }
+}
 
 SFile::~SFile() {
     delete &reader_; // should SFile delete it? who else would?

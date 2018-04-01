@@ -5,6 +5,7 @@
 #include "code_block.h"
 #include "config.h"
 #include "scope.h"
+#include "writer.h"
 
 #include <string>
 
@@ -14,11 +15,11 @@ class LineReader;
 class SFile : public CodeBlock {
     Line * try_factories(Line * raw);
 protected:
-    const Scope& scope;
     LineReader& reader_;
     SFile * const parent_file_;
     bool ended_;
 public:
+    const Scope& scope;
     const std::string path;
 
     SFile(const Scope& scope, const char * path_, SFile * parent, LineReader& reader);
@@ -28,6 +29,7 @@ public:
     bool is_ended() const;
 
     void read_lines();
+    void writeall(Writer& w);
 
     ~SFile();
 };
