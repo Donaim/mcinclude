@@ -5,7 +5,9 @@
 #include "argparse.h"
 
 
-Label::Label(const Line & source, std::string name) : Line(source), ILabel(name) {
+Label::Label(const Line & source, std::string name) 
+    : Line(source), ILabel(name) 
+{
     DPLOG("LABEL [%s] CREATED", name.c_str())
     // source_file_.scope.addme();
 }
@@ -27,16 +29,13 @@ const IArray<Label*>& LabelFactory::list() const {
 }
 Line * LabelFactory::try_create(const Line& src) {
     if (src.text().startswith(original_name, true)) {
-        try {
-            ArgParse ap(src.text());
-            auto name = ap.get_tag_at(1);
-            if (name.empty()) { return nullptr; }
+        ArgParse ap(src.text());
+        auto name = ap.get_tag_at(1);
+        if (name.empty()) { return nullptr; }
 
-            auto lbl = new Label(src, name);
-            created.push_back_copy(lbl);
-            return lbl;
-        }
-        catch (std::exception& ex) { }
+        auto lbl = new Label(src, name);
+        created.push_back_copy(lbl);
+        return lbl;
     }
 
     return nullptr;
