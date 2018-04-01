@@ -9,13 +9,17 @@
 #include "ilinefac.h"
 #include "label.h"
 #include "writer.h"
+#include "include.h"
 
 Scope * dscope = nullptr;
 
 TEST_CASE("init scope") {
     auto cfg = Config::generate_default();
+    LabelFactory * lblfac = new LabelFactory(cfg);
+
     SList<ILineFactory*> facs{1};
-    facs.push_back_copy(new LabelFactory(cfg));
+    facs.push_back_copy(lblfac);
+    facs.push_back_copy(new IncludeFactory(cfg, *lblfac));
     dscope = new Scope(cfg, facs);
 }
 

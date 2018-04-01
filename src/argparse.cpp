@@ -40,6 +40,7 @@ SList<string *> split_mstring(const MString& source) {
     auto sp = source.split_into_raw();
     for (int i = 0; i < sp.size(); i++) {
         re.push_back_copy(new string{sp[i].source()});
+        // DPLOG("[%d]=[%s]", i, sp[i].source());
     }
 
     return re;

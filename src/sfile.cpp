@@ -8,7 +8,7 @@
 #include "scope.h"
 #include "ilinefac.h"
 
-SFile::SFile(const Scope& sc, const char * path_, SFile * parent, LineReader& reader) : 
+SFile::SFile(const Scope& sc, const char * path_, const SFile * parent, LineReader& reader) : 
         path(path_), // copies chars -> no safety issues
         scope(sc),
         reader_(reader),
