@@ -2,6 +2,7 @@
 #pragma once
 
 #include "slist.hpp"
+#include <stdexcept>
 
 class Config;
 class ILineFactory;
@@ -29,5 +30,5 @@ const T * Scope::find_factory() const {
         const T * re = dynamic_cast<T *>(linefacs_[i]);
         if (re != nullptr) { return re; }
     }
-    return nullptr;
+    throw std::runtime_error("factory not found exception");
 }

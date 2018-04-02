@@ -10,8 +10,11 @@
 #include "label.h"
 #include "writer.h"
 #include "include.h"
+#include "manager.h"
 
-Scope * dscope = nullptr;
+#include <memory>
+
+shared_ptr<Scope> dscope ;
 
 TEST_CASE("init scope") {
     auto cfg = Config::generate_default();
@@ -20,18 +23,19 @@ TEST_CASE("init scope") {
     SList<ILineFactory*> facs{1};
     facs.push_back_copy(lblfac);
     facs.push_back_copy(new IncludeFactory(cfg, *lblfac));
-    dscope = new Scope(cfg, facs);
+    dscope = shared_ptr<Scope>(new Scope(cfg, facs));
 }
 
 TEST_CASE("test creation") {
-    CHECK_THROWS(SFile::create_root("some/non/existing/garbage", *dscope));
-    CHECK_NOTHROW(SFile::create_root(SIMPLETEXT_PATH, *dscope));
+    CHECK_THROWS(SFile::create_root("some/non/existing/garbage", dscope));
+    CHECK_NOTHROW(SFile::create_root(SIMPLETEXT_PATH, dscope));
 }
 
 TEST_CASE("test read") {
+    // DLOG("HELLO");
     stringstream ss{};
 
-    SFile sf = SFile::create_root(SIMPLETEXT_PATH, *dscope);
+    SFile sf = SFile::create_root(SIMPLETEXT_PATH, dscope);
     sf.read_lines();
 
     for (int i = 0, to = sf.lines.size(); i < to; i++) {
@@ -41,29 +45,17 @@ TEST_CASE("test read") {
 
     // CHECK_EQ(ss.str(), get_true_content(SIMPLETEXT_PATH));
 }
-TEST_CASE("test read long") {
-
-    DLOG("\nSTART READING LONG TEXT");
-    dscope->find_factory<Scope>();
-
-    // while(true) 
-    {
-        // SFile sf = SFile::create_root(LONGTEXT_PATH);
-        // sf.read_lines();
-  
-        // for (int i = 0, to = sf.lines.size(); i < to; i++) {
-        //     // DLOG(*sf.lines[i]);
-        //     // ss << sf.lines[i]->text();
-        // }
-    }
-
-
-    DLOG("END READING LONG TEXT");
+TEST_CASE("test find_factory") {
+    dscope->find_factory<LabelFactory>();
+    CHECK_THROWS(dscope->find_factory<Scope>());
+    
+    Manager m(dscope, SIMPLETEXT_PATH);
+    m.connect_labels();
 }
 TEST_CASE("test write") {
     Writer wr(OUTPUT_PATH);
     
-    SFile sf = SFile::create_root(SIMPLETEXT_PATH, *dscope);
+    SFile sf = SFile::create_root(SIMPLETEXT_PATH, dscope);
     sf.read_lines();
     sf.writeall(wr);
 
