@@ -5,6 +5,7 @@
 #include "config.h"
 #include "include.h"
 #include "scope.h"
+#include "writer.h"
 
 #include <memory>
 
@@ -14,19 +15,19 @@ Manager::Manager(shared_ptr<Scope> sc, const char * root_path)
     : scope(sc), rootfile(SFile::create_root(root_path, sc))
 {}
 
-Manager * Manager::create_default(const char * path) {
+shared_ptr<Manager> Manager::create_default(const char * path) {
     auto cfg = Config::generate_default();
     LabelFactory * lblfac = new LabelFactory(cfg);
 
-    SList<ILineFactory*> facs{1};
+    SList<ILineFactory*> facs{2};
     facs.push_back_copy(lblfac);
     facs.push_back_copy(new IncludeFactory(cfg, *lblfac));
     shared_ptr<Scope> sc(new Scope(cfg, facs));
     
-    return new Manager(sc, path);
+    return shared_ptr<Manager>(new Manager(sc, path));
 }
 
-void Manager::readfile() {
+void Manager::readall() {
     rootfile.read_lines();
 }
 
@@ -36,5 +37,6 @@ void Manager::connect_labels() {
 }
 
 void Manager::writeto(const char * path) {
-
+    Writer wr(path);
+    rootfile.writeall(wr);
 }

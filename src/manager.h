@@ -13,9 +13,9 @@ class Manager {
 public:
     std::shared_ptr<Scope> scope;
     Manager(std::shared_ptr<Scope> scope, const char * root_path);
-    static Manager * create_default(const char * path);
+    static std::shared_ptr<Manager> create_default(const char * path);
 
-    void readfile();
+    void readall();
     void connect_labels();
     void writeto(const char * path);
 };

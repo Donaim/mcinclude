@@ -10,5 +10,6 @@
     #include <vector>
     #include <cstdlib>
     #include <stdexcept>
+    #include <memory> //shared_ptr
     
 #endif

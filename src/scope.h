@@ -21,6 +21,8 @@ public:
     
     template <typename T>
     const T * find_factory() const;
+
+    ~Scope();
 };
 
 

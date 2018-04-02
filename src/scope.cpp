@@ -1,5 +1,6 @@
 
 #include "scope.h"
+#include "ilinefac.h"
 
 
 Scope::Scope(Config& c, SList<ILineFactory*> flist)
@@ -12,4 +13,8 @@ const Config& Scope::cfg() const {
 
 const IArray<ILineFactory*>& Scope::funcs() const {
     return linefacs_;
+}
+
+Scope::~Scope() {
+    linefacs_.delete_targets();
 }

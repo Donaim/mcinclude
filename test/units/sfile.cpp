@@ -14,7 +14,7 @@
 
 #include <memory>
 
-shared_ptr<Scope> dscope ;
+shared_ptr<Scope> dscope;
 
 TEST_CASE("init scope") {
     auto cfg = Config::generate_default();
@@ -48,9 +48,6 @@ TEST_CASE("test read") {
 TEST_CASE("test find_factory") {
     dscope->find_factory<LabelFactory>();
     CHECK_THROWS(dscope->find_factory<Scope>());
-    
-    Manager m(dscope, SIMPLETEXT_PATH);
-    m.connect_labels();
 }
 TEST_CASE("test write") {
     Writer wr(OUTPUT_PATH);
@@ -58,6 +55,10 @@ TEST_CASE("test write") {
     SFile sf = SFile::create_root(SIMPLETEXT_PATH, dscope);
     sf.read_lines();
     sf.writeall(wr);
-
-    // CHECK_EQ(ss.str(), get_true_content(SIMPLETEXT_PATH));
+}
+TEST_CASE("test manager") {
+    auto mgr = Manager::create_default(SIMPLETEXT_PATH);
+    mgr->readall();
+    mgr->connect_labels();
+    mgr->writeto(OUTPUT_PATH);
 }
