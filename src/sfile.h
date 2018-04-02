@@ -22,7 +22,7 @@ public:
     const Scope& scope;
     const std::string path;
 
-    SFile(const Scope& scope, const char * path_, const SFile * parent, LineReader& reader);
+    SFile(const Scope& scope, const char * path_, const SFile * parent, LineReader& reader, const char * indent);
     static SFile create_root(const char * path, const Scope& scope);
 
     bool is_file_root() const;

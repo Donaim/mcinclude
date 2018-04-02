@@ -8,19 +8,19 @@
 #include "scope.h"
 #include "ilinefac.h"
 
-SFile::SFile(const Scope& sc, const char * path_, const SFile * parent, LineReader& reader) : 
+SFile::SFile(const Scope& sc, const char * path_, const SFile * parent, LineReader& reader, const char * ind) : 
         path(path_), // copies chars -> no safety issues
         scope(sc),
         reader_(reader),
         parent_file_(parent),
         ended_(false),
-        CodeBlock(parent != nullptr ? parent->parent_block() : nullptr) 
+        CodeBlock(parent != nullptr ? parent->parent_block() : nullptr, ind) 
     {
     }
 
 
 SFile SFile::create_root(const char * path, const Scope& sc) {
-    return SFile{sc, path, nullptr, *new SFileLineReader(path)};
+    return SFile{sc, path, nullptr, *new SFileLineReader(path), ""};
 }
 
 bool SFile::is_file_root() const { return parent_file_ == nullptr; }

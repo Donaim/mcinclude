@@ -5,10 +5,10 @@
 Include::Include(const Line& src, const char * tp)
     : 
     Line(src),
-    target(src.source_file_.scope, tp, &src.source_file_, *new SFileLineReader(tp))
+    target(src.source_file_.scope, tp, &src.source_file_, *new SFileLineReader(tp), src.get_indent().c_str())
 {
     target.read_lines();
-    DPLOG("INCLUDE [%s] CREATED", tp);
+    DPLOG("INCLUDE [%s] CREATED WITH INDENT = [%s]", tp, target.indent);
 }
 
 void Include::writeme(Writer& w) {

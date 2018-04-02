@@ -12,6 +12,7 @@ public:
     Writer(const char * target_path);
 
     void write(const MString& ms);
+    void write(const char * str);
 
     ~Writer();
 };

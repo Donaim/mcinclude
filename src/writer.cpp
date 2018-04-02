@@ -17,6 +17,9 @@ Writer::Writer(const char * target_path) : os{target_path} {
 void Writer::write(const MString& ms) {
     this->os << ms;
 }
+void Writer::write(const char * str) {
+    this->os << str;
+}
 
 Writer::~Writer() {
     try {

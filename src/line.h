@@ -1,10 +1,12 @@
 #pragma once
 
 #include "linepos.h" // using class instance, so no forward-decl possible
+#include <string>
 
 class MString;
 class SFile;
 class Writer;
+
 
 class Line {
 public:
@@ -18,6 +20,7 @@ public:
     virtual void writeme(Writer& w); // will be overriden by Label, Include, .. etc
 
     static bool is_same_origin(const Line& a, const Line& b);
+    std::string get_indent() const;
 
     ~Line();
 
