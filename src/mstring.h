@@ -1,6 +1,5 @@
 #pragma once
 
-#include "line_reader.h"
 #include "s_iter.h"
 #include "range.hpp"
 #include "slist.hpp"
@@ -8,19 +7,18 @@
 #include <string>
 #include <iostream>
 
-class MString {
+class MString : public IArray<char> {
 private:
     char * const original; // use for delete [] 
-    char * raw; // 0-terminated
-    int len;
-    MString(char * raw_, bool copy);
 public:
-    MString(const LineReader& r);
+    MString(const std::string& copy_from_std);
+    MString(const char * raw_, bool copy);
     MString(const MString& o); // override copy constructor
     MString(); // empty line
     
     static MString create_empty();
 
+    int size() const;
     std::string copy_as_std() const;
     SIter get_iterator() const;
 
@@ -34,6 +32,7 @@ public:
     bool is_whitespace_not_empty() const;
 
     bool startswith(const char * s, bool skip_whitespace) const;
+    bool startswith(const MString& ms, bool skip_whitespace) const;
     bool endswith(const char * s, bool skip_whitespace) const;
     
     // mods
@@ -43,4 +42,5 @@ public:
     // subsets
     MString slice(Range r) const;
     SList<MString *> split() const;
+    SList<SList<char>> split_into_raw() const;
 };

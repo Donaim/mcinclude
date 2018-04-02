@@ -36,7 +36,7 @@ public:
     inline void turn_around() { 
         dir = -dir;
     }
-    inline bool is_subset_of(const OIter<T> & other) {
+    inline bool is_subset_of(const OIter<T> & other) const {
         return OIter<T>::is_subset(*this, other);
     }
     static bool is_subset(const OIter<T>& small, const OIter<T>& big) {

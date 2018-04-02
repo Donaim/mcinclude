@@ -1,4 +1,8 @@
 hello 
     #in lakdkjad
 
+    #label MYLABL at option nargsname : aa bb cc dd nargs2 : xxx yyy
+
+    #include <C:\Users\d0naim\Documents\dev\mcinclude\test\data\war_and_peace.txt>
+
 kek!

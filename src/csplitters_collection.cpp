@@ -14,6 +14,7 @@ CSplittersCollection::CSplittersCollection(const char * null_terminated)
     available.push_back(new QuoteSplitter(nullptr, '\"', '\"'));
     available.push_back(new BracketSplitter(nullptr, '(', ')'));
     available.push_back(new BracketSplitter(nullptr, '[', ']'));
+    available.push_back(new BracketSplitter(nullptr, '<', '>'));
     available.push_back(new WordSplitter(nullptr));
 }
 
