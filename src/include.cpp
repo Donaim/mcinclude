@@ -21,7 +21,7 @@ void Include::writeme(Writer& w) {
     this->target.writeall(w);
 }
 void Include::write_from_label(Writer& w, const Label& lbl) {
-    this->target.writeall(w);
+    this->target.writeall(w, lbl.get_indent().c_str());
 }
 
 IncludeFactory::IncludeFactory(const Config& cfg, LabelFactory& lf)

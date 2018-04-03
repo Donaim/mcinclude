@@ -30,7 +30,7 @@ public:
     bool is_ended() const;
 
     void read_lines();
-    void writeall(Writer& w);
+    void writeall(Writer& w, const char * additional_indent = "");
 
     ~SFile();
 };

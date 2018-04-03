@@ -53,8 +53,10 @@ void SFile::read_lines() {
     }
     ended_ = true;
 }
-void SFile::writeall(Writer& wr) {
+void SFile::writeall(Writer& wr, const char * additional_indent) {
+    bool indent_exists = strlen(additional_indent) > 0;
     for (int i = 0; i < lines.size(); i++) {
+        if (indent_exists) { wr.write(additional_indent); }
         lines[i]->writeme(wr);
     }
 }
