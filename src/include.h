@@ -12,13 +12,16 @@
 #include <string>
 
 class Include : public Line, public IAtable {
-    SFile target;
+    SFile * target;
 
 public:
-    Include(const Line& source, const char * target_path, LabelFactory& fac);
+    static std::string get_true_include_path(std::string rawpath, const SFile& parent_file, const Config& cfg);
+    Include(const Line& source, std::string target_path, LabelFactory& fac);
 
     virtual void writeme(Writer& w) override;
     virtual void write_from_label(Writer& w, const Label& lbl) override;
+
+    ~Include();
 };
 
 class IncludeFactory : public ILineFactory {

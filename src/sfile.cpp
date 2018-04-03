@@ -11,8 +11,9 @@
 #include <memory>
 
 using std::shared_ptr;
+using std::string;
 
-SFile::SFile(shared_ptr<Scope> sc, const char * path_, const SFile * parent, std::shared_ptr<LineReader> reader, const char * ind) : 
+SFile::SFile(shared_ptr<Scope> sc, string path_, const SFile * parent, std::shared_ptr<LineReader> reader, const char * ind) : 
         path(path_), // copies chars -> no safety issues
         scope(sc),
         reader_(reader),

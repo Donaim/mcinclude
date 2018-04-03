@@ -1,0 +1,8 @@
+beg of sample_include1
+some content in sample_include1
+// #include <sample_include2.txt> at : A B
+#include <sample_include2.txt> at A
+    #label A
+--- separator
+#label B
+end of sample_include1

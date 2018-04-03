@@ -2,27 +2,69 @@
 #include "argparse.h"
 #include "sfile_line_reader.h"
 #include "iatable.h"
+#include "fhelp.hh"
+#include "strhelp.h"
 
 #include <string>
 using std::string;
 
-Include::Include(const Line& src, const char * tp, LabelFactory& fac)
+
+string Include::get_true_include_path(string rawpath, const SFile& parent_file, const Config& cfg) {
+    if (is_file_exists(rawpath)) { return rawpath; }
+
+    string local_dir = dirname(parent_file.path);
+    string combine;
+
+    combine = local_dir + '/' + rawpath;
+    if (is_file_exists(combine)) { return combine; }
+    
+    return "";
+}
+
+Include::Include(const Line& src, string tp, LabelFactory& fac)
     :
     Line(src),
-    IAtable(fac),
-    target(src.source_file_.scope, tp, &src.source_file_, std::shared_ptr<SFileLineReader>(new SFileLineReader(tp)), src.get_indent().c_str())
+    IAtable(fac)
 {
-    target.read_lines();
-    DPLOG("INCLUDE [%s] CREATED WITH INDENT = [%s]", tp, target.indent);
+    string true_include = Include::get_true_include_path(tp, src.source_file_, src.source_file_.scope->cfg());
+    if (true_include.empty()) {
+        target = nullptr;
+        mlog::error(string_format("include path=[%s] wasn't found", tp.c_str()).c_str(), mlog::EType::DEFAULT);
+    } else {
+        target = new SFile(
+            src.source_file_.scope, 
+            true_include,
+            &src.source_file_,
+            std::shared_ptr<SFileLineReader>(new SFileLineReader(true_include.c_str())), 
+            src.get_local_indent().c_str()
+            );
+
+        target->read_lines();
+        DPLOG("INCLUDE [%s] CREATED WITH INDENT = [%s]", true_include.c_str(), target->indent);
+    }
 }
 
 void Include::writeme(Writer& w) {
     if (dest_names.size() > 0) { return; }
-    this->target.writeall(w);
+    if (this->target != nullptr) {
+        this->target->writeall(w);
+        w.write("\n");
+    }
 }
 void Include::write_from_label(Writer& w, const Label& lbl) {
-    this->target.writeall(w, lbl.get_indent().c_str());
+    if (this->target != nullptr) {
+        this->target->writeall(w, lbl.get_abs_indent().c_str());
+        w.write("\n");
+    }
 }
+Include::~Include() {
+    if (this->target != nullptr) {
+        delete target;
+    }
+}
+
+
+// factory //
 
 IncludeFactory::IncludeFactory(const Config& cfg, LabelFactory& lf)
     : original_name(cfg.include_name()), label_fac(lf), created{16}
@@ -38,7 +80,7 @@ Line * IncludeFactory::try_create(const Line& src) {
         auto targetpath = ap.get_tag_at(1);
         if (targetpath.empty()) { return nullptr; }
 
-        auto inc = new Include(src, targetpath.c_str(), label_fac);
+        auto inc = new Include(src, targetpath, label_fac);
 
         // add label dest 
         string dest = ap.get_option(IAtable::AT_KEYWORD);

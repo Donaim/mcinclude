@@ -20,7 +20,8 @@ public:
     virtual void writeme(Writer& w); // will be overriden by Label, Include, .. etc
 
     static bool is_same_origin(const Line& a, const Line& b);
-    std::string get_indent() const;
+    std::string get_abs_indent() const;
+    std::string get_local_indent() const;
 
     ~Line();
 

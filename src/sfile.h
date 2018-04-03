@@ -23,7 +23,7 @@ public:
     std::shared_ptr<Scope> scope;
     const std::string path;
 
-    SFile(std::shared_ptr<Scope> scope, const char * path_, const SFile * parent, std::shared_ptr<LineReader> reader, const char * indent);
+    SFile(std::shared_ptr<Scope> scope, std::string path_, const SFile * parent, std::shared_ptr<LineReader> reader, const char * local_indent);
     static SFile create_root(const char * path, std::shared_ptr<Scope> scope);
 
     bool is_file_root() const;

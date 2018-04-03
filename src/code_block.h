@@ -11,7 +11,7 @@ protected:
     CodeBlock * parent_block_; // nullptr means this code block is root. 
     CodeBlock(CodeBlock * parent, const char * additional_indent);
 public:
-    const char * const indent; // used for writing
+    const char * const indent; // local. used for writing
     const int id; // unique
 
     std::vector<Line*> lines;

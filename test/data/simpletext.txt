@@ -1,11 +1,11 @@
 hello 
     #in lakdkjad
 
-    #include <C:\Users\d0naim\Documents\dev\mcinclude\test\data\war_and_peace.txt> at MYLABL
+    #include <sample_include1.txt> at MYLABL
 
 ########### SEPARATOR
 
-    #label MYLABL at option nargsname : aa bb cc dd nargs2 : xxx yyy
+#label MYLABL at option nargsname : aa bb cc dd nargs2 : xxx yyy
 
 
 

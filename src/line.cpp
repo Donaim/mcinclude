@@ -28,12 +28,28 @@ void Line::writeme(Writer& w) {
 bool Line::is_same_origin(const Line& a, const Line& b) {
     return a.source_file_.id == b.source_file_.id && a.pos == b.pos;
 }
-string Line::get_indent() const {
+
+string Line::get_abs_indent() const {
     stringstream ss;
+
+    const CodeBlock * file = &source_file_;
+    while(file != nullptr) {
+        ss << file->indent;
+        file = file->parent_block();
+    }
+
+    ss << this->get_local_indent();
+
+    return ss.str();
+}
+string Line::get_local_indent() const {
+    stringstream ss;
+    
     for (int i = 0; i < text_.size(); i++) {
         if (is_space(text_[i])) { ss << text_[i]; }
         else { break; }
     }
+
     return ss.str();
 }
 
