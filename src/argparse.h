@@ -2,9 +2,9 @@
 #pragma once
 
 #include "mstring.h"
+#include "slist.hpp"
 
 #include <string>
-#include <slist.hpp>
 #include <vector>
 
 class NArg {
