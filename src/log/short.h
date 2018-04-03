@@ -1,6 +1,6 @@
 #pragma once
 
-#include "config.h"
+#include "logconfig.h"
 #include "rang.hpp"
 #include "../linepos.h"
 

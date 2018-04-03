@@ -1,6 +1,6 @@
 #include "log.stdafx.h"
 
-#include "config.h"
+#include "logconfig.h"
 
 using std::string;
 

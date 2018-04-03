@@ -3,7 +3,6 @@
 
 #include "slist.hpp"
 #include "log/short.h"
-#include "log/config.h"
 #include "line_reader.h"
 
 #include <fstream>
