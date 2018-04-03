@@ -82,9 +82,15 @@ Line * IncludeFactory::try_create(const Line& src) {
 
         auto inc = new Include(src, targetpath, label_fac);
 
-        // add label dest 
-        string dest = ap.get_option(IAtable::AT_KEYWORD);
-        inc->add_dest_name(dest);
+        { // add label dest 
+            string dest = ap.get_option(IAtable::AT_KEYWORD);
+            inc->add_dest_name(dest);
+            
+            IArray<string*> dests = ap.get_nargs(IAtable::AT_KEYWORD);
+            for (int i = 0; i < dests.size(); i++) {
+                inc->add_dest_name(*(dests[i]));
+            }
+        }
 
         created.push_back_copy(inc);
         return inc;

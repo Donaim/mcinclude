@@ -6,9 +6,9 @@ hello
 
     beg of sample_include1
     some content in sample_include1
-    // #include <sample_include2.txt> at : A B
         this is sample_include2
     --- separator
+    this is sample_include2
     end of sample_include1
 
 
