@@ -3,16 +3,17 @@
 // abstract interface for label //
 
 #include "line.h"
+class IAtable;
 
 #include <string>
 #include <vector>
 
 class ILabel {
 protected:
-    std::vector<Line*> attachments;
+    std::vector<IAtable*> attachments;
     ILabel(std::string name_);
 public:
     const std::string name;
-    void add_att(Line * l); // add attachment
-    const std::vector<Line*> get_attachments();
+    void add_att(IAtable * l); // add attachment
+    const std::vector<IAtable *> get_attachments();
 };

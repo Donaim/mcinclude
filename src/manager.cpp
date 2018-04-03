@@ -33,6 +33,7 @@ void Manager::readall() {
 
 void Manager::connect_labels() {
     const LabelFactory * fac = this->scope->find_factory<LabelFactory>();
+    fac->connect_labels();
     DPLOG("CONNECTED %d LABELS", fac->list().size());
 }
 

@@ -2,19 +2,24 @@
 
 class Label;
 class LabelFactory;
+class IncludeFactory;
 
 #include "writer.h"
+#include "slist.hpp"
 #include <string>
+#include <vector>
 
 class IAtable {
+    friend class LabelFactory;
 protected:
+    std::vector<std::string> dest_names;
+
     const LabelFactory& lbl_fac;
-    IAtable(const LabelFactory& fac);
-
-    void addmeto(std::string label_name);
-
+    IAtable(LabelFactory& fac);
+    
 public:
-    const Label * const destination;
+    void add_dest_name(std::string label_name);
+    virtual void write_from_label(Writer& w, const Label& lbl) = 0;
 
-    void write_from_label(Writer& w, const Label& lbl);
+    static const char * const AT_KEYWORD;
 };

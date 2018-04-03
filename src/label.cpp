@@ -3,9 +3,11 @@
 #include "ilabel.h"
 #include "label.h"
 #include "argparse.h"
+#include "log/short.h"
 
+using std::string;
 
-Label::Label(const Line & source, std::string name) 
+Label::Label(const Line & source, string name) 
     : Line(source), ILabel(name) 
 {
     DPLOG("LABEL [%s] CREATED", name.c_str())
@@ -14,13 +16,13 @@ Label::Label(const Line & source, std::string name)
 
 void Label::writeme(Writer& w) {
     for (int i = 0, to = attachments.size(); i < to; i++) {
-        attachments[i]->writeme(w);
+        attachments[i]->write_from_label(w, *this);
     }
 }
 
 
 LabelFactory::LabelFactory(const Config& cfg) 
-    : original_name(cfg.label_name()), created{16}
+    : original_name(cfg.label_name()), created{16}, subscribers{32}
 {
     // DPLOG("LabelFactory initialized with name=[%s]", original_name.copy_as_std().c_str());
 }
@@ -39,6 +41,28 @@ Line * LabelFactory::try_create(const Line& src) {
     }
 
     return nullptr;
+}
+
+void LabelFactory::register_iatable(IAtable * sub) {
+    subscribers.push_back_copy(sub);
+}
+bool connect_one_label(IAtable * ia, string name, SList<Label*> created) {
+    for (int i = 0; i < created.size(); i++) {
+        if (created[i]->name == name) {
+            created[i]->add_att(ia);
+            return true;
+        }
+    }
+    return false;
+}
+void LabelFactory::connect_labels() const {
+    for (int i = 0; i < subscribers.size(); i++) {
+        IAtable * ia = subscribers[i];
+        for (int k = 0; k < ia->dest_names.size(); k++) {
+            if (connect_one_label(ia, ia->dest_names[k], created)) {}
+            else { mlog::error("couldn't connect IAtable (wrong label name)", mlog::EType::DEFAULT); }
+        }
+    }
 }
 
 
