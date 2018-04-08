@@ -30,21 +30,23 @@ example testing with scripts:
 - [x] faster project compilations: split compilation and linking with scripts
 - [X] make test compilation faster
 - [ ] make quote splitters trim `\"` 
-- [ ] write `install.py` script for downloading externs
+- [X] write `install.py` script for downloading externs
 - [X] make portable to linux
-- [ ] make mlog cross-platform without need of recompiling
+- [ ] <del>make mlog cross-platform without need of recompiling</del>
 - [ ] implement `reverse` on SIter
 - [ ] make possible with mcincluder to generate precompiled headers for each individual file. Because now only possible that only first header can be precompiled which is silly
 - [X] call mxxbuild from runtest directly (`import mxxbuild`)
 - [ ] make possible to imitate classes (and inheritance) in C with mcinclude
-- [ ] tags in argparse should start with `-` or `+` as booleans
+- [X] tags in argparse should start with `-` or `+` as booleans
+- [ ] search for tags/options/nargs from end in argparse
 - [X] add `#label` instruction
 - [ ] `at` option for `#label`
 - [X] add `#include` instruction
-- [ ] add `#moveat` instruction
+- [X] add `#moveat` instruction
 - [ ] `if` option for `#moveat`
 - [ ] add `#template` instruction
 - [ ] improve conditions for `if` option (maybe even up to dynamic compilation)
+- [ ] make `if` syntaxis like: `#if cond then #include <filename>`, instead of `#include <filename> if cond`
 - [ ] create event-system in Scope for better instructions management
 - [ ] [hard] make instructions (and other objects like SFile) load dynamically 
 - [ ] make example files in `/example` dir
