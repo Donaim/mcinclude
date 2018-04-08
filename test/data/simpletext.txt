@@ -1,4 +1,8 @@
 hello 
+
+    #moveat MYLABL 3
+move this at MYLABL
+ 
     #in lakdkjad
 
     #include <sample_include1.txt> at MYLABL once! -repeat +mark

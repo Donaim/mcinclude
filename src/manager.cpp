@@ -6,6 +6,7 @@
 #include "include.h"
 #include "scope.h"
 #include "writer.h"
+#include "moveat.h"
 
 #include <memory>
 
@@ -22,6 +23,7 @@ shared_ptr<Manager> Manager::create_default(const char * path) {
     SList<ILineFactory*> facs{2};
     facs.push_back_copy(lblfac);
     facs.push_back_copy(new IncludeFactory(cfg, *lblfac));
+    facs.push_back_copy(new MoveatFactory(cfg, *lblfac));
     shared_ptr<Scope> sc(new Scope(cfg, facs));
     
     return shared_ptr<Manager>(new Manager(sc, path));

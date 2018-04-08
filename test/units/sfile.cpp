@@ -1,30 +1,7 @@
 
 #include "stdafx.h"
 
-#include "mstring.h"
-#include "sfile_line_reader.h"
-#include "line.h"
-#include "sfile.h"
-#include "scope.h"
-#include "ilinefac.h"
-#include "label.h"
-#include "writer.h"
-#include "include.h"
-#include "manager.h"
-
-#include <memory>
-
-shared_ptr<Scope> dscope;
-
-TEST_CASE("init scope") {
-    auto cfg = Config::generate_default();
-    LabelFactory * lblfac = new LabelFactory(cfg);
-
-    SList<ILineFactory*> facs{1};
-    facs.push_back_copy(lblfac);
-    facs.push_back_copy(new IncludeFactory(cfg, *lblfac));
-    dscope = shared_ptr<Scope>(new Scope(cfg, facs));
-}
+#include "instructiontest.h"
 
 TEST_CASE("test creation") {
     CHECK_THROWS(SFile::create_root("some/non/existing/garbage", dscope));

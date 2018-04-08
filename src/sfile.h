@@ -31,6 +31,7 @@ public:
     bool is_ended() const;
 
     void read_lines();
+    void read_some_lines(int count); // if negative, read whole file
     void writeall(Writer& w, const char * additional_indent = "");
 
     ~SFile();

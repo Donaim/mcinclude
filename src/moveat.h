@@ -17,7 +17,8 @@ class Moveat : public Line, public IAtable {
     SFile virtual_file;
 
 public:
-    Moveat(const Line& source, std::string main_label, LabelFactory& fac);
+    const int lines_count;
+    Moveat(const Line& source, std::string main_label, int lines_count, LabelFactory& fac);
 
     virtual void writeme(Writer& w) override;
     virtual void write_from_label(Writer& w, const Label& lbl) override;

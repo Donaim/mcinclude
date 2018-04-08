@@ -6,28 +6,41 @@
 #include "argparse.h"
 
 #include <memory>
+#include <stdexcept>
 
 using std::string;
+using std::stoi;
+using std::exception;
 using std::shared_ptr;
 
-Moveat::Moveat(const Line& src, string main_label_name, LabelFactory& fac)
+Moveat::Moveat(const Line& src, string main_label_name, int lc, LabelFactory& fac)
     : 
     Line(src),
     IAtable(fac, *this),
+    lines_count(lc),
     virtual_file(
         src.source_file_.scope, 
         src.source_file_.path, 
         &src.source_file_, 
-        shared_ptr<KeyendSubFileLineReader>(new KeyendSubFileLineReader(src.source_file_.scope->cfg().moveat_end_key(), (LineReader&)src.source_file_.reader())),
+        shared_ptr<KeyendSubFileLineReader>(new KeyendSubFileLineReader("#end moveat", (LineReader&)src.source_file_.reader())),
         src.get_local_indent().c_str()
         )
 {
     this->add_dest_name(main_label_name);
+    
+    { // reading lines
+        if (lines_count >= 0) {
+            virtual_file.read_some_lines(lines_count);
+        } else {
+            virtual_file.read_lines();
+        }
+    }
+
     DPLOG("MOVEAT [%s] CREATED WITH ABS INDENT = [%s]", main_label_name.c_str(), this->get_abs_indent().c_str());
 }
 
 void Moveat::writeme(Writer& w) {
-    mlog::error(string_format("#moveat instruction at [%s] should not be written right away!", this->pos.to_str().c_str()));
+    // mlog::error(string_format("#moveat instruction at [%s] should not be written right away!", this->pos.to_str().c_str()));
 }
 
 void Moveat::write_from_label(Writer& w, const Label& lbl) {
@@ -55,13 +68,19 @@ MoveatFactory::MoveatFactory(const Config& cfg, LabelFactory& lblfac)
 
 Line * MoveatFactory::try_create(const Line& src) {
     if (src.text_.startswith(original_name, true)) {
-        // DPLOGH("MOVEAT STARTWITH [%s]:", original_name.copy_as_std().c_str());
-        // DLOG(src);
+        DPLOGH("MOVEAT STARTWITH [%s]:", original_name.copy_as_std().c_str());
+        DLOG(src);
+
         ArgParse ap(src.text());
         string target_label = ap.get_tag_at(1);
         if (target_label.empty()) { return nullptr; }
 
-        auto re = new Moveat(src, target_label, label_fac);
+        string lines_count_str = ap.get_tag_at(2);
+        int lines_count;
+        try { lines_count = std::stoi(lines_count_str); }
+        catch (std::exception&) { lines_count = -1; }
+
+        auto re = new Moveat(src, target_label, lines_count, label_fac);
         created.push_back_copy(re);
         return re;
     }

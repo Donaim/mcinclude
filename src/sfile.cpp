@@ -43,9 +43,11 @@ Line * SFile::try_factories(Line * raw) {
 }
 void SFile::read_lines() {
     // DLOG("IN READ_LINES");
-
+    this->read_some_lines(-1);
+}
+void SFile::read_some_lines(int count) {
     Line * ln = new Line(*new MString{}, *this, LinePos::zero(this->path) );
-    while (true) {
+    for (int i = 0; i != count; i++) {
         SList<char> buff{16};
         if (!reader_->try_readline(buff)) { break; }
 
@@ -58,6 +60,8 @@ void SFile::read_lines() {
     }
     ended_ = true;
 }
+
+
 void SFile::writeall(Writer& wr, const char * additional_indent) {
     bool indent_exists = strlen(additional_indent) > 0;
     for (int i = 0; i < lines.size(); i++) {
