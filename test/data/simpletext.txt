@@ -4,7 +4,7 @@ hello
 move this at MYLABL
  
     #in lakdkjad
-
+$between
     #include <sample_include1.txt> at MYLABL once! -repeat +mark
 
 ########### SEPARATOR

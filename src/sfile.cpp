@@ -47,7 +47,7 @@ void SFile::read_lines() {
 }
 void SFile::read_some_lines(int count) {
     Line * ln = new Line(*new MString{}, *this, LinePos::zero(this->path) );
-    for (int i = 0; i != count; i++) {
+    while (count-- != 0) {
         SList<char> buff{16};
         if (!reader_->try_readline(buff)) { break; }
 
