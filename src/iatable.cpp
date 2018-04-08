@@ -3,8 +3,8 @@
 
 using std::string;
 
-IAtable::IAtable(LabelFactory& fac)
-    : lbl_fac(fac)
+IAtable::IAtable(LabelFactory& fac, const Line& src)
+    : lbl_fac(fac), source_line{src}
 {
     fac.register_iatable(this);
 }

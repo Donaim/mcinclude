@@ -26,7 +26,7 @@ string Include::get_true_include_path(string rawpath, const SFile& parent_file, 
 Include::Include(const Line& src, string tp, LabelFactory& fac)
     :
     Line(src),
-    IAtable(fac)
+    IAtable(fac, *this)
 {
     string true_include = Include::get_true_include_path(tp, src.source_file_, src.source_file_.scope->cfg());
     if (true_include.empty()) {

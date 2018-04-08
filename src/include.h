@@ -11,7 +11,7 @@
 
 #include <string>
 
-class Include : public Line, public IAtable {
+class Include : public virtual Line, public virtual IAtable {
     SFile * target;
 
 public:
