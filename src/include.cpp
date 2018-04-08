@@ -6,6 +6,8 @@
 #include "strhelp.h"
 
 #include <string>
+#include <vector>
+using std::vector;
 using std::string;
 
 
@@ -86,9 +88,9 @@ Line * IncludeFactory::try_create(const Line& src) {
             string dest = ap.get_option(IAtable::AT_KEYWORD);
             inc->add_dest_name(dest);
             
-            IArray<string*> dests = ap.get_nargs(IAtable::AT_KEYWORD);
+            vector<string> dests = ap.get_nargs(IAtable::AT_KEYWORD);
             for (int i = 0; i < dests.size(); i++) {
-                inc->add_dest_name(*(dests[i]));
+                inc->add_dest_name(dests[i]);
             }
         }
 

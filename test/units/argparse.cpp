@@ -7,7 +7,7 @@
 
 TEST_CASE("test creation") {
     ArgParse * ap = new ArgParse("aaa bbb : a1 b2 c3 c : x1 y2 z3");
-    DPLOG("OPTION [%s] = [%s]", "option", ap->get_option("aaa").c_str());
+    // DPLOG("OPTION [%s] = [%s]", "option", ap->get_option("aaa").c_str());
     delete ap;
     // for (int i = 0; i < ap.args.size(); i++) {
     //     DLOG(ap.args[i]); 
@@ -32,7 +32,7 @@ TEST_CASE("test split") {
         auto nargs = ap.get_nargs("nargs2");
         DLOG("NARGS {nargs2}:");
         for (int i = 0; i < nargs.size(); i++) {
-            DLOG(*nargs[i]);
+            DLOG(nargs[i]);
         }
     }
 }
