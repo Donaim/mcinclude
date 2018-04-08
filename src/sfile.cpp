@@ -44,8 +44,11 @@ void SFile::read_lines() {
     // DLOG("IN READ_LINES");
 
     Line * ln = new Line(*new MString{}, *this, LinePos::zero(this->path) );
-    while (!reader_->is_end()) {
-        MString * ms = new MString{reader_->readline(), false}; // Line class is responsible for free
+    while (true) {
+        SList<char> buff{16};
+        if (!reader_->try_readline(buff)) { break; }
+
+        MString * ms = new MString{buff.source(), false}; // Line class is responsible for free
          
         ln = new Line(*ms, *this, ln->pos.next());
         ln = this->try_factories(ln);

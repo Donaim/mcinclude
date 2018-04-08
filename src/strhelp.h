@@ -7,6 +7,8 @@
 bool is_space(char c);
 bool cstr_contains(const char * s, char c);
 
+bool str_startswith(const char * big_s, size_t b_len, const char * small_s, size_t s_len, bool skip_whitespace);
+
 #include <memory>
 #include <iostream>
 #include <string>

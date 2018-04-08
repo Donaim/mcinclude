@@ -16,13 +16,13 @@ SFileLineReader::SFileLineReader(const char * source_file_path) : handle{}, eof_
     }
 }
 
-char * SFileLineReader::readline() const {
-    SList<char> buff{10}; // to do: reserve average length of line 
+bool SFileLineReader::try_readline(SList<char> & buff) const {
+    if (eof_) { return false; }
 
     while (!handle.eof()) {
         char c = this->handle.get(); // to do: read char array, not single one
         if (c == -1 || c == '\0') 
-        { 
+        {
             eof_ = true;
             handle.close();
             break; 
@@ -34,7 +34,8 @@ char * SFileLineReader::readline() const {
     }
 
     buff.push_back_copy('\0');
-    return buff.source();
+
+    return true;
 }
 
 bool SFileLineReader::is_end() const {
