@@ -3,7 +3,17 @@
 *.o
 *.gch
 
+# visual studio
+visual-studio
+*.obj
+*.tlog
+*.idb
+*.log
+*.pdb
+
+
 **__pycache__
 
 extern
 .vscode
+.vs
