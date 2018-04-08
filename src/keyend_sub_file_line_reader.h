@@ -7,7 +7,7 @@ class KeyendSubFileLineReader : public SubFileLineReader {
     char * const end_keyword;
     const size_t keyword_len;
 public:
-    KeyendSubFileLineReader(std::string end_keyword, const LineReader& parent);
+    KeyendSubFileLineReader(std::string end_keyword, LineReader& parent);
 
     virtual bool is_okline(const SList<char> & buffer) const override;
 

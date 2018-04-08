@@ -5,7 +5,6 @@
 using std::string;
 using std::endl;
 
-#define QUOTE(x) #x
 
 Config::Config() {}
 Config& Config::generate_default() {
@@ -16,21 +15,28 @@ Config& Config::generate_default() {
     re.error_if_include_doesnt_exist_ = true;
     re.leave_headers_ = false;
 
-    re.include_name_ = "#include";
-    re.label_name_ = "#label";
+    re.include_name_ = re.commands_prefix_ + "include";
+    re.label_name_ = re.commands_prefix_ +  "label";
+    re.moveat_name_ = re.commands_prefix_ + "moveat";
+    re.moveat_end_key_ = re.commands_prefix_ + "end moveat";
 
     return re;
 }
 
+#define QUOTE(x) #x
+#define pp(x) '\t' << QUOTE(x) << ": " << x << endl
+
 std::ostream& operator << (std::ostream& os, const Config& cfg) {
   
-    os << '{';
-    os << '\t' << QUOTE(cfg.commands_prefix_) << ": " << cfg.commands_prefix_ << endl; 
-    os << '\t' << QUOTE(cfg.skip_repeating_includes_) << ": " << cfg.skip_repeating_includes_ << endl; 
-    os << '\t' << QUOTE(cfg.error_if_include_doesnt_exist_) << ": " << cfg.error_if_include_doesnt_exist_ << endl; 
-    os << '\t' << QUOTE(cfg.leave_headers_) << ": " << cfg.leave_headers_ << endl; 
-    os << '\t' << QUOTE(cfg.include_name_) << ": " << cfg.include_name_ << endl; 
-    os << '\t' << QUOTE(cfg.label_name_) << ": " << cfg.label_name_ << endl; 
+    os << '{' << endl;
+    os << pp(cfg.commands_prefix_);
+    os << pp(cfg.skip_repeating_includes_);
+    os << pp(cfg.error_if_include_doesnt_exist_);
+    os << pp(cfg.leave_headers_);
+    os << pp(cfg.include_name_);
+    os << pp(cfg.label_name_);
+    os << pp(cfg.moveat_name_);
+    os << pp(cfg.moveat_end_key_);
     os << '}';
 
     return os;
@@ -42,3 +48,5 @@ bool Config::error_if_include_doesnt_exist() const { return error_if_include_doe
 bool Config::leave_headers() const { return leave_headers_; }
 const string& Config::include_name() const { return include_name_; }
 const string& Config::label_name() const { return label_name_; }
+const string& Config::moveat_name() const { return moveat_name_; }
+const string& Config::moveat_end_key() const { return moveat_end_key_; }

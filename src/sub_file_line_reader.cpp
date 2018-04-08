@@ -3,13 +3,13 @@
 
 using namespace std;
 
-SubFileLineReader::SubFileLineReader(const LineReader& p) 
+SubFileLineReader::SubFileLineReader(LineReader& p) 
     : parent{p}
 {
 
 }
 
-bool SubFileLineReader::try_readline(SList<char> & buff) const {
+bool SubFileLineReader::try_readline(SList<char> & buff) {
     bool pok = parent.try_readline(buff);
     bool mok = is_okline(buff);
 

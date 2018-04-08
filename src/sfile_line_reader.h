@@ -17,7 +17,7 @@ public:
     SFileLineReader(const char * source_file_path);
 
     // virtual char * readline() const override;
-    virtual bool try_readline(SList<char> & buffer) const override;
+    virtual bool try_readline(SList<char> & buffer) override;
     virtual bool is_end() const override;
 
     ~SFileLineReader();

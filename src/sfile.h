@@ -21,6 +21,7 @@ protected:
     bool ended_;
 public:
     std::shared_ptr<Scope> scope;
+    const LineReader& reader() const;
     const std::string path;
 
     SFile(std::shared_ptr<Scope> scope, std::string path_, const SFile * parent, std::shared_ptr<LineReader> reader, const char * local_indent);

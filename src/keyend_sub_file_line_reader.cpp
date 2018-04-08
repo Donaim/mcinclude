@@ -4,7 +4,7 @@
 
 using namespace std;
 
-KeyendSubFileLineReader::KeyendSubFileLineReader(string endk, const LineReader& p) 
+KeyendSubFileLineReader::KeyendSubFileLineReader(string endk, LineReader& p) 
     : end_keyword{new char[endk.size()]}, keyword_len{endk.size()}, SubFileLineReader(p)
 {
     strcpy(this->end_keyword, endk.c_str());

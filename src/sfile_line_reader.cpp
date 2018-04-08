@@ -16,7 +16,7 @@ SFileLineReader::SFileLineReader(const char * source_file_path) : handle{}, eof_
     }
 }
 
-bool SFileLineReader::try_readline(SList<char> & buff) const {
+bool SFileLineReader::try_readline(SList<char> & buff) {
     if (eof_) { return false; }
 
     while (!handle.eof()) {

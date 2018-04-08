@@ -11,25 +11,28 @@
 
 #include <string>
 
-class Include : public Line, public IAtable {
-    SFile * target;
+class Moveat : public Line, public IAtable {
+    friend class MoveatFactory;
+
+    SFile virtual_file;
 
 public:
-    static std::string get_true_include_path(std::string rawpath, const SFile& parent_file, const Config& cfg);
-    Include(const Line& source, std::string target_path, LabelFactory& fac);
+    Moveat(const Line& source, std::string main_label, LabelFactory& fac);
 
     virtual void writeme(Writer& w) override;
     virtual void write_from_label(Writer& w, const Label& lbl) override;
 
-    ~Include();
+    const SFile& get_virtual_file() const;
+
+    ~Moveat();
 };
 
-class IncludeFactory : public ILineFactory {
+class MoveatFactory : public ILineFactory {
     LabelFactory& label_fac;
     MString original_name;
-    SList<Include*> created;
+    SList<Moveat*> created;
 public:
-    IncludeFactory(const Config& cfg, LabelFactory& lblfac);
+    MoveatFactory(const Config& cfg, LabelFactory& lblfac);
 
     virtual Line * try_create(const Line& src) override;
 };
