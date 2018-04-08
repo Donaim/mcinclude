@@ -109,8 +109,25 @@ inline bool iterators_subseq(const SIter& mit, const SIter& sit, bool skip_white
 
     return sit.is_subset_of(mit);
 }
-bool MString::startswith(const MString& o, bool skip_whitespace) const {
-    return this->startswith(o.buffer, skip_whitespace);
+bool MString::startswith(const MString& o, bool skip_whitespace) const { // should be fast
+    char * m_ptr = this->buffer;
+    const char * const m_end = this->buffer + this->_size;
+    char * o_ptr = o.buffer;
+    const char * const o_end = o.buffer + o._size;
+
+    if (skip_whitespace) {
+        while (is_space(*m_ptr)) { ++m_ptr; }
+        while (is_space(*o_ptr)) { ++o_ptr; }
+    }
+
+    while(true) {
+        if (o_ptr >= o_end) { return true; }
+        if (m_ptr >= m_end) { return false; } // this shorter that o
+
+        if ((*o_ptr) != (*m_ptr)) { return false; }
+        ++m_ptr;
+        ++o_ptr;
+    }
 }
 bool MString::startswith(const char * s, bool skip_whitespace) const {
     auto mit = get_iterator();

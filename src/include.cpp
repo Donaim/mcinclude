@@ -75,7 +75,7 @@ IncludeFactory::IncludeFactory(const Config& cfg, LabelFactory& lf)
 }
 Line * IncludeFactory::try_create(const Line& src) {
 
-    if (src.text().startswith(original_name, true)) {
+    if (src.text_.startswith(original_name, true)) {
         // DPLOGH("INCLUDE STARTWITH [%s]:", original_name.copy_as_std().c_str());
         // DLOG(src);
         ArgParse ap(src.text());
