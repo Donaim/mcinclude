@@ -27,6 +27,7 @@ TEST_CASE("test split") {
         
         ArgParse ap{a};
         DPLOG("OPTION [%s] = [%s]", "at", ap.get_option("at").c_str());
+        DPLOG("BOOL [%s] = [%d]", "once", ap.get_bool("once"));
         
         auto nargs = ap.get_nargs("nargs2");
         DLOG("NARGS {nargs2}:");

@@ -22,6 +22,15 @@ NArg::~NArg() {
 
 // ArgParse
 const string ArgParse::NARG_SPLITCHAR = ":";
+string * ArgParse::try_get_bool(const string& arg) {
+    if (arg.empty()) { return nullptr; }
+
+    if (arg[0] == '+') { return new string{arg.c_str() + 1, arg.size() - 1}; }
+    if (arg[arg.size() - 1] == '!') { return new string{arg.c_str(), arg.size() - 1}; } 
+    if (arg[0] == '-') { return new string{}; }
+    
+    return nullptr; 
+}
 
 SList<string *> split_source(string source) {
     SList<string *> re{4};
@@ -56,7 +65,7 @@ ArgParse::ArgParse(string source)
     
 }
 ArgParse::ArgParse(SList<string *> parts) 
-    : args{4}, nargs{2}
+    : args{4}, nargs{2}, bools{2}
 {
     NArg * last_narg = nullptr;
     for (int i = 0; i < parts.size(); i++) {
@@ -71,7 +80,14 @@ ArgParse::ArgParse(SList<string *> parts)
         else {
             if (last_narg == nullptr) {
                 // DPLOG("NEWARG: [%s]", parts[i]->c_str());
-                args.push_back_copy(new string(*parts[i]));
+                string * boolstr = ArgParse::try_get_bool(*parts[i]);
+                if (boolstr != nullptr) {
+                    if (!boolstr->empty()) {
+                        bools.push_back_copy(boolstr);                 
+                    }
+                } else {
+                    args.push_back_copy(new string(*parts[i]));
+                }
             } else {
                 // DPLOG("NEW NARG:%s", parts[i]->c_str());
                 last_narg->push_arg(*parts[i]);
@@ -88,12 +104,11 @@ string ArgParse::get_option(const string& name) const {
 
     return "";
 }
-string ArgParse::get_tag(const string & name ) const {
-    for (int i = 0, to = args.size(); i < to; i++) {
-        if (*args[i] == name) { return *(args[i]); }
+bool ArgParse::get_bool(const string & name ) const {
+    for (int i = 0, to = bools.size(); i < to; i++) {
+        if (*bools[i] == name) { return true; }
     }
-
-    return "";
+    return false;
 }
 string ArgParse::get_tag_at(size_t index) const {
     if (args.size() > index) {

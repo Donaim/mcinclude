@@ -1,7 +1,7 @@
 hello 
     #in lakdkjad
 
-    #include <sample_include1.txt> at MYLABL
+    #include <sample_include1.txt> at MYLABL once! -repeat +mark
 
 ########### SEPARATOR
 
