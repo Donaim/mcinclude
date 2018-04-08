@@ -4,6 +4,7 @@
 #include "label.h"
 #include "argparse.h"
 #include "log/short.h"
+#include "strhelp.h"
 
 using std::string;
 
@@ -60,7 +61,7 @@ void LabelFactory::connect_labels() const {
         IAtable * ia = subscribers[i];
         for (int k = 0; k < ia->dest_names.size(); k++) {
             if (connect_one_label(ia, ia->dest_names[k], created)) {}
-            else { mlog::error("couldn't connect IAtable (wrong label name)", mlog::EType::DEFAULT); }
+            else { mlog::error(string_format("couldn't connect IAtable to label with name=[%s]!", ia->dest_names[k].c_str()), mlog::EType::DEFAULT); }
         }
     }
 }

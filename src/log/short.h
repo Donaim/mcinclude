@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <string>
+#include <stdexcept>
 
 namespace mlog {
 
@@ -16,12 +17,12 @@ namespace mlog {
         rang::fg foreground_color = rang::fg::reset, 
         rang::bg background_color = rang::bg::reset);
 
-    void error(
-        const char * str, 
+    std::exception error(
+        std::string str, 
         EType type = EType::BAD, 
         LinePos pos = LinePos::undefined());
 
     void warn(
-        const char * str, 
+        std::string str, 
         WType type = WType::DEFAULT, LinePos pos = LinePos::undefined());
 }

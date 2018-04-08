@@ -1,6 +1,8 @@
 #include "stdafx.h"
 
 #include "sfile_line_reader.h"
+#include "strhelp.h"
+
 #include <iostream>
 
 using namespace std;
@@ -10,9 +12,7 @@ SFileLineReader::SFileLineReader(const char * source_file_path) : handle{}, eof_
     if (handle.is_open()) { 
         eof_ = false;
     } else {
-        char mess[1000];
-        sprintf(mess, "SFileLineReader couldn't open file \"%s\" !", source_file_path);
-        mlog::error(mess); 
+        throw mlog::error(string_format("SFileLineReader couldn't open file \"%s\" !", source_file_path)); 
     }
 }
 

@@ -31,7 +31,7 @@ Include::Include(const Line& src, string tp, LabelFactory& fac)
     string true_include = Include::get_true_include_path(tp, src.source_file_, src.source_file_.scope->cfg());
     if (true_include.empty()) {
         target = nullptr;
-        mlog::error(string_format("include path=[%s] wasn't found", tp.c_str()).c_str(), mlog::EType::DEFAULT);
+        mlog::error(string_format("include path=[%s] wasn't found", tp.c_str()), mlog::EType::DEFAULT);
     } else {
         target = new SFile(
             src.source_file_.scope, 

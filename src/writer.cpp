@@ -2,6 +2,7 @@
 
 #include "writer.h"
 #include "log/short.h"
+#include "strhelp.h"
 
 #include <fstream>
 #include <string>
@@ -10,7 +11,7 @@ using std::string;
 
 Writer::Writer(const char * target_path) : os{target_path} {
     if (!os.is_open()) {
-        mlog::error((string{"Writer couldn't open "} + target_path + "!").c_str());
+        throw mlog::error(string_format("Writer couldn't open path=[%s]", target_path));
     }
 }
 
@@ -25,7 +26,7 @@ Writer::~Writer() {
     try {
         os.close();
     }
-    catch (std::exception &ex) {
-        mlog::warn("Couldn't close file");
+    catch (std::exception&) {
+        mlog::warn("Couldn't close writer file");
     }
 }
