@@ -11,6 +11,7 @@
 #include <memory>
 
 using std::shared_ptr;
+using std::unique_ptr;
 using std::string;
 
 SFile::SFile(shared_ptr<Scope> sc, string path_, const SFile * parent, std::shared_ptr<LineReader> reader, const char * ind) : 
@@ -41,22 +42,44 @@ Line * SFile::try_factories(Line * raw) {
     }
     return raw;
 }
+
+
+unique_ptr<Line> SFile::get_line() {
+    if (lines.size() > 0) 
+    { 
+        Line * last = lines.back(); 
+        return unique_ptr<Line>(this->read_line(last));
+    }
+    else 
+    { 
+        auto zero = unique_ptr<Line>(new Line(*new MString{}, *this, LinePos::zero(this->path) ));
+        Line * last = zero.get();
+        return unique_ptr<Line>(this->read_line(last));
+    }
+}
+Line * SFile::read_line(Line * last_line) {
+    SList<char> buff{16};
+    if (!reader_->try_readline(buff)) { return nullptr; }
+
+    MString * ms = new MString{buff.source(), false}; // Line class is responsible for free
+        
+    Line * ln = new Line(*ms, *this, last_line->pos.next());
+    ln = this->try_factories(ln);
+    return ln;    
+}
 void SFile::read_lines() {
-    // DLOG("IN READ_LINES");
     this->read_some_lines(-1);
 }
 void SFile::read_some_lines(int count) {
-    Line * ln = new Line(*new MString{}, *this, LinePos::zero(this->path) );
+    auto zero = unique_ptr<Line>(new Line(*new MString{}, *this, LinePos::zero(this->path) ));
+    Line * ln = zero.get();
     while (count-- != 0) {
-        SList<char> buff{16};
-        if (!reader_->try_readline(buff)) { break; }
-
-        MString * ms = new MString{buff.source(), false}; // Line class is responsible for free
-         
-        ln = new Line(*ms, *this, ln->pos.next());
-        ln = this->try_factories(ln);
-        
-        lines.push_back(ln);
+        ln = read_line(ln);
+        if (ln != nullptr) {
+            lines.push_back(ln);
+        } else {
+            break;
+        }
     }
     ended_ = true;
 }

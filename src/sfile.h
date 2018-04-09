@@ -15,6 +15,7 @@ class LineReader;
 
 class SFile : public CodeBlock {
     Line * try_factories(Line * raw);
+    Line * read_line(Line * last_line);
 protected:
     const SFile * const parent_file_;
     bool ended_;
@@ -32,6 +33,8 @@ public:
 
     void read_lines();
     void read_some_lines(int count); // if negative, read whole file
+    std::unique_ptr<Line> get_line();
+
     void writeall(Writer& w, const char * additional_indent = "");
 
     ~SFile();
