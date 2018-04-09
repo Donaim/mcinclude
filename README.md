@@ -3,13 +3,17 @@ Includes some preprocessor magic to your project.
 [previous version](https://github.com/Donaim/pyincluder)  
 
 ## Currently available:
-- `#include <target>`  
-    Just copies the content of target file.  
+- `#include <targetpath>` [`at labelname`]  
+    Just copies the content of `targetpath` file.  
     Hovewer there are some improvements over std c include:
     - `at (destination)` option  
         Allows to copy content at specific location in source file (based on labels)
-- `#label (name)`  
-    Defines _target-point_ for instructions like `#include`
+- `#label name`   
+    Defines _target-point_ for instructions like `#include`, `#moveat`
+- `#moveat labelname` [`lines_count: int`]  
+    Moves text below at `labelname` position
+    _text below_ should end with `#endmove` line. Alternatively if `lines_count` provided _text below_ ends in that many lines  
+    Does not allow for repetitions by default  
 
 # Compilation
 - with scripts:  
@@ -39,6 +43,8 @@ example testing with scripts:
 - [ ] make possible to imitate classes (and inheritance) in C with mcinclude
 - [X] tags in argparse should start with `-` or `+` as booleans
 - [ ] search for tags/options/nargs from end in argparse
+- [ ] create even more human-readable argparser
+- [ ] make startswith also check if next char after requiered is white_space
 - [X] add `#label` instruction
 - [ ] `at` option for `#label`
 - [X] add `#include` instruction
