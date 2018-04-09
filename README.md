@@ -58,3 +58,4 @@ example testing with scripts:
 - dont use `inline` in definition if declaration does not have it
 - use `&&` (move) references. [tutor](https://stackoverflow.com/questions/5481539/what-does-t-double-ampersand-mean-in-c11)
 - use smart pointers. shared_ptr is espacially useful
+- don't ever use strcpy and such !! have no idea how safe they are

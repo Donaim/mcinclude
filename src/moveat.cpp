@@ -17,22 +17,34 @@ Moveat::Moveat(const Line& src, string main_label_name, int lc, LabelFactory& fa
     : 
     Line(src),
     IAtable(fac, *this),
-    lines_count(lc),
-    virtual_file(
+    lines_count(lc)
+{
+    // DPLOG("CREATING MOVEAT (SRC: %s)", src.pos.to_str().c_str());
+
+    virtual_file = new SFile {
         src.source_file_.scope, 
         src.source_file_.path, 
         &src.source_file_, 
-        shared_ptr<KeyendSubFileLineReader>(new KeyendSubFileLineReader("#end moveat", (LineReader&)src.source_file_.reader())),
+        shared_ptr<KeyendSubFileLineReader>(new KeyendSubFileLineReader(src.source_file_.scope->cfg()->moveat_end_key(), src.source_file_.reader_)),
         src.get_local_indent().c_str()
-        )
-{
-    this->add_dest_name(main_label_name);
-    
+    };
+
+    {
+        this->add_dest_name(main_label_name);
+    }
+
+    // {
+    //     DLOGH("\nENDMOVEKEY LEN=[");
+    //     // DLOG(src.source_file_.scope->cfg());
+    //     // DLOGH(src.source_file_.scope->cfg().moveat_end_key().size());
+    //     DLOG("]\n");
+    // }
+
     { // reading lines
         if (lines_count >= 0) {
-            virtual_file.read_some_lines(lines_count);
+            virtual_file->read_some_lines(lines_count);
         } else {
-            virtual_file.read_lines();
+            virtual_file->read_lines();
         }
     }
 
@@ -44,23 +56,23 @@ void Moveat::writeme(Writer& w) {
 }
 
 void Moveat::write_from_label(Writer& w, const Label& lbl) {
-    virtual_file.writeall(w, lbl.get_abs_indent().c_str());
+    virtual_file->writeall(w, lbl.get_abs_indent().c_str());
 }
 
 const SFile& Moveat::get_virtual_file() const {
-    return this->virtual_file;
+    return *this->virtual_file;
 }
 
 Moveat::~Moveat() {
-
+    delete virtual_file;
 }
 
 // factory
 
-MoveatFactory::MoveatFactory(const Config& cfg, LabelFactory& lblfac) 
+MoveatFactory::MoveatFactory(const shared_ptr<Config> cfg, LabelFactory& lblfac) 
     : 
     label_fac(lblfac), 
-    original_name(cfg.moveat_name()), 
+    original_name(cfg->moveat_name()),
     created{4}
 {
 
@@ -68,8 +80,8 @@ MoveatFactory::MoveatFactory(const Config& cfg, LabelFactory& lblfac)
 
 Line * MoveatFactory::try_create(const Line& src) {
     if (src.text_.startswith(original_name, true)) {
-        DPLOGH("MOVEAT STARTWITH [%s]:", original_name.copy_as_std().c_str());
-        DLOG(src);
+        // DPLOGH("MOVEAT STARTWITH [%s]:", original_name.copy_as_std().c_str());
+        // DLOG(src);
 
         ArgParse ap(src.text());
         string target_label = ap.get_tag_at(1);

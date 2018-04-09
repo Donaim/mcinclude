@@ -30,7 +30,7 @@ SFile SFile::create_root(const char * path,  shared_ptr<Scope> sc) {
     return SFile{sc, path, nullptr, shared_ptr<SFileLineReader>(new SFileLineReader(path)), ""};
 }
 
-const LineReader& SFile::reader() const { return *(reader_); }
+const SFile * SFile::ptr() const { return this; }
 bool SFile::is_file_root() const { return parent_file_ == nullptr; }
 bool SFile::is_ended() const { return ended_; }
 

@@ -12,7 +12,7 @@
 using namespace std;
 
 int main() {
-    Config cfg = Config::generate_default();
+    Config& cfg = *Config::generate_default();
     cout << cfg << endl;
 
     // mlog::warn("HI THERE!");

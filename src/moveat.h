@@ -10,11 +10,12 @@
 #include "iatable.h"
 
 #include <string>
+#include <memory>
 
 class Moveat : public Line, public IAtable {
     friend class MoveatFactory;
 
-    SFile virtual_file;
+    SFile * virtual_file;
 
 public:
     const int lines_count;
@@ -30,10 +31,12 @@ public:
 
 class MoveatFactory : public ILineFactory {
     LabelFactory& label_fac;
-    MString original_name;
+    
     SList<Moveat*> created;
 public:
-    MoveatFactory(const Config& cfg, LabelFactory& lblfac);
+    const MString original_name;
+    
+    MoveatFactory(const std::shared_ptr<Config> cfg, LabelFactory& lblfac);
 
     virtual Line * try_create(const Line& src) override;
 };

@@ -2,23 +2,25 @@
 
 #include "config.h"
 
+#include <memory>
+
 using std::string;
 using std::endl;
-
+using std::shared_ptr;
 
 Config::Config() {}
-Config& Config::generate_default() {
-    Config& re = *new Config();
+shared_ptr<Config> Config::generate_default() {
+    auto re = shared_ptr<Config>(new Config());
     
-    re.commands_prefix_ = "#";
-    re.skip_repeating_includes_ = false;
-    re.error_if_include_doesnt_exist_ = true;
-    re.leave_headers_ = false;
+    re->commands_prefix_ = "#";
+    re->skip_repeating_includes_ = false;
+    re->error_if_include_doesnt_exist_ = true;
+    re->leave_headers_ = false;
 
-    re.include_name_ = re.commands_prefix_ + "include";
-    re.label_name_ = re.commands_prefix_ +  "label";
-    re.moveat_name_ = re.commands_prefix_ + "moveat";
-    re.moveat_end_key_ = re.commands_prefix_ + "end moveat";
+    re->include_name_ = re->commands_prefix_ + "include";
+    re->label_name_ = re->commands_prefix_ +  "label";
+    re->moveat_name_ = re->commands_prefix_ + "moveat";
+    re->moveat_end_key_ = re->commands_prefix_ + "endmove";
 
     return re;
 }
@@ -42,11 +44,11 @@ std::ostream& operator << (std::ostream& os, const Config& cfg) {
     return os;
 }
 
-const string& Config::commands_prefix() const { return commands_prefix_; }
+const string Config::commands_prefix() const { return commands_prefix_; }
 bool Config::skip_repeating_includes() const { return skip_repeating_includes_; }
 bool Config::error_if_include_doesnt_exist() const { return error_if_include_doesnt_exist_; }
 bool Config::leave_headers() const { return leave_headers_; }
-const string& Config::include_name() const { return include_name_; }
-const string& Config::label_name() const { return label_name_; }
-const string& Config::moveat_name() const { return moveat_name_; }
-const string& Config::moveat_end_key() const { return moveat_end_key_; }
+const string Config::include_name() const { return include_name_; }
+const string Config::label_name() const { return label_name_; }
+const string Config::moveat_name() const { return moveat_name_; }
+const string Config::moveat_end_key() const { return moveat_end_key_; }

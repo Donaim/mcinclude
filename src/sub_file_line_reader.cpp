@@ -3,14 +3,14 @@
 
 using namespace std;
 
-SubFileLineReader::SubFileLineReader(LineReader& p) 
+SubFileLineReader::SubFileLineReader(shared_ptr<LineReader> p) 
     : parent{p}
 {
 
 }
 
 bool SubFileLineReader::try_readline(SList<char> & buff) {
-    bool pok = parent.try_readline(buff);
+    bool pok = parent->try_readline(buff);
     bool mok = is_okline(buff);
 
     this->eof_ = !(pok && mok);

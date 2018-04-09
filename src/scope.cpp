@@ -2,12 +2,13 @@
 #include "scope.h"
 #include "ilinefac.h"
 
+using std::shared_ptr;
 
-Scope::Scope(Config& c, SList<ILineFactory*> flist)
+Scope::Scope(shared_ptr<Config> c, SList<ILineFactory*> flist)
     : cfg_{c}, linefacs_(flist) 
 {}
 
-const Config& Scope::cfg() const {
+const shared_ptr<Config> Scope::cfg() const {
     return cfg_;
 }
 

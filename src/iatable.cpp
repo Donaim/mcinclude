@@ -12,7 +12,7 @@ IAtable::IAtable(LabelFactory& fac, const Line& src)
 void IAtable::add_dest_name(string label_name) {
     if (label_name.empty()) { return; }
 
-    DPLOG("ADDED DEST NAME=[%s]", label_name.c_str());
+    // DPLOG("ADDED DEST NAME=[%s]", label_name.c_str());
     this->dest_names.push_back(label_name);
 }
 

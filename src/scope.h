@@ -3,20 +3,21 @@
 
 #include "slist.hpp"
 #include <stdexcept>
+#include <memory>
 
 class Config;
 class ILineFactory;
 
 class Scope {
 
-    Config& cfg_;
+    std::shared_ptr<Config> cfg_;
     SList<ILineFactory*> linefacs_;
 
 public:
 
-    Scope(Config& cfg, SList<ILineFactory*> facts);
+    Scope(std::shared_ptr<Config> cfg, SList<ILineFactory*> facts);
 
-    const Config& cfg() const;
+    const std::shared_ptr<Config> cfg() const;
     const IArray<ILineFactory*>& funcs() const;
     
     template <typename T>

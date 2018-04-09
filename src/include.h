@@ -10,12 +10,13 @@
 #include "iatable.h"
 
 #include <string>
+#include <memory>
 
 class Include : public Line, public IAtable {
     SFile * target;
 
 public:
-    static std::string get_true_include_path(std::string rawpath, const SFile& parent_file, const Config& cfg);
+    static std::string get_true_include_path(std::string rawpath, const SFile& parent_file, const std::shared_ptr<Config> cfg);
     Include(const Line& source, std::string target_path, LabelFactory& fac);
 
     virtual void writeme(Writer& w) override;
@@ -29,7 +30,7 @@ class IncludeFactory : public ILineFactory {
     MString original_name;
     SList<Include*> created;
 public:
-    IncludeFactory(const Config& cfg, LabelFactory& lblfac);
+    IncludeFactory(const std::shared_ptr<Config> cfg, LabelFactory& lblfac);
 
     virtual Line * try_create(const Line& src) override;
 };

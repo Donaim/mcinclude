@@ -1,13 +1,17 @@
 
 #include "keyend_sub_file_line_reader.h"
 #include "strhelp.h"
+#include <memory>
 
 using namespace std;
 
-KeyendSubFileLineReader::KeyendSubFileLineReader(string endk, LineReader& p) 
-    : end_keyword{new char[endk.size()]}, keyword_len{endk.size()}, SubFileLineReader(p)
+KeyendSubFileLineReader::KeyendSubFileLineReader(string endk, shared_ptr<LineReader> p) 
+    : end_keyword{new char[endk.size() + 1]}, keyword_len{endk.size()}, SubFileLineReader(p)
 {
-    strcpy(this->end_keyword, endk.c_str());
+    for (int i = 0; i < endk.size(); i++) {
+        this->end_keyword[i] = endk[i];
+    }
+    this->end_keyword[endk.size()] = '\0';
 }
 KeyendSubFileLineReader::~KeyendSubFileLineReader() {
     delete [] end_keyword;

@@ -6,7 +6,11 @@
 #include "log/short.h"
 #include "strhelp.h"
 
+#include <string>
+#include <memory>
+
 using std::string;
+using std::shared_ptr;
 
 Label::Label(const Line & source, string name) 
     : Line(source), ILabel(name) 
@@ -22,8 +26,8 @@ void Label::writeme(Writer& w) {
 }
 
 
-LabelFactory::LabelFactory(const Config& cfg) 
-    : original_name(cfg.label_name()), created{16}, subscribers{32}
+LabelFactory::LabelFactory(const shared_ptr<Config> cfg) 
+    : original_name(cfg->label_name()), created{16}, subscribers{32}
 {
     // DPLOG("LabelFactory initialized with name=[%s]", original_name.copy_as_std().c_str());
 }

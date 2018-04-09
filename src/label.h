@@ -19,7 +19,7 @@ class LabelFactory : public ILineFactory {
  
     SList<IAtable *> subscribers;
 public:
-    LabelFactory(const Config& cfg);
+    LabelFactory(const std::shared_ptr<Config> cfg);
     virtual Line * try_create(const Line& src) override;
     
     const IArray<Label*>& list() const;

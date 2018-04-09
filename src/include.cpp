@@ -7,11 +7,13 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 using std::vector;
 using std::string;
+using std::shared_ptr;
 
 
-string Include::get_true_include_path(string rawpath, const SFile& parent_file, const Config& cfg) {
+string Include::get_true_include_path(string rawpath, const SFile& parent_file, const shared_ptr<Config> cfg) {
     if (is_file_exists(rawpath)) { return rawpath; }
 
     string local_dir = dirname(parent_file.path);
@@ -68,13 +70,13 @@ Include::~Include() {
 
 // factory //
 
-IncludeFactory::IncludeFactory(const Config& cfg, LabelFactory& lf)
-    : original_name(cfg.include_name()), label_fac(lf), created{16}
+IncludeFactory::IncludeFactory(const shared_ptr<Config> cfg, LabelFactory& lf)
+    : original_name(cfg->include_name()), label_fac(lf), created{16}
 {
 
 }
 Line * IncludeFactory::try_create(const Line& src) {
-
+    // DLOG("TRYING TO CREATE INCLUDE FACTORY");
     if (src.text_.startswith(original_name, true)) {
         // DPLOGH("INCLUDE STARTWITH [%s]:", original_name.copy_as_std().c_str());
         // DLOG(src);
