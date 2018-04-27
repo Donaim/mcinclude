@@ -6,7 +6,6 @@
 
 #include <string>
 #include <memory>
-
 using std::unique_ptr;
 using std::string;
 using std::vector;

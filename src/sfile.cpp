@@ -91,7 +91,7 @@ void SFile::writeall(Writer& wr, const char * additional_indent) {
         if (indent_exists) { wr.write(additional_indent); }
         lines[i]->writeme(wr);
     }
-}
+} 
 
 SFile::~SFile() {
     for (int i = 0, to = lines.size(); i < to; i++) {
